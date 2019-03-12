@@ -13,10 +13,10 @@ using namespace std;
 void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max = 0.3){
 	
 	TFile* out_file = TFile::Open(fileout);
-  	/*if(out_file!=0){
+  	if(out_file!=0){
       cout<<fileout<<" already exists, please delete it before converting again"<<endl;
       return;
-	}*/
+	}
 
 	out_file = TFile::Open(fileout,"RECREATE");
 
@@ -258,8 +258,8 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 
 void test(int n_events){
 
-  TString infile = "/data_CMS/cms/mperez/HGCal_data/L1taus/NTuple_ZTT_PU0_skimmed.root";
-  TString outfile = "/data_CMS/cms/mperez/HGCal_data/NTuple_ZTT_PU0_matched_0p3.root";
+  TString infile = "/data_CMS/cms/mperez/HGCal_data/L1taus/NTuple_ZTT_PU0_skimmed_BDTeg.root";
+  TString outfile = "/data_CMS/cms/mperez/HGCal_data/L1taus/NTuple_ZTT_PU0_matched_0p3_BDTeg.root";
 
   match_tree(infile, outfile, n_events, 0.3);
 

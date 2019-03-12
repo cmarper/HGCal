@@ -13,10 +13,10 @@ using namespace std;
 void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 	
 	TFile* out_file = TFile::Open(fileout);
-  	/*if(out_file!=0){
+  	if(out_file!=0){
       cout<<fileout<<" already exists, please delete it before converting again"<<endl;
       return;
-	}*/
+	}
 
 	out_file = TFile::Open(fileout,"RECREATE");
 
@@ -487,7 +487,7 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 
 void test(int n_events){
 
-  TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/ZTT_Tauola_All_hadronic_14TeV_TuneCUETP8M1_Pythia8/ZTauTau_PU0_L1TFall17/190228_160553/0000/";
+  /*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/ZTT_Tauola_All_hadronic_14TeV_TuneCUETP8M1_Pythia8/ZTauTau_PU0_L1TFall17/190228_160553/0000/";
 
   vector<TString> infiles;
   infiles.push_back(indir+Form("ntuple_Ztt_5k_1.root"));
@@ -498,7 +498,22 @@ void test(int n_events){
   infiles.push_back(indir+Form("ntuple_Ztt_5k_6.root"));
   infiles.push_back(indir+Form("ntuple_Ztt_5k_7.root"));
 
-  TString outfile = "/data_CMS/cms/mperez/HGCal_data/New_TPG/NTuple_ZTT_PU0_skimmed.root";
+  TString outfile = "/data_CMS/cms/mperez/HGCal_data/L1taus/NTuple_ZTT_PU0_skimmed.root";*/
+
+  //NEW BDTeg 12.03.19
+  TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/ZTT_Tauola_All_hadronic_14TeV_TuneCUETP8M1_Pythia8/ZTauTau_PU0_L1TFall17_new-3dcl-BDTeg/190308_150157/0000/";
+
+  vector<TString> infiles;
+  infiles.push_back(indir+Form("ntuple_Ztt_5k_1.root"));
+  infiles.push_back(indir+Form("ntuple_Ztt_5k_2.root"));
+  infiles.push_back(indir+Form("ntuple_Ztt_5k_3.root"));
+  infiles.push_back(indir+Form("ntuple_Ztt_5k_4.root"));
+  infiles.push_back(indir+Form("ntuple_Ztt_5k_5.root"));
+  infiles.push_back(indir+Form("ntuple_Ztt_5k_6.root"));
+  infiles.push_back(indir+Form("ntuple_Ztt_5k_7.root"));
+
+  TString outfile = "/data_CMS/cms/mperez/HGCal_data/L1taus/NTuple_ZTT_PU0_skimmed_BDTeg.root";
+  
 
   skim_tree(infiles, outfile, n_events);
 
