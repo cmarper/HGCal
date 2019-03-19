@@ -13,10 +13,10 @@ using namespace std;
 void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max = 0.3){
 	
 	TFile* out_file = TFile::Open(fileout);
-  	if(out_file!=0){
+  	/*if(out_file!=0){
       cout<<fileout<<" already exists, please delete it before converting again"<<endl;
       return;
-	}
+	}*/
 
 	out_file = TFile::Open(fileout,"RECREATE");
 
@@ -94,24 +94,34 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 	vector<bool>   			_gentau_isMatched;
 	vector<vector<float> >	_gentau_iMatchedcl3d;
 	vector<int>   			_gentau_nMatchedcl3d;
-	vector<float>   		_gentau_PtMaxMatchedcl3d;
-	vector<float>   		_gentau_iPtMaxMatchedcl3d;
+	vector<float>   		_gentau_PtMaxPtMatchedcl3d;
+	vector<float>   		_gentau_EtaMaxPtMatchedcl3d;
+	vector<float>   		_gentau_PhiMaxPtMatchedcl3d;
+	vector<float>   		_gentau_iMaxPtMatchedcl3d;
 	vector<float>   		_gentau_PtTotMatchedcl3d;
 
 	vector<bool>   _cl3d_isMatched;
 	vector<int>    _cl3d_iMatchedgentau;
+	vector<bool>   _cl3d_isMaxPtcl3d;
+	vector<int>    _cl3d_decayMode;
+	vector<float>  _cl3d_dRtoMaxPtcl3d;
 
 	out_tree->Branch("dR_cl3d_gentau",&_dR_cl3d_gentau);
 
 	out_tree->Branch("gentau_isMatched",			&_gentau_isMatched);
 	out_tree->Branch("gentau_iMatchedcl3d",			&_gentau_iMatchedcl3d);
 	out_tree->Branch("gentau_nMatchedcl3d",			&_gentau_nMatchedcl3d);
-	out_tree->Branch("gentau_PtMaxMatchedcl3d",		&_gentau_PtMaxMatchedcl3d);
-	out_tree->Branch("gentau_iPtMaxMatchedcl3d",	&_gentau_iPtMaxMatchedcl3d);
+	out_tree->Branch("gentau_PtMaxPtMatchedcl3d",		&_gentau_PtMaxPtMatchedcl3d);
+	out_tree->Branch("gentau_EtaMaxPtMatchedcl3d",	&_gentau_EtaMaxPtMatchedcl3d);
+	out_tree->Branch("gentau_PhiMaxPtMatchedcl3d",	&_gentau_PhiMaxPtMatchedcl3d);
+	out_tree->Branch("gentau_iMaxPtMatchedcl3d",	&_gentau_iMaxPtMatchedcl3d);
 	out_tree->Branch("gentau_PtTotMatchedcl3d",		&_gentau_PtTotMatchedcl3d);
 
 	out_tree->Branch("cl3d_isMatched", &_cl3d_isMatched);
 	out_tree->Branch("cl3d_iMatchedgentau", &_cl3d_iMatchedgentau);
+	out_tree->Branch("cl3d_isMaxPtcl3d", &_cl3d_isMaxPtcl3d);
+	out_tree->Branch("cl3d_decayMode", &_cl3d_decayMode);
+	out_tree->Branch("cl3d_dRtoMaxPtcl3d", &_cl3d_dRtoMaxPtcl3d);
 
 	float n_total_gentau = 0;
 	float n_total_gentau_matched = 0;
@@ -152,12 +162,17 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 		_gentau_isMatched.clear();
 		_gentau_iMatchedcl3d.clear();
 		_gentau_nMatchedcl3d.clear();
-		_gentau_PtMaxMatchedcl3d.clear();
-		_gentau_iPtMaxMatchedcl3d.clear();
+		_gentau_PtMaxPtMatchedcl3d.clear();
+		_gentau_EtaMaxPtMatchedcl3d.clear();
+		_gentau_PhiMaxPtMatchedcl3d.clear();
+		_gentau_iMaxPtMatchedcl3d.clear();
 		_gentau_PtTotMatchedcl3d.clear();
 
 		_cl3d_isMatched.clear();
 		_cl3d_iMatchedgentau.clear();
+		_cl3d_isMaxPtcl3d.clear();
+		_cl3d_decayMode.clear();
+		_cl3d_dRtoMaxPtcl3d.clear();
 
 
 		int entry_ok = in_tree->GetEntry(i);	
@@ -173,64 +188,116 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 
 			int n_match = 0;
 
-			vector<float> matched_cl3ds;
-			matched_cl3ds.clear();
+			//max. pt cluster
+			int   i_MaxPt = -999;
+			float Pt_MaxPt = -999; 
+			float Eta_MaxPt = -999;
+			float Phi_MaxPt = -999;
 
-			float maxPt = -1;
-			int i_maxPt = -1;
-			float totPt = 0;
+			//sum of pt of clusters
+			float TotPt = 0;
 
 			for (int i_cl3d=0; i_cl3d<_cl3d_n; i_cl3d++){
 
 				TLorentzVector matching_cl3d;
 				matching_cl3d.SetPtEtaPhiM( (*_cl3d_pt)[i_cl3d], (*_cl3d_eta)[i_cl3d], (*_cl3d_phi)[i_cl3d], 0);
 
-				float _myidr = sqrt( ((*_gentau_vis_eta)[i_gentau]-(*_cl3d_eta)[i_cl3d])*((*_gentau_vis_eta)[i_gentau]-(*_cl3d_eta)[i_cl3d]) + ((*_gentau_vis_phi)[i_gentau]-(*_cl3d_phi)[i_cl3d])*((*_gentau_vis_phi)[i_gentau]-(*_cl3d_phi)[i_cl3d]) );
+				float _i_dR = matching_cl3d.DeltaR(matching_tau);
 
-				float _i_dR = matching_tau.DeltaR(matching_cl3d);
 				_dR_cl3d_gentau.push_back(_i_dR);
 
-				bool _isMatch = _i_dR <= dR_max;
+				bool _isMatch = (_i_dR <= dR_max);
+
 				_cl3d_isMatched.push_back(_isMatch);
+				_cl3d_decayMode.push_back((*_gentau_decayMode)[i_gentau]);
 
 				if (_isMatch){	
 
 					_cl3d_iMatchedgentau.push_back(i_gentau);
-					matched_cl3ds.push_back(i_cl3d);
+
 					n_match++;
 
-					totPt = totPt + matching_cl3d.Pt();
+					TotPt = TotPt + matching_cl3d.Pt();
 
-					if (matching_cl3d.Pt()>maxPt){
-						maxPt = matching_cl3d.Pt();
-						i_maxPt = i_cl3d;
+					if (matching_cl3d.Pt()>Pt_MaxPt){
+
+						Pt_MaxPt = matching_cl3d.Pt();
+						Eta_MaxPt = matching_cl3d.Eta();
+						Phi_MaxPt = matching_cl3d.Phi();
+						i_MaxPt = i_cl3d;
+
 					}
 
 				}
 
 				else if (!_isMatch){
-					_cl3d_iMatchedgentau.push_back(-1);	
+
+					_cl3d_iMatchedgentau.push_back(-999);	
+
 				}
 
 			}
 
+			TLorentzVector maxPt_cl3d;
 
 			if (n_match>0) {
 
 				_gentau_isMatched.push_back(true);
-				_gentau_iMatchedcl3d.push_back(matched_cl3ds);
-				_gentau_PtMaxMatchedcl3d.push_back(maxPt);
-				_gentau_iPtMaxMatchedcl3d.push_back(i_maxPt);
-				_gentau_PtTotMatchedcl3d.push_back(totPt);
+
+				_gentau_PtMaxPtMatchedcl3d.push_back(Pt_MaxPt);
+				_gentau_EtaMaxPtMatchedcl3d.push_back(Eta_MaxPt);
+				_gentau_PhiMaxPtMatchedcl3d.push_back(Phi_MaxPt);
+				_gentau_iMaxPtMatchedcl3d.push_back(i_MaxPt);
+
+				_gentau_PtTotMatchedcl3d.push_back(TotPt);
+
 				n_total_gentau_matched++;
+
+				maxPt_cl3d.SetPtEtaPhiM( (*_cl3d_pt)[i_MaxPt], (*_cl3d_eta)[i_MaxPt], (*_cl3d_phi)[i_MaxPt], 0);
 			
 			}
 
 			else if (n_match==0) {
+
 				_gentau_isMatched.push_back(false);
+
+				_gentau_PtMaxPtMatchedcl3d.push_back(-999);
+				_gentau_EtaMaxPtMatchedcl3d.push_back(-999);
+				_gentau_PhiMaxPtMatchedcl3d.push_back(-999);
+				_gentau_iMaxPtMatchedcl3d.push_back(-999);
+
+				_gentau_PtTotMatchedcl3d.push_back(-999);
+
+				maxPt_cl3d.SetPtEtaPhiM( -999, -999, -999, -999);
+
 			}
 
+			for (int i_cl3d = 0; i_cl3d<_cl3d_n; i_cl3d++){
+
+				float dR_toMax = -999;
+
+				bool isMax = (i_cl3d == i_MaxPt);
+				_cl3d_isMaxPtcl3d.push_back(isMax);
+
+				if(_cl3d_isMatched[i_cl3d] && i_cl3d != i_MaxPt && _cl3d_iMatchedgentau[i_cl3d]==i_gentau){
+
+					if(i_cl3d == i_MaxPt) continue;
+
+					TLorentzVector matched_cl3d;
+					matched_cl3d.SetPtEtaPhiM( (*_cl3d_pt)[i_cl3d], (*_cl3d_eta)[i_cl3d], (*_cl3d_phi)[i_cl3d], 0);
+
+					dR_toMax = matched_cl3d.DeltaR(maxPt_cl3d);
+
+
+				}
+
+				_cl3d_dRtoMaxPtcl3d.push_back(dR_toMax);
+
+			}
+
+
 			_gentau_nMatchedcl3d.push_back(n_match);
+
 
 		}
 
