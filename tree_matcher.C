@@ -14,8 +14,8 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 	
 	TFile* out_file = TFile::Open(fileout);
   	/*if(out_file!=0){
-      cout<<fileout<<" already exists, please delete it before converting again"<<endl;
-      return;
+	  cout<<fileout<<" already exists, please delete it before converting again"<<endl;
+	  return;
 	}*/
 
 	out_file = TFile::Open(fileout,"RECREATE");
@@ -100,7 +100,7 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 	vector<vector<float> >	_gentau_BDTegMatchedcl3d;
 
 	vector<bool>   _cl3d_isMatched;
-	vector<int>    _cl3d_indexMatchedgentau;
+	vector<int>	_cl3d_indexMatchedgentau;
 
 	vector<float>  _cl3d_dRMatchedgentau;
 	vector<float>  _cl3d_dRMatchedgentauvis;
@@ -135,14 +135,14 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 	out_tree->Branch("cl3d_dRMatchedgentau",			&_cl3d_dRMatchedgentau);
 	out_tree->Branch("cl3d_dRMatchedgentauvis",			&_cl3d_dRMatchedgentauvis);
 	
-    out_tree->Branch("cl3d_PtMatchedgentau", 		&_cl3d_PtMatchedgentau);
+	out_tree->Branch("cl3d_PtMatchedgentau", 		&_cl3d_PtMatchedgentau);
 	out_tree->Branch("cl3d_EtaMatchedgentau", 		&_cl3d_EtaMatchedgentau);
 	out_tree->Branch("cl3d_PhiMatchedgentau",		&_cl3d_PhiMatchedgentau);
 	out_tree->Branch("cl3d_EnergyMatchedgentau",	&_cl3d_EnergyMatchedgentau);
 	out_tree->Branch("cl3d_MassMatchedgentau",		&_cl3d_MassMatchedgentau);
 	out_tree->Branch("cl3d_decayModeMatchedgentau",	&_cl3d_decayModeMatchedgentau);
 
-    out_tree->Branch("cl3d_PtMatchedgentauvis", 		&_cl3d_PtMatchedgentauvis);
+	out_tree->Branch("cl3d_PtMatchedgentauvis", 		&_cl3d_PtMatchedgentauvis);
 	out_tree->Branch("cl3d_EtaMatchedgentauvis", 		&_cl3d_EtaMatchedgentauvis);
 	out_tree->Branch("cl3d_PhiMatchedgentauvis",		&_cl3d_PhiMatchedgentauvis);
 	out_tree->Branch("cl3d_EnergyMatchedgentauvis",		&_cl3d_EnergyMatchedgentauvis);
@@ -214,7 +214,7 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 		int entry_ok = in_tree->GetEntry(i);	
 		if(entry_ok<0) 
 			continue;
-	     
+		 
 		//loop over gentaus
 
 		for(int i_gentau=0; i_gentau<_gentau_n; i_gentau++){
@@ -275,7 +275,7 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 					_cl3d_dRMatchedgentau.push_back(dR_gentau);
 					_cl3d_dRMatchedgentauvis.push_back(dR_gentauvis);
 
-    				_cl3d_PtMatchedgentau.push_back((*_gentau_pt)[i_gentau]);
+					_cl3d_PtMatchedgentau.push_back((*_gentau_pt)[i_gentau]);
 					_cl3d_EtaMatchedgentau.push_back((*_gentau_eta)[i_gentau]);
 					_cl3d_PhiMatchedgentau.push_back((*_gentau_phi)[i_gentau]);
 					_cl3d_EnergyMatchedgentau.push_back((*_gentau_energy)[i_gentau]);
@@ -297,7 +297,7 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 					_cl3d_dRMatchedgentau.push_back(-999.);
 					_cl3d_dRMatchedgentauvis.push_back(-999.);
 
-    				_cl3d_PtMatchedgentau.push_back(-999.);
+					_cl3d_PtMatchedgentau.push_back(-999.);
 					_cl3d_EtaMatchedgentau.push_back(-999.);
 					_cl3d_PhiMatchedgentau.push_back(-999.);
 					_cl3d_EnergyMatchedgentau.push_back(-999.);
@@ -335,8 +335,8 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 
 	h_dR_match->Write();
 
-    out_tree->Write();
-    out_file->Close();
+	out_tree->Write();
+	out_file->Close();
 
 	return;
 
