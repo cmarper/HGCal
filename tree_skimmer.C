@@ -1,10 +1,11 @@
+/////////////////////////////////////////////////////////
+///// HGCal L1 taus, C. Martin Perez, LLR, May 2019 /////
+/////////////////////////////////////////////////////////
+
 #include <TFile.h>
 #include <TTree.h>
 #include <TChain.h>
 #include <TString.h>
-#include <TCanvas.h>
-#include <TLorentzVector.h>
-#include <TF1.h>
 #include <iostream>
 
 using namespace std;
@@ -28,7 +29,9 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 
 	Long64_t nentries = in_tree->GetEntries();
 	cout<<"nentries="<<in_tree->GetEntries()<<endl;
-	if (nevents != -1) nentries = nevents;
+	
+	if (nevents != -1) 
+		nentries = nevents;
 
 	// old branches used
 
@@ -399,7 +402,7 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 		_out_event = _in_event;
 		_out_lumi  = _in_lumi;
 
-		// loop over gentaus to select the ones in the endcaps
+		// loop over gentaus to select the ones in the endcaps (1.7<eta<2.8)
 
 		int n_gentaus = (*_in_gentau_pt).size();
 
@@ -485,7 +488,7 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 }
 
 
-void test(int n_events){
+void test(int n_events = -1){
 
   /*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/ZTT_Tauola_All_hadronic_14TeV_TuneCUETP8M1_Pythia8/ZTauTau_PU0_L1TFall17/190228_160553/0000/";
 
@@ -501,7 +504,7 @@ void test(int n_events){
   TString outfile = "/data_CMS/cms/mperez/HGCal_data/New_TPG/NTuple_ZTT_PU0_skimmed.root";*/
 
   //NEW BDTeg 12.03.19
-  TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/ZTT_Tauola_All_hadronic_14TeV_TuneCUETP8M1_Pythia8/ZTauTau_PU0_L1TFall17_new-3dcl-BDTeg/190308_150157/0000/";
+  /*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/ZTT_Tauola_All_hadronic_14TeV_TuneCUETP8M1_Pythia8/ZTauTau_PU0_L1TFall17_new-3dcl-BDTeg/190308_150157/0000/";
 
   vector<TString> infiles;
   infiles.push_back(indir+Form("ntuple_Ztt_5k_1.root"));
@@ -512,7 +515,21 @@ void test(int n_events){
   infiles.push_back(indir+Form("ntuple_Ztt_5k_6.root"));
   infiles.push_back(indir+Form("ntuple_Ztt_5k_7.root"));
 
-  TString outfile = "/data_CMS/cms/mperez/HGCal_data/New_TPG/NTuple_ZTT_PU0_skimmed_BDTeg.root";
+  TString outfile = "/data_CMS/cms/mperez/HGCal_data/New_TPG/NTuple_ZTT_PU0_skimmed_BDTeg.root";*/
+
+  //May19, v8
+  TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/ZTT_Tauola_All_hadronic_14TeV_TuneCUETP8M1_Pythia8/ZTauTau_PU0_L1TFall17_May19/190504_153054/0000/";
+  
+  vector<TString> infiles;
+  infiles.push_back(indir+Form("ntuple_1.root"));
+  infiles.push_back(indir+Form("ntuple_2.root"));
+  infiles.push_back(indir+Form("ntuple_3.root"));
+  infiles.push_back(indir+Form("ntuple_4.root"));
+  infiles.push_back(indir+Form("ntuple_5.root"));
+  infiles.push_back(indir+Form("ntuple_6.root"));
+  infiles.push_back(indir+Form("ntuple_7.root"));
+
+  TString outfile = "/data_CMS/cms/mperez/HGCal_data/May19/NTuple_ZTT_PU0_skimmed.root";
   
 
   skim_tree(infiles, outfile, n_events);
