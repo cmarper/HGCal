@@ -76,6 +76,11 @@ void sort_tree( TString filein, TString fileout, int nevents = -1){
 	TTree* out_tree=in_tree->GetTree()->CloneTree(0);
 	out_tree->SetNameTitle("SortedTree","SortedTree"); 
 
+	vector<float>   _gentau_TotPtMatchedcl3d;
+	vector<float>   _gentau_TotBDTMatchedcl3d;
+	vector<float>   _gentau_MaxPtMatchedcl3d;
+	vector<float>   _gentau_MaxBDTMatchedcl3d;
+
 	vector<vector<float> >	_gentau_dRMatchedcl3d_pTsorted;
 	vector<vector<float> >	_gentau_PtMatchedcl3d_pTsorted;
 	vector<vector<float> >	_gentau_EtaMatchedcl3d_pTsorted;
@@ -87,6 +92,11 @@ void sort_tree( TString filein, TString fileout, int nevents = -1){
 	vector<vector<float> >	_gentau_EtaMatchedcl3d_BDTsorted;
 	vector<vector<float> >	_gentau_PhiMatchedcl3d_BDTsorted;
 	vector<vector<float> >	_gentau_BDTegMatchedcl3d_BDTsorted;
+
+	out_tree->Branch("gentau_TotPtMatchedcl3d",&_gentau_TotPtMatchedcl3d);
+	out_tree->Branch("gentau_TotBDTMatchedcl3d",&_gentau_TotBDTMatchedcl3d);
+	out_tree->Branch("gentau_MaxPtMatchedcl3d",&_gentau_MaxPtMatchedcl3d);
+	out_tree->Branch("gentau_MaxBDTMatchedcl3d",&_gentau_MaxBDTMatchedcl3d);
 
 	out_tree->Branch("gentau_dRMatchedcl3d_pTsorted",		&_gentau_dRMatchedcl3d_pTsorted);
 	out_tree->Branch("gentau_PtMatchedcl3d_pTsorted",		&_gentau_PtMatchedcl3d_pTsorted);
@@ -123,9 +133,9 @@ void sort_tree( TString filein, TString fileout, int nevents = -1){
 
 	out_tree->Branch("numberMatchedcl3d",&_numberMatchedcl3d);
 
-	out_tree->Branch("pT1cl3d_BDTeg",&_pT1cl3d_BDTeg);
-	out_tree->Branch("pT2cl3d_BDTeg",&_pT2cl3d_BDTeg);
-	out_tree->Branch("pT3cl3d_BDTeg",&_pT3cl3d_BDTeg);
+	out_tree->Branch("pT1cl3d_pTfraction",&_pT1cl3d_pTfraction);
+	out_tree->Branch("pT2cl3d_pTfraction",&_pT2cl3d_pTfraction);
+	out_tree->Branch("pT3cl3d_pTfraction",&_pT3cl3d_pTfraction);
 
 	out_tree->Branch("pT1cl3d_BDTeg",&_pT1cl3d_BDTeg);
 	out_tree->Branch("pT2cl3d_BDTeg",&_pT2cl3d_BDTeg);
@@ -159,6 +169,11 @@ void sort_tree( TString filein, TString fileout, int nevents = -1){
 		_gentau_BDTegMatchedcl3d = 0;
 
 		//new branches
+
+		_gentau_TotPtMatchedcl3d.clear();
+		_gentau_TotBDTMatchedcl3d.clear();
+		_gentau_MaxPtMatchedcl3d.clear();
+		_gentau_MaxBDTMatchedcl3d.clear();
 
 		_gentau_dRMatchedcl3d_pTsorted.clear();
 		_gentau_PtMatchedcl3d_pTsorted.clear();
@@ -199,10 +214,6 @@ void sort_tree( TString filein, TString fileout, int nevents = -1){
 		for(int i_gentau=0; i_gentau<_gentau_n; i_gentau++){
 
 			if (!(*_gentau_isMatched)[i_gentau]) continue;
-
-			_numberMatchedcl3d = (*_gentau_numberMatchedcl3d)[i_gentau];
-			cout<<"---"<<endl;
-			cout<<" numberMatchedcl3d "<<_numberMatchedcl3d<<endl;
 
 			vector<float> dRMatchedcl3d = (*_gentau_dRMatchedcl3d)[i_gentau];
 			vector<float> PtMatchedcl3d = (*_gentau_PtMatchedcl3d)[i_gentau];
@@ -307,19 +318,95 @@ void sort_tree( TString filein, TString fileout, int nevents = -1){
 			_gentau_BDTegMatchedcl3d_BDTsorted.push_back(BDTegMatchedcl3d_BDTsorted);
 
 
+			/*cout<<" --- "<<endl;
 			cout<<" unsorted, size: "<<PtMatchedcl3d.size()<<endl;
 			for (unsigned int i_cl3d = 0; i_cl3d<PtMatchedcl3d.size(); i_cl3d++){	
 				cout<<"  i_cl3d: pT "<<PtMatchedcl3d[i_cl3d]<<", eta "<<EtaMatchedcl3d[i_cl3d]<<",phi "<<PhiMatchedcl3d[i_cl3d]<<",bdt "<<BDTegMatchedcl3d[i_cl3d]<<endl;
-			}
+			}*/
 
 			cout<<" sorted by pT, size: "<<PtMatchedcl3d_pTsorted.size()<<endl;
 			for (unsigned int i_cl3d = 0; i_cl3d<PtMatchedcl3d_pTsorted.size(); i_cl3d++){				
 				cout<<"  i_cl3d: pT "<<PtMatchedcl3d_pTsorted[i_cl3d]<<", eta "<<EtaMatchedcl3d_pTsorted[i_cl3d]<<",phi "<<PhiMatchedcl3d_pTsorted[i_cl3d]<<",bdt "<<BDTegMatchedcl3d_pTsorted[i_cl3d]<<endl;
 			}
 
-			cout<<" sorted by BDT, size: "<<PtMatchedcl3d_BDTsorted.size()<<endl;
+			/*cout<<" sorted by BDT, size: "<<PtMatchedcl3d_BDTsorted.size()<<endl;
 			for (unsigned int i_cl3d = 0; i_cl3d<PtMatchedcl3d_BDTsorted.size(); i_cl3d++){				
 				cout<<"  i_cl3d: pT "<<PtMatchedcl3d_BDTsorted[i_cl3d]<<", eta "<<EtaMatchedcl3d_BDTsorted[i_cl3d]<<",phi "<<PhiMatchedcl3d_BDTsorted[i_cl3d]<<",bdt "<<BDTegMatchedcl3d_BDTsorted[i_cl3d]<<endl;
+			}*/
+
+			float TotPt = 0.;
+			float TotBDT = 0.;
+
+			for (unsigned int i_cl3d = 0; i_cl3d<PtMatchedcl3d.size(); i_cl3d++){
+				TotPt += PtMatchedcl3d[i_cl3d];
+				TotBDT += BDTegMatchedcl3d[i_cl3d];
+			}
+
+			float MaxPt = PtMatchedcl3d_pTsorted[0];
+			float MaxBDT = BDTegMatchedcl3d_BDTsorted[0];
+
+			//cout<<"MaxPt "<<MaxPt<<",MaxBDT "<<MaxBDT<<",TotPt "<<TotPt<<",TotBDT "<<TotBDT<<endl;
+
+			_gentau_TotPtMatchedcl3d.push_back(TotPt);
+			_gentau_TotBDTMatchedcl3d.push_back(TotBDT);
+			_gentau_MaxPtMatchedcl3d.push_back(MaxPt);
+			_gentau_MaxBDTMatchedcl3d.push_back(MaxBDT);
+
+
+			// Variables for BDT
+
+			_numberMatchedcl3d = (*_gentau_numberMatchedcl3d)[i_gentau];
+
+			_pT1cl3d_pTfraction = -1.;
+			_pT2cl3d_pTfraction = -1.;
+			_pT3cl3d_pTfraction = -1.;
+
+			_pT1cl3d_BDTeg = -1.;
+			_pT2cl3d_BDTeg = -1.;
+			_pT3cl3d_BDTeg = -1.;
+
+			_BDTeg1cl3d_pTfraction = -1;
+			_BDTeg2cl3d_pTfraction = -1;
+			_BDTeg3cl3d_pTfraction = -1;
+
+			_BDTeg1cl3d_BDTeg = -1;
+			_BDTeg2cl3d_BDTeg = -1;
+			_BDTeg3cl3d_BDTeg = -1;
+
+			if(_numberMatchedcl3d>=1){
+
+				cout<<"1 matched"<<endl;
+				cout<<"PtMatchedcl3d_pTsorted[0] "<<PtMatchedcl3d_pTsorted[0]<<endl;
+
+				_pT1cl3d_pTfraction = PtMatchedcl3d_pTsorted[0]/TotPt;
+				_pT1cl3d_BDTeg = BDTegMatchedcl3d_pTsorted[0];
+				_BDTeg1cl3d_pTfraction = PtMatchedcl3d_BDTsorted[0]/TotPt;
+				_BDTeg1cl3d_BDTeg = BDTegMatchedcl3d_BDTsorted[0];
+
+			}
+
+			if(_numberMatchedcl3d>=2){
+
+				cout<<"2 matched"<<endl;
+				cout<<"PtMatchedcl3d_pTsorted[1] "<<PtMatchedcl3d_pTsorted[1]<<endl;
+
+				_pT2cl3d_pTfraction = PtMatchedcl3d_pTsorted[1]/TotPt;
+				_pT2cl3d_BDTeg = BDTegMatchedcl3d_pTsorted[1];
+				_BDTeg2cl3d_pTfraction = PtMatchedcl3d_BDTsorted[1]/TotPt;
+				_BDTeg2cl3d_BDTeg = BDTegMatchedcl3d_BDTsorted[1];
+
+			}
+
+			if(_numberMatchedcl3d>=3){
+
+				cout<<"3 matched"<<endl;
+				cout<<"PtMatchedcl3d_pTsorted[2] "<<PtMatchedcl3d_pTsorted[2]<<endl;
+
+				_pT3cl3d_pTfraction = PtMatchedcl3d_pTsorted[2]/TotPt;
+				_pT3cl3d_BDTeg = BDTegMatchedcl3d_pTsorted[2];
+				_BDTeg3cl3d_pTfraction = PtMatchedcl3d_BDTsorted[2]/TotPt;
+				_BDTeg3cl3d_BDTeg = BDTegMatchedcl3d_BDTsorted[2];
+
 			}
 
 		}
