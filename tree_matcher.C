@@ -1,11 +1,13 @@
+/////////////////////////////////////////////////////////
+///// HGCal L1 taus, C. Martin Perez, LLR, May 2019 /////
+/////////////////////////////////////////////////////////
+
+#include <TH1F.h>
 #include <TFile.h>
 #include <TTree.h>
 #include <TChain.h>
 #include <TString.h>
-#include <TCanvas.h>
 #include <TLorentzVector.h>
-#include <TF1.h>
-#include <TH1F.h>
 #include <iostream>
 
 using namespace std;
@@ -14,8 +16,8 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 	
 	TFile* out_file = TFile::Open(fileout);
   	/*if(out_file!=0){
-	  cout<<fileout<<" already exists, please delete it before converting again"<<endl;
-	  return;
+      cout<<fileout<<" already exists, please delete it before converting again"<<endl;
+      return;
 	}*/
 
 	out_file = TFile::Open(fileout,"RECREATE");
@@ -57,7 +59,8 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 	vector<float>  *_cl3d_eta;
 	vector<float>  *_cl3d_phi;
 	vector<float>  *_cl3d_bdteg;
-
+	vector<int>  *_cl3d_coreshowerlength;
+        vector<int>  *_cl3d_maxlayer;
 
 	in_tree->SetBranchAddress("gentau_n",&_gentau_n);
 
@@ -82,25 +85,28 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 	in_tree->SetBranchAddress("cl3d_eta",	 &_cl3d_eta);
 	in_tree->SetBranchAddress("cl3d_phi",	 &_cl3d_phi);
 	in_tree->SetBranchAddress("cl3d_bdteg",	 &_cl3d_bdteg);
-
+	in_tree->SetBranchAddress("cl3d_coreshowerlength", &_cl3d_coreshowerlength);
+	in_tree->SetBranchAddress("cl3d_maxlayer", &_cl3d_maxlayer);
 
 	// new branches
 
 	TTree* out_tree=in_tree->GetTree()->CloneTree(0);
 	out_tree->SetNameTitle("MatchedTree","MatchedTree");
 
-	vector<bool>   			_gentau_isMatched;
+	vector<bool>   		_gentau_isMatched;
 	vector<vector<float> >	_gentau_indicesMatchedcl3d;
-	vector<int>   			_gentau_numberMatchedcl3d;
+	vector<int>   		_gentau_numberMatchedcl3d;
 
 	vector<vector<float> >	_gentau_dRMatchedcl3d;
 	vector<vector<float> >	_gentau_PtMatchedcl3d;
 	vector<vector<float> >	_gentau_EtaMatchedcl3d;
 	vector<vector<float> >	_gentau_PhiMatchedcl3d;
 	vector<vector<float> >	_gentau_BDTegMatchedcl3d;
+	vector<vector<int> >  _gentau_CoreshowerlengthMatchedcl3d;
+	vector<vector<int> >  _gentau_MaxlayerMatchedcl3d;
 
 	vector<bool>   _cl3d_isMatched;
-	vector<int>	_cl3d_indexMatchedgentau;
+	vector<int>    _cl3d_indexMatchedgentau;
 
 	vector<float>  _cl3d_dRMatchedgentau;
 	vector<float>  _cl3d_dRMatchedgentauvis;
@@ -119,34 +125,36 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 	vector<float>  _cl3d_MassMatchedgentauvis;
 
 
-	out_tree->Branch("gentau_isMatched",				&_gentau_isMatched);
-	out_tree->Branch("gentau_indicesMatchedcl3d",		&_gentau_indicesMatchedcl3d);
-	out_tree->Branch("gentau_numberMatchedcl3d",		&_gentau_numberMatchedcl3d);
+	out_tree->Branch("gentau_isMatched",		&_gentau_isMatched);
+	out_tree->Branch("gentau_indicesMatchedcl3d",	&_gentau_indicesMatchedcl3d);
+	out_tree->Branch("gentau_numberMatchedcl3d",	&_gentau_numberMatchedcl3d);
 
-	out_tree->Branch("gentau_dRMatchedcl3d",		&_gentau_dRMatchedcl3d);
-	out_tree->Branch("gentau_PtMatchedcl3d",		&_gentau_PtMatchedcl3d);
-	out_tree->Branch("gentau_EtaMatchedcl3d",		&_gentau_EtaMatchedcl3d);
-	out_tree->Branch("gentau_PhiMatchedcl3d",		&_gentau_PhiMatchedcl3d);
-	out_tree->Branch("gentau_BDTegMatchedcl3d",		&_gentau_BDTegMatchedcl3d);
+	out_tree->Branch("gentau_dRMatchedcl3d",	&_gentau_dRMatchedcl3d);
+	out_tree->Branch("gentau_PtMatchedcl3d",	&_gentau_PtMatchedcl3d);
+	out_tree->Branch("gentau_EtaMatchedcl3d",	&_gentau_EtaMatchedcl3d);
+	out_tree->Branch("gentau_PhiMatchedcl3d",	&_gentau_PhiMatchedcl3d);
+	out_tree->Branch("gentau_BDTegMatchedcl3d",	&_gentau_BDTegMatchedcl3d);
+	out_tree->Branch("gentau_CoreshowerlengthMatchedcl3d",	&_gentau_CoreshowerlengthMatchedcl3d);
+	out_tree->Branch("gentau_MaxlayerMatchedcl3d",	&_gentau_MaxlayerMatchedcl3d);
 
-	out_tree->Branch("cl3d_isMatched", 			&_cl3d_isMatched);
-	out_tree->Branch("cl3d_indexMatchedgentau", &_cl3d_indexMatchedgentau);
+	out_tree->Branch("cl3d_isMatched", 		&_cl3d_isMatched);
+	out_tree->Branch("cl3d_indexMatchedgentau", 	&_cl3d_indexMatchedgentau);
 
-	out_tree->Branch("cl3d_dRMatchedgentau",			&_cl3d_dRMatchedgentau);
-	out_tree->Branch("cl3d_dRMatchedgentauvis",			&_cl3d_dRMatchedgentauvis);
+	out_tree->Branch("cl3d_dRMatchedgentau",	&_cl3d_dRMatchedgentau);
+	out_tree->Branch("cl3d_dRMatchedgentauvis",	&_cl3d_dRMatchedgentauvis);
 	
-	out_tree->Branch("cl3d_PtMatchedgentau", 		&_cl3d_PtMatchedgentau);
-	out_tree->Branch("cl3d_EtaMatchedgentau", 		&_cl3d_EtaMatchedgentau);
-	out_tree->Branch("cl3d_PhiMatchedgentau",		&_cl3d_PhiMatchedgentau);
+	out_tree->Branch("cl3d_PtMatchedgentau", 	&_cl3d_PtMatchedgentau);
+	out_tree->Branch("cl3d_EtaMatchedgentau", 	&_cl3d_EtaMatchedgentau);
+	out_tree->Branch("cl3d_PhiMatchedgentau",	&_cl3d_PhiMatchedgentau);
 	out_tree->Branch("cl3d_EnergyMatchedgentau",	&_cl3d_EnergyMatchedgentau);
-	out_tree->Branch("cl3d_MassMatchedgentau",		&_cl3d_MassMatchedgentau);
+	out_tree->Branch("cl3d_MassMatchedgentau",	&_cl3d_MassMatchedgentau);
 	out_tree->Branch("cl3d_decayModeMatchedgentau",	&_cl3d_decayModeMatchedgentau);
 
-	out_tree->Branch("cl3d_PtMatchedgentauvis", 		&_cl3d_PtMatchedgentauvis);
-	out_tree->Branch("cl3d_EtaMatchedgentauvis", 		&_cl3d_EtaMatchedgentauvis);
-	out_tree->Branch("cl3d_PhiMatchedgentauvis",		&_cl3d_PhiMatchedgentauvis);
-	out_tree->Branch("cl3d_EnergyMatchedgentauvis",		&_cl3d_EnergyMatchedgentauvis);
-	out_tree->Branch("cl3d_MassMatchedgentauvis",		&_cl3d_MassMatchedgentauvis);
+	out_tree->Branch("cl3d_PtMatchedgentauvis", 	&_cl3d_PtMatchedgentauvis);
+	out_tree->Branch("cl3d_EtaMatchedgentauvis", 	&_cl3d_EtaMatchedgentauvis);
+	out_tree->Branch("cl3d_PhiMatchedgentauvis",	&_cl3d_PhiMatchedgentauvis);
+	out_tree->Branch("cl3d_EnergyMatchedgentauvis",	&_cl3d_EnergyMatchedgentauvis);
+	out_tree->Branch("cl3d_MassMatchedgentauvis",	&_cl3d_MassMatchedgentauvis);
 
 
 	for (int i=0;i<nentries;i++) {
@@ -178,6 +186,8 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 		_cl3d_eta = 0; 
 		_cl3d_phi = 0; 
 		_cl3d_bdteg = 0;
+		_cl3d_coreshowerlength = 0;
+		_cl3d_maxlayer = 0;
 
 		// new branches
 
@@ -190,6 +200,8 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 		_gentau_EtaMatchedcl3d.clear();
 		_gentau_PhiMatchedcl3d.clear();
 		_gentau_BDTegMatchedcl3d.clear();
+		_gentau_CoreshowerlengthMatchedcl3d.clear();
+		_gentau_MaxlayerMatchedcl3d.clear();
 		
 		_cl3d_isMatched.clear();
 		_cl3d_indexMatchedgentau.clear();
@@ -214,7 +226,7 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 		int entry_ok = in_tree->GetEntry(i);	
 		if(entry_ok<0) 
 			continue;
-		 
+	     
 		//loop over gentaus
 
 		for(int i_gentau=0; i_gentau<_gentau_n; i_gentau++){
@@ -234,6 +246,8 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 			vector<float> EtaMatchedcl3d;
 			vector<float> PhiMatchedcl3d;
 			vector<float> BDTegMatchedcl3d;
+			vector<int> CoreshowerlengthMatchedcl3d;
+			vector<int> MaxlayerMatchedcl3d;
 
 			indicesMatchedcl3d.clear();
 			dRMatchedcl3d.clear();
@@ -241,11 +255,14 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 			EtaMatchedcl3d.clear();
 			PhiMatchedcl3d.clear();
 			BDTegMatchedcl3d.clear();
-
-
+			CoreshowerlengthMatchedcl3d.clear();
+			MaxlayerMatchedcl3d.clear();
+		
 			// loop over cl3d
 
 			for (int i_cl3d=0; i_cl3d<_cl3d_n; i_cl3d++){
+
+				if ((*_cl3d_maxlayer)[i_cl3d]<6) continue;
 				
 				TLorentzVector matching_cl3d;
 				matching_cl3d.SetPtEtaPhiM( (*_cl3d_pt)[i_cl3d], (*_cl3d_eta)[i_cl3d], (*_cl3d_phi)[i_cl3d], 0);
@@ -270,12 +287,14 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 					EtaMatchedcl3d.push_back((*_cl3d_eta)[i_cl3d]);
 					PhiMatchedcl3d.push_back((*_cl3d_phi)[i_cl3d]);
 					BDTegMatchedcl3d.push_back((*_cl3d_bdteg)[i_cl3d]);
-
+					CoreshowerlengthMatchedcl3d.push_back((*_cl3d_coreshowerlength)[i_cl3d]);
+					MaxlayerMatchedcl3d.push_back((*_cl3d_maxlayer)[i_cl3d]);
+					
 					_cl3d_indexMatchedgentau.push_back(i_gentau);
 					_cl3d_dRMatchedgentau.push_back(dR_gentau);
 					_cl3d_dRMatchedgentauvis.push_back(dR_gentauvis);
 
-					_cl3d_PtMatchedgentau.push_back((*_gentau_pt)[i_gentau]);
+	    				_cl3d_PtMatchedgentau.push_back((*_gentau_pt)[i_gentau]);
 					_cl3d_EtaMatchedgentau.push_back((*_gentau_eta)[i_gentau]);
 					_cl3d_PhiMatchedgentau.push_back((*_gentau_phi)[i_gentau]);
 					_cl3d_EnergyMatchedgentau.push_back((*_gentau_energy)[i_gentau]);
@@ -297,7 +316,7 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 					_cl3d_dRMatchedgentau.push_back(-999.);
 					_cl3d_dRMatchedgentauvis.push_back(-999.);
 
-					_cl3d_PtMatchedgentau.push_back(-999.);
+	    				_cl3d_PtMatchedgentau.push_back(-999.);
 					_cl3d_EtaMatchedgentau.push_back(-999.);
 					_cl3d_PhiMatchedgentau.push_back(-999.);
 					_cl3d_EnergyMatchedgentau.push_back(-999.);
@@ -323,7 +342,8 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 			_gentau_EtaMatchedcl3d.push_back(EtaMatchedcl3d);
 			_gentau_PhiMatchedcl3d.push_back(PhiMatchedcl3d);
 			_gentau_BDTegMatchedcl3d.push_back(BDTegMatchedcl3d);
-
+			_gentau_CoreshowerlengthMatchedcl3d.push_back(CoreshowerlengthMatchedcl3d);
+			_gentau_MaxlayerMatchedcl3d.push_back(MaxlayerMatchedcl3d);
 
 		} //end of loop over gentaus
 
@@ -343,13 +363,24 @@ void match_tree( TString filein, TString fileout, int nevents = -1, float dR_max
 }
 
 
-void test(int n_events = -1){
+void test(int n_events = -1, TString pu = "0", TString dr = "0p3"){
 
   TString dir = "/data_CMS/cms/mperez/HGCal_data/May19/";
+  
+  float dR;
+  if(dr=="0p1") dR = 0.1;
+  else if(dr=="0p2") dR = 0.2;
+  else if(dr=="0p3") dR = 0.3;
+  else if(dr=="0p4") dR = 0.4;
+  else if(dr=="0p5") dR = 0.5;
+  else if(dr=="0p6") dR = 0.6;
 
-  TString infile = dir+"NTuple_ZTT_PU0_skimmed.root";
-  TString outfile = dir+"NTuple_ZTT_PU0_matched0p3.root";
+  cout<<"pu"<<pu<<endl;
+  cout<<"dR"<<dR<<endl;
 
-  match_tree(infile, outfile, n_events, 0.3);
+  TString infile = dir+"skimmed/NTuple_ZTT_PU"+pu+"_skimmed.root";
+  TString outfile = dir+"matched/NTuple_ZTT_PU"+pu+"_matched"+dr+"_cutMaxLayer6.root";
+
+  match_tree(infile, outfile, n_events, dR);
 
 }

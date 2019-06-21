@@ -518,8 +518,8 @@ void test(int n_events = -1){
   TString outfile = "/data_CMS/cms/mperez/HGCal_data/New_TPG/NTuple_ZTT_PU0_skimmed_BDTeg.root";*/
 
   //May19, v8
-  TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/ZTT_Tauola_All_hadronic_14TeV_TuneCUETP8M1_Pythia8/ZTauTau_PU0_L1TFall17_May19/190504_153054/0000/";
-  
+  /*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/ZTT_Tauola_All_hadronic_14TeV_TuneCUETP8M1_Pythia8/ZTauTau_PU0_L1TFall17_May19/190504_153054/0000/";  
+
   vector<TString> infiles;
   infiles.push_back(indir+Form("ntuple_1.root"));
   infiles.push_back(indir+Form("ntuple_2.root"));
@@ -529,8 +529,17 @@ void test(int n_events = -1){
   infiles.push_back(indir+Form("ntuple_6.root"));
   infiles.push_back(indir+Form("ntuple_7.root"));
 
-  TString outfile = "/data_CMS/cms/mperez/HGCal_data/May19/NTuple_ZTT_PU0_skimmed.root";
+  TString outfile = "/data_CMS/cms/mperez/HGCal_data/May19/NTuple_ZTT_PU0_skimmed.root";*/
+
+
+  TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/ZTT_Tauola_All_hadronic_14TeV_TuneCUETP8M1_Pythia8/ZTauTau_PU200_L1TFall17_May19/190506_081053/0000/";
+
+  vector<TString> infiles;
+  for(int i=1;i<270;i++){
+    infiles.push_back(Form(indir+"ntuple_%i.root",i));
+  }
   
+  TString outfile = "/data_CMS/cms/mperez/HGCal_data/May19/NTuple_ZTT_PU200_skimmed.root";
 
   skim_tree(infiles, outfile, n_events);
 
