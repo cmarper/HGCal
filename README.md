@@ -16,7 +16,7 @@ Instructions (based on Z->tautau samples):
 Decay mode multiclassifier training/performance 
 
 Instructions:
-1. Select and dump the input variables for the BDT into a txt file with dump_BDT_vbles.C.
+1. Select and dump the input variables for the BDT into a csv file with dump_BDT_vbles.C.
 2. Run training and performance evaluation with HGCal_BDT/multiclass_DM/training.py
 
 
@@ -25,5 +25,5 @@ Instructions:
 Calibration regressor training/performance 
 
 Instructions:
-1. Select and dump the input variables for the BDT into a txt file with dump_BDT_vbles.C.
+1. Select and dump the input variables for the BDT into a csv file with dump_BDT_vbles.C.
 2. Run training and performance evaluation with HGCal_BDT/regression_calib/training.py
