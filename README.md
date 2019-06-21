@@ -1,4 +1,4 @@
-# HGCal
+# HGCal L1 taus
 Development of a L1 tau algorithm for CMS HGCal, C. Martin Perez (LLR), 2019
 
 * *Step 1*: 
