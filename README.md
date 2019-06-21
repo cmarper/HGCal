@@ -1,7 +1,7 @@
 # HGCal
 Development of a L1 tau algorithm for CMS HGCal, C. Martin Perez (LLR), 2019
 
-# Step 1: Postprocessing of raw ntuples
+* Step 1: Postprocessing of raw ntuples *
 
 Instructions (based on Z->tautau samples):
 1. Run tree_skimmer.C to remove gentaus out of the HGCal acceptance.
