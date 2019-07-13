@@ -116,8 +116,8 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 	vector<vector<float> >	_gentau_EtaMatchedcl3d;
 	vector<vector<float> >	_gentau_PhiMatchedcl3d;
 	vector<vector<float> >	_gentau_BDTegMatchedcl3d;
-	vector<vector<float> >	_gentau_CoreShowerLengthMatchedcl3d;
-	vector<vector<float> >	_gentau_MaxLayerMatchedcl3d;
+	vector<vector<int> >	_gentau_CoreShowerLengthMatchedcl3d;
+	vector<vector<int> >	_gentau_MaxLayerMatchedcl3d;
 
 	out_tree->Branch("n_supercl3d",			 	&_n_supercl3ds);
 
@@ -388,14 +388,22 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 			TLorentzVector gentauvis;
 			gentauvis.SetPtEtaPhiM( (*_gentau_vis_pt)[i_gentau], (*_gentau_vis_eta)[i_gentau], (*_gentau_vis_phi)[i_gentau], (*_gentau_vis_mass)[i_gentau]);
 
-			float matched_cl3d_n;
+			float matched_cl3d_n = 0;
 			vector<float> matched_cl3d_pt;
             vector<float> matched_cl3d_energy;
             vector<float> matched_cl3d_eta;
             vector<float> matched_cl3d_phi;
             vector<float> matched_cl3d_bdteg;
-            vector<float> matched_cl3d_coreshowerlength;
-            vector<float> matched_cl3d_maxlayer;
+            vector<int> matched_cl3d_coreshowerlength;
+            vector<int> matched_cl3d_maxlayer;
+
+            matched_cl3d_pt.clear();
+            matched_cl3d_energy.clear();
+            matched_cl3d_eta.clear();
+            matched_cl3d_phi.clear();
+            matched_cl3d_bdteg.clear();
+            matched_cl3d_coreshowerlength.clear();
+            matched_cl3d_maxlayer.clear();
 
             float dRmin = 1.0;
 
@@ -410,9 +418,9 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 
 				isMatch = (dR_gentauvis <= 0.3);
 
-				if(dR<dRmin){
+				if(dR_gentauvis<dRmin){
 
-            		dRmin = dR;
+            		dRmin = dR_gentauvis;
 
             		matched_cl3d_n 		= _supercl3d_n_cl3d.at(i_supercl3d);
 					matched_cl3d_pt 	= _supercl3d_cl3d_pt.at(i_supercl3d);
@@ -438,18 +446,6 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 				_gentau_BDTegMatchedcl3d.push_back(matched_cl3d_bdteg);
 				_gentau_CoreShowerLengthMatchedcl3d.push_back(matched_cl3d_coreshowerlength);
 				_gentau_MaxLayerMatchedcl3d.push_back(matched_cl3d_maxlayer);
-
-			}
-
-			else {
-
-				_gentau_numberMatchedcl3d.push_back(-999.);
-				_gentau_PtMatchedcl3d.push_back(-999.);
-				_gentau_EtaMatchedcl3d.push_back(-999.);
-				_gentau_PhiMatchedcl3d.push_back(-999.);
-				_gentau_BDTegMatchedcl3d.push_back(-999.);
-				_gentau_CoreShowerLengthMatchedcl3d.push_back(-999.);
-				_gentau_MaxLayerMatchedcl3d.push_back(-999.);
 
 			}
 
