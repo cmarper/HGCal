@@ -18,322 +18,318 @@ bool pT_comparison_pairs(pair<int,TLorentzVector> pair1, pair<int,TLorentzVector
 
 void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_thr_seed = 4, float pt_thr_sec = 2, float eta_window = 0.3, float phi_window = 0.5){
 
-	TFile* out_file = TFile::Open(fileout);
-  	/*if(out_file!=0){
+    TFile* out_file = TFile::Open(fileout);
+      /*if(out_file!=0){
       cout<<fileout<<" already exists, please delete it before converting again"<<endl;
       return;
-	}*/
-
-	out_file = TFile::Open(fileout,"RECREATE");
-
-	TChain * in_tree = new TChain("SkimmedTree");	
-	in_tree->Add(filein);
-
-	Long64_t nentries = in_tree->GetEntries();
-	cout<<"nentries="<<in_tree->GetEntries()<<endl;
-	if (nevents != -1) 
-		nentries = nevents;
-
-	TH1F* h_pT_seed=new TH1F("h_pT_seed","h_pT_seed",100,0,100);
-	TH1F* h_pT_secondaries=new TH1F("h_pT_secondaries","h_pT_secondaries",100,0,100);
-
-	// old branches used
-
-	int _gentau_n;
-
-	vector<float> *_gentau_pt; 
-	vector<float> *_gentau_eta;
-	vector<float> *_gentau_phi;
-	vector<float> *_gentau_energy;
-	vector<float> *_gentau_mass;
-
-	vector<float> *_gentau_vis_pt; 
-	vector<float> *_gentau_vis_eta;
-	vector<float> *_gentau_vis_phi;
-	vector<float> *_gentau_vis_energy;
-	vector<float> *_gentau_vis_mass;
-
-	vector<int>   *_gentau_decayMode;
-
-	int _cl3d_n;
-
-	vector<float>  *_cl3d_pt;
-	vector<float>  *_cl3d_energy;
-	vector<float>  *_cl3d_eta;
-	vector<float>  *_cl3d_phi;
-	vector<float>  *_cl3d_bdteg;
-	vector<int>    *_cl3d_coreshowerlength;
-	vector<int>    *_cl3d_maxlayer;
-
-	in_tree->SetBranchAddress("gentau_n",&_gentau_n);
-
-	in_tree->SetBranchAddress("gentau_pt",		&_gentau_pt);
-	in_tree->SetBranchAddress("gentau_eta",		&_gentau_eta);
-	in_tree->SetBranchAddress("gentau_phi",		&_gentau_phi);
-	in_tree->SetBranchAddress("gentau_energy",	&_gentau_energy);
-	in_tree->SetBranchAddress("gentau_mass",	&_gentau_mass);
-
-	in_tree->SetBranchAddress("gentau_vis_pt",		&_gentau_vis_pt);
-	in_tree->SetBranchAddress("gentau_vis_eta",		&_gentau_vis_eta);
-	in_tree->SetBranchAddress("gentau_vis_phi",		&_gentau_vis_phi);
-	in_tree->SetBranchAddress("gentau_vis_energy",	&_gentau_vis_energy);
-	in_tree->SetBranchAddress("gentau_vis_mass",	&_gentau_vis_mass);
-
-	in_tree->SetBranchAddress("gentau_decayMode",	&_gentau_decayMode);
-
-	in_tree->SetBranchAddress("cl3d_n",	&_cl3d_n);
-
-	in_tree->SetBranchAddress("cl3d_pt",	 			&_cl3d_pt);
-	in_tree->SetBranchAddress("cl3d_energy", 			&_cl3d_energy);
-	in_tree->SetBranchAddress("cl3d_eta",	 			&_cl3d_eta);
-	in_tree->SetBranchAddress("cl3d_phi",	 			&_cl3d_phi);
-	in_tree->SetBranchAddress("cl3d_bdteg",	 			&_cl3d_bdteg);
-	in_tree->SetBranchAddress("cl3d_coreshowerlength", 	&_cl3d_coreshowerlength);
-	in_tree->SetBranchAddress("cl3d_maxlayer", 			&_cl3d_maxlayer);
-
-	TTree* out_tree=in_tree->GetTree()->CloneTree(0);
-	out_tree->SetNameTitle("ClusteredTree","ClusteredTree");
-
-	float _n_supercl3ds;
-
-	vector<int>    _supercl3d_n_cl3d; //number of sub cl3d
-	vector<float>  _supercl3d_pt; //sum of cl3d pT
-	vector<float>  _supercl3d_energy; //sum of cl3d E
-	vector<float>  _supercl3d_eta; //eta of main cl3d
-	vector<float>  _supercl3d_phi; //phi of main cl3d
-
-	vector<vector<float>>  _supercl3d_cl3d_pt;
-	vector<vector<float>>  _supercl3d_cl3d_energy;
-	vector<vector<float>>  _supercl3d_cl3d_eta;
-	vector<vector<float>>  _supercl3d_cl3d_phi;
-	vector<vector<float>>  _supercl3d_cl3d_bdteg;
-	vector<vector<int>>    _supercl3d_cl3d_coreshowerlength;
-	vector<vector<int>>    _supercl3d_cl3d_maxlayer;
-
-	vector<bool>   			_gentau_isMatched;
-	vector<int>   			_gentau_numberMatchedcl3d;
-	vector<vector<float> >	_gentau_PtMatchedcl3d;
-	vector<vector<float> >	_gentau_EtaMatchedcl3d;
-	vector<vector<float> >	_gentau_PhiMatchedcl3d;
-	vector<vector<float> >	_gentau_BDTegMatchedcl3d;
-	vector<vector<int> >	_gentau_CoreShowerLengthMatchedcl3d;
-	vector<vector<int> >	_gentau_MaxLayerMatchedcl3d;
-
-	out_tree->Branch("n_supercl3d",			 	&_n_supercl3ds);
-
-	out_tree->Branch("supercl3d_n_cl3d",			&_supercl3d_n_cl3d);
-	out_tree->Branch("supercl3d_pt",				&_supercl3d_pt);
-	out_tree->Branch("supercl3d_energy",			&_supercl3d_energy);
-	out_tree->Branch("supercl3d_eta",				&_supercl3d_eta);
-	out_tree->Branch("supercl3d_phi",				&_supercl3d_phi);
-	/*out_tree->Branch("supercl3d_bdteg",			&_supercl3d_bdteg);
-	out_tree->Branch("supercl3d_coreshowerlength",	&_supercl3d_coreshowerlength);
-	out_tree->Branch("supercl3d_maxlayer",			&_supercl3d_maxlayer);*/
-
-	out_tree->Branch("supercl3d_cl3d_pt",					&_supercl3d_cl3d_pt);
-	out_tree->Branch("supercl3d_cl3d_energy",				&_supercl3d_cl3d_energy);
-	out_tree->Branch("supercl3d_cl3d_eta",					&_supercl3d_cl3d_eta);
-	out_tree->Branch("supercl3d_cl3d_phi",					&_supercl3d_cl3d_phi);
-	out_tree->Branch("supercl3d_cl3d_bdteg",				&_supercl3d_cl3d_bdteg);
-	out_tree->Branch("supercl3d_cl3d_coreshowerlength",		&_supercl3d_cl3d_coreshowerlength);
-	out_tree->Branch("supercl3d_cl3d_maxlayer",				&_supercl3d_cl3d_maxlayer);
-
-	out_tree->Branch("gentau_isMatched", &_gentau_isMatched);
-	out_tree->Branch("gentau_numberMatchedcl3d", &_gentau_numberMatchedcl3d);
-	out_tree->Branch("gentau_PtMatchedcl3d", &_gentau_PtMatchedcl3d);
-	out_tree->Branch("gentau_EtaMatchedcl3d", &_gentau_EtaMatchedcl3d);
-	out_tree->Branch("gentau_PhiMatchedcl3d", &_gentau_PhiMatchedcl3d);
-	out_tree->Branch("gentau_BDTegMatchedcl3d", &_gentau_BDTegMatchedcl3d);
-	out_tree->Branch("gentau_CoreShowerLengthMatchedcl3d", &_gentau_CoreShowerLengthMatchedcl3d);
-	out_tree->Branch("gentau_MaxLayerMatchedcl3d", &_gentau_MaxLayerMatchedcl3d);
-
-
-	for (int i=0;i<nentries;i++) {
-
-		if(i%1000==0) cout<<"i="<<i<<endl;
-
-		// old branches
-
-		_gentau_n = 0;
-
-		_gentau_pt = 0; 
-		_gentau_eta = 0;
-		_gentau_phi = 0;
-		_gentau_energy = 0;
-		_gentau_mass = 0;
+    }*/
+
+    out_file = TFile::Open(fileout,"RECREATE");
+
+    TChain * in_tree = new TChain("SkimmedTree");    
+    in_tree->Add(filein);
+
+    Long64_t nentries = in_tree->GetEntries();
+    cout<<"nentries="<<in_tree->GetEntries()<<endl;
+    if (nevents != -1) 
+        nentries = nevents;
+
+    TH1F* h_pT_cl1=new TH1F("h_pT_cl1","h_pT_cl1",100,0,50);
+    TH1F* h_pT_cl2=new TH1F("h_pT_cl2","h_pT_cl2",100,0,50);
+    TH1F* h_pT_cl3=new TH1F("h_pT_cl3","h_pT_cl3",100,0,50);
+    TH1F* h_pT_cl4=new TH1F("h_pT_cl4","h_pT_cl4",100,0,50);
+
+    // old branches used
+
+    int _gentau_n;
+
+    vector<float> *_gentau_pt; 
+    vector<float> *_gentau_eta;
+    vector<float> *_gentau_phi;
+    vector<float> *_gentau_energy;
+    vector<float> *_gentau_mass;
+
+    vector<float> *_gentau_vis_pt; 
+    vector<float> *_gentau_vis_eta;
+    vector<float> *_gentau_vis_phi;
+    vector<float> *_gentau_vis_energy;
+    vector<float> *_gentau_vis_mass;
+
+    vector<int>   *_gentau_decayMode;
+
+    int _cl3d_n;
+
+    vector<float>  *_cl3d_pt;
+    vector<float>  *_cl3d_energy;
+    vector<float>  *_cl3d_eta;
+    vector<float>  *_cl3d_phi;
+    vector<float>  *_cl3d_bdteg;
+    vector<int>    *_cl3d_coreshowerlength;
+    vector<int>    *_cl3d_maxlayer;
+
+    in_tree->SetBranchAddress("gentau_n",&_gentau_n);
+
+    in_tree->SetBranchAddress("gentau_pt",        &_gentau_pt);
+    in_tree->SetBranchAddress("gentau_eta",        &_gentau_eta);
+    in_tree->SetBranchAddress("gentau_phi",        &_gentau_phi);
+    in_tree->SetBranchAddress("gentau_energy",    &_gentau_energy);
+    in_tree->SetBranchAddress("gentau_mass",    &_gentau_mass);
+
+    in_tree->SetBranchAddress("gentau_vis_pt",        &_gentau_vis_pt);
+    in_tree->SetBranchAddress("gentau_vis_eta",        &_gentau_vis_eta);
+    in_tree->SetBranchAddress("gentau_vis_phi",        &_gentau_vis_phi);
+    in_tree->SetBranchAddress("gentau_vis_energy",    &_gentau_vis_energy);
+    in_tree->SetBranchAddress("gentau_vis_mass",    &_gentau_vis_mass);
+
+    in_tree->SetBranchAddress("gentau_decayMode",    &_gentau_decayMode);
+
+    in_tree->SetBranchAddress("cl3d_n",    &_cl3d_n);
+
+    in_tree->SetBranchAddress("cl3d_pt",                 &_cl3d_pt);
+    in_tree->SetBranchAddress("cl3d_energy",             &_cl3d_energy);
+    in_tree->SetBranchAddress("cl3d_eta",                 &_cl3d_eta);
+    in_tree->SetBranchAddress("cl3d_phi",                 &_cl3d_phi);
+    in_tree->SetBranchAddress("cl3d_bdteg",                 &_cl3d_bdteg);
+    in_tree->SetBranchAddress("cl3d_coreshowerlength",     &_cl3d_coreshowerlength);
+    in_tree->SetBranchAddress("cl3d_maxlayer",             &_cl3d_maxlayer);
+
+    TTree* out_tree=in_tree->GetTree()->CloneTree(0);
+    out_tree->SetNameTitle("ClusteredTree","ClusteredTree");
+
+    float _n_supercl3ds;
+
+    vector<int>    _supercl3d_n_cl3d; //number of sub cl3d
+    vector<float>  _supercl3d_pt; //sum of cl3d pT
+    vector<float>  _supercl3d_energy; //sum of cl3d E
+    vector<float>  _supercl3d_eta; //eta of main cl3d
+    vector<float>  _supercl3d_phi; //phi of main cl3d
+
+    vector<vector<float>>  _supercl3d_cl3d_pt;
+    vector<vector<float>>  _supercl3d_cl3d_energy;
+    vector<vector<float>>  _supercl3d_cl3d_eta;
+    vector<vector<float>>  _supercl3d_cl3d_phi;
+    vector<vector<float>>  _supercl3d_cl3d_bdteg;
+    vector<vector<int>>    _supercl3d_cl3d_coreshowerlength;
+    vector<vector<int>>    _supercl3d_cl3d_maxlayer;
+
+    vector<bool>               _gentau_isMatched;
+    vector<int>               _gentau_numberMatchedcl3d;
+    vector<vector<float> >    _gentau_PtMatchedcl3d;
+    vector<vector<float> >    _gentau_EtaMatchedcl3d;
+    vector<vector<float> >    _gentau_PhiMatchedcl3d;
+    vector<vector<float> >    _gentau_BDTegMatchedcl3d;
+    vector<vector<int> >    _gentau_CoreShowerLengthMatchedcl3d;
+    vector<vector<int> >    _gentau_MaxLayerMatchedcl3d;
+
+    out_tree->Branch("n_supercl3d",                 &_n_supercl3ds);
+
+    out_tree->Branch("supercl3d_n_cl3d",            &_supercl3d_n_cl3d);
+    out_tree->Branch("supercl3d_pt",                &_supercl3d_pt);
+    out_tree->Branch("supercl3d_energy",            &_supercl3d_energy);
+    out_tree->Branch("supercl3d_eta",                &_supercl3d_eta);
+    out_tree->Branch("supercl3d_phi",                &_supercl3d_phi);
 
-		_gentau_vis_pt = 0; 
-		_gentau_vis_eta = 0; 
-		_gentau_vis_phi = 0; 
-		_gentau_vis_energy = 0; 
-		_gentau_vis_mass = 0; 
+    out_tree->Branch("supercl3d_cl3d_pt",                    &_supercl3d_cl3d_pt);
+    out_tree->Branch("supercl3d_cl3d_energy",                &_supercl3d_cl3d_energy);
+    out_tree->Branch("supercl3d_cl3d_eta",                    &_supercl3d_cl3d_eta);
+    out_tree->Branch("supercl3d_cl3d_phi",                    &_supercl3d_cl3d_phi);
+    out_tree->Branch("supercl3d_cl3d_bdteg",                &_supercl3d_cl3d_bdteg);
+    out_tree->Branch("supercl3d_cl3d_coreshowerlength",        &_supercl3d_cl3d_coreshowerlength);
+    out_tree->Branch("supercl3d_cl3d_maxlayer",                &_supercl3d_cl3d_maxlayer);
 
-		_gentau_decayMode = 0; 
+    out_tree->Branch("gentau_isMatched", &_gentau_isMatched);
+    out_tree->Branch("gentau_numberMatchedcl3d", &_gentau_numberMatchedcl3d);
+    out_tree->Branch("gentau_PtMatchedcl3d", &_gentau_PtMatchedcl3d);
+    out_tree->Branch("gentau_EtaMatchedcl3d", &_gentau_EtaMatchedcl3d);
+    out_tree->Branch("gentau_PhiMatchedcl3d", &_gentau_PhiMatchedcl3d);
+    out_tree->Branch("gentau_BDTegMatchedcl3d", &_gentau_BDTegMatchedcl3d);
+    out_tree->Branch("gentau_CoreShowerLengthMatchedcl3d", &_gentau_CoreShowerLengthMatchedcl3d);
+    out_tree->Branch("gentau_MaxLayerMatchedcl3d", &_gentau_MaxLayerMatchedcl3d);
 
-		_cl3d_n = 0; 
 
-		_cl3d_pt = 0; 
-		_cl3d_energy = 0; 
-		_cl3d_eta = 0; 
-		_cl3d_phi = 0; 
-		_cl3d_bdteg = 0;
-		_cl3d_coreshowerlength = 0;
-		_cl3d_maxlayer = 0;
+    for (int i=0;i<nentries;i++) {
 
-		_n_supercl3ds = 0;
+        if(i%1000==0) cout<<"i="<<i<<endl;
 
-		_supercl3d_n_cl3d.clear();
-		_supercl3d_pt.clear();
-		_supercl3d_energy.clear();
-		_supercl3d_eta.clear();
-		_supercl3d_phi.clear();
-		/*_supercl3d_bdteg.clear();
-		_supercl3d_coreshowerlength.clear();
-		_supercl3d_maxlayer.clear();*/
+        // old branches
 
-		_supercl3d_cl3d_pt.clear();
-		_supercl3d_cl3d_energy.clear();
-		_supercl3d_cl3d_eta.clear();
-		_supercl3d_cl3d_phi.clear();
-		_supercl3d_cl3d_bdteg.clear();
-		_supercl3d_cl3d_coreshowerlength.clear();
-		_supercl3d_cl3d_maxlayer.clear();
+        _gentau_n = 0;
 
-		_gentau_isMatched.clear();
-		_gentau_numberMatchedcl3d.clear();
-		_gentau_PtMatchedcl3d.clear();
-		_gentau_EtaMatchedcl3d.clear();
-		_gentau_PhiMatchedcl3d.clear();
-		_gentau_BDTegMatchedcl3d.clear();
-		_gentau_CoreShowerLengthMatchedcl3d.clear();
-		_gentau_MaxLayerMatchedcl3d.clear();
+        _gentau_pt = 0; 
+        _gentau_eta = 0;
+        _gentau_phi = 0;
+        _gentau_energy = 0;
+        _gentau_mass = 0;
 
+        _gentau_vis_pt = 0; 
+        _gentau_vis_eta = 0; 
+        _gentau_vis_phi = 0; 
+        _gentau_vis_energy = 0; 
+        _gentau_vis_mass = 0; 
 
-		int entry_ok = in_tree->GetEntry(i);	
-		if(entry_ok<0) 
-			continue;
+        _gentau_decayMode = 0; 
 
-		float previous_pt_leading = -999.;
+        _cl3d_n = 0; 
 
+        _cl3d_pt = 0; 
+        _cl3d_energy = 0; 
+        _cl3d_eta = 0; 
+        _cl3d_phi = 0; 
+        _cl3d_bdteg = 0;
+        _cl3d_coreshowerlength = 0;
+        _cl3d_maxlayer = 0;
 
-		//////////////////////////////////////////
-		////////////// CLUSTERING ////////////////
-		//////////////////////////////////////////
+        _n_supercl3ds = 0;
 
-		for (int i_main=0; i_main<_cl3d_n; i_main++){
+        _supercl3d_n_cl3d.clear();
+        _supercl3d_pt.clear();
+        _supercl3d_energy.clear();
+        _supercl3d_eta.clear();
+        _supercl3d_phi.clear();
 
-			if ( (*_cl3d_pt)[i_main] < 0.0001 || (*_cl3d_pt)[i_main] > 10000 ) continue;
+        _supercl3d_cl3d_pt.clear();
+        _supercl3d_cl3d_energy.clear();
+        _supercl3d_cl3d_eta.clear();
+        _supercl3d_cl3d_phi.clear();
+        _supercl3d_cl3d_bdteg.clear();
+        _supercl3d_cl3d_coreshowerlength.clear();
+        _supercl3d_cl3d_maxlayer.clear();
 
-			// RAW CLUSTERING 
+        _gentau_isMatched.clear();
+        _gentau_numberMatchedcl3d.clear();
+        _gentau_PtMatchedcl3d.clear();
+        _gentau_EtaMatchedcl3d.clear();
+        _gentau_PhiMatchedcl3d.clear();
+        _gentau_BDTegMatchedcl3d.clear();
+        _gentau_CoreShowerLengthMatchedcl3d.clear();
+        _gentau_MaxLayerMatchedcl3d.clear();
 
-			vector<TLorentzVector> clusters;
-			vector<float> clusters_bdteg;
-			vector<int> clusters_coreshowerlength;
-			vector<int> clusters_maxlayer;
 
-			clusters.clear();
-			clusters_bdteg.clear();
-			clusters_coreshowerlength.clear();
-			clusters_maxlayer.clear();
+        int entry_ok = in_tree->GetEntry(i);    
+        if(entry_ok<0) 
+            continue;
 
-			// MAIN CLUSTER CANDIDATE (SUPERCLUSTER SEED)
+        float previous_pt_leading = -999.;
 
-			TLorentzVector main;
-			float main_bdteg;
-			int main_coreshowerlength;
-			int main_maxlayer;
 
-		    main.SetPtEtaPhiM( (*_cl3d_pt)[i_main], (*_cl3d_eta)[i_main], (*_cl3d_phi)[i_main], 0);
-		    main_bdteg = (*_cl3d_bdteg)[i_main];
-		    main_coreshowerlength = (*_cl3d_coreshowerlength)[i_main];
-		    main_maxlayer = (*_cl3d_maxlayer)[i_main];
+        //////////////////////////////////////////
+        ////////////// CLUSTERING ////////////////
+        //////////////////////////////////////////
 
+        for (int i_main=0; i_main<_cl3d_n; i_main++){
 
-		    if ( main.Pt() < pt_thr_seed ) continue;
+            if ( (*_cl3d_pt)[i_main] < 0.0001 || (*_cl3d_pt)[i_main] > 10000 ) continue;
 
-		    clusters.push_back(main);
-		    clusters_bdteg.push_back(main_bdteg);
-			clusters_coreshowerlength.push_back(main_coreshowerlength);
-			clusters_maxlayer.push_back(main_maxlayer);
+            // RAW CLUSTERING 
 
-			// SECONDARY CLUSTERS CANDIDATES
+            vector<TLorentzVector> clusters;
+            vector<float> clusters_bdteg;
+            vector<int> clusters_coreshowerlength;
+            vector<int> clusters_maxlayer;
 
-		    for (int i_sec=0; i_sec<_cl3d_n; i_sec++){
+            clusters.clear();
+            clusters_bdteg.clear();
+            clusters_coreshowerlength.clear();
+            clusters_maxlayer.clear();
 
-		    	if( i_sec==i_main ) continue;
+            // MAIN CLUSTER CANDIDATE (SUPERCLUSTER SEED)
 
-		    	if ( (*_cl3d_pt)[i_sec] < 0.0001 || (*_cl3d_pt)[i_sec] > 10000 ) continue;
+            TLorentzVector main;
+            float main_bdteg;
+            int main_coreshowerlength;
+            int main_maxlayer;
 
-		    	TLorentzVector secondary;
-		    	float secondary_bdteg;
-				int secondary_coreshowerlength;
-				int secondary_maxlayer;
+            main.SetPtEtaPhiM( (*_cl3d_pt)[i_main], (*_cl3d_eta)[i_main], (*_cl3d_phi)[i_main], 0);
+            main_bdteg = (*_cl3d_bdteg)[i_main];
+            main_coreshowerlength = (*_cl3d_coreshowerlength)[i_main];
+            main_maxlayer = (*_cl3d_maxlayer)[i_main];
 
-		    	secondary.SetPtEtaPhiM( (*_cl3d_pt)[i_sec], (*_cl3d_eta)[i_sec], (*_cl3d_phi)[i_sec], 0);
-		    	secondary_bdteg = (*_cl3d_bdteg)[i_sec];
-		    	secondary_coreshowerlength = (*_cl3d_coreshowerlength)[i_sec];
-		    	secondary_maxlayer = (*_cl3d_maxlayer)[i_sec];
 
-		    	if ( secondary.Pt() < pt_thr_sec ) continue;
+            if ( main.Pt() < pt_thr_seed ) continue;
 
-		    	if( abs(secondary.Eta() - main.Eta()) > eta_window ) continue;
-		    	if( abs(secondary.Phi() - main.Phi()) > phi_window ) continue;
+            clusters.push_back(main);
+            clusters_bdteg.push_back(main_bdteg);
+            clusters_coreshowerlength.push_back(main_coreshowerlength);
+            clusters_maxlayer.push_back(main_maxlayer);
 
-		    	clusters.push_back(secondary);
-		    	clusters_bdteg.push_back(secondary_bdteg);
-				clusters_coreshowerlength.push_back(secondary_coreshowerlength);
-				clusters_maxlayer.push_back(secondary_maxlayer);
+            // SECONDARY CLUSTERS CANDIDATES
 
-		    }
+            for (int i_sec=0; i_sec<_cl3d_n; i_sec++){
 
-		    // SORT CLUSTERS BY PT IN SUPERCLUSTER
+                if( i_sec==i_main ) continue;
 
-		    vector<TLorentzVector> clusters_pTsorted;
-		    vector<float> clusters_pt_pTsorted;
-			vector<float> clusters_E_pTsorted;
-			vector<float> clusters_eta_pTsorted;
-			vector<float> clusters_phi_pTsorted;
-		    vector<float> clusters_bdteg_pTsorted;
-			vector<int> clusters_coreshowerlength_pTsorted;
-			vector<int> clusters_maxlayer_pTsorted;
+                if ( (*_cl3d_pt)[i_sec] < 0.0001 || (*_cl3d_pt)[i_sec] > 10000 ) continue;
 
-			clusters_pTsorted.clear();
-			clusters_bdteg_pTsorted.clear();
-			clusters_coreshowerlength_pTsorted.clear();
-			clusters_maxlayer_pTsorted.clear();
+                TLorentzVector secondary;
+                float secondary_bdteg;
+                int secondary_coreshowerlength;
+                int secondary_maxlayer;
 
-		    vector< pair<int,TLorentzVector> > icluster_cluster_pairs;
+                secondary.SetPtEtaPhiM( (*_cl3d_pt)[i_sec], (*_cl3d_eta)[i_sec], (*_cl3d_phi)[i_sec], 0);
+                secondary_bdteg = (*_cl3d_bdteg)[i_sec];
+                secondary_coreshowerlength = (*_cl3d_coreshowerlength)[i_sec];
+                secondary_maxlayer = (*_cl3d_maxlayer)[i_sec];
 
-			for (unsigned int i_cluster = 0; i_cluster<clusters.size(); i_cluster++){
+                if ( secondary.Pt() < pt_thr_sec ) continue;
 
-				pair<int,TLorentzVector> cluster_pair = make_pair(i_cluster,clusters.at(i_cluster));
-				icluster_cluster_pairs.push_back(cluster_pair);
+                if( abs(secondary.Eta() - main.Eta()) > eta_window ) continue;
+                if( abs(secondary.Phi() - main.Phi()) > phi_window ) continue;
 
-			}
+                clusters.push_back(secondary);
+                clusters_bdteg.push_back(secondary_bdteg);
+                clusters_coreshowerlength.push_back(secondary_coreshowerlength);
+                clusters_maxlayer.push_back(secondary_maxlayer);
 
-			sort(icluster_cluster_pairs.begin(), icluster_cluster_pairs.end(), pT_comparison_pairs);
+            }
 
-			for (unsigned int i_cluster = 0; i_cluster<clusters.size(); i_cluster++){
+            // SORT CLUSTERS BY PT IN SUPERCLUSTER
 
-				int index = icluster_cluster_pairs[i_cluster].first;
-				TLorentzVector tlv = icluster_cluster_pairs[i_cluster].second;
+            vector<TLorentzVector> clusters_pTsorted;
+            vector<float> clusters_pt_pTsorted;
+            vector<float> clusters_E_pTsorted;
+            vector<float> clusters_eta_pTsorted;
+            vector<float> clusters_phi_pTsorted;
+            vector<float> clusters_bdteg_pTsorted;
+            vector<int> clusters_coreshowerlength_pTsorted;
+            vector<int> clusters_maxlayer_pTsorted;
 
-				clusters_pTsorted.push_back(tlv);
-				clusters_pt_pTsorted.push_back(tlv.Pt());
-				clusters_E_pTsorted.push_back(tlv.E());
-				clusters_eta_pTsorted.push_back(tlv.Eta());
-				clusters_phi_pTsorted.push_back(tlv.Phi());
-				clusters_bdteg_pTsorted.push_back(clusters_bdteg.at(index));
-				clusters_coreshowerlength_pTsorted.push_back(clusters_coreshowerlength.at(index));
-				clusters_maxlayer_pTsorted.push_back(clusters_maxlayer.at(index));
+            clusters_pTsorted.clear();
+            clusters_bdteg_pTsorted.clear();
+            clusters_coreshowerlength_pTsorted.clear();
+            clusters_maxlayer_pTsorted.clear();
 
-			}
+            vector< pair<int,TLorentzVector> > icluster_cluster_pairs;
 
-			// REMOVE DUPLICATED SUPERCLUSTERS
+            for (unsigned int i_cluster = 0; i_cluster<clusters.size(); i_cluster++){
 
-			float new_pt_leading = clusters_pTsorted.at(0).Pt();
+                pair<int,TLorentzVector> cluster_pair = make_pair(i_cluster,clusters.at(i_cluster));
+                icluster_cluster_pairs.push_back(cluster_pair);
 
-			if(new_pt_leading == previous_pt_leading) 
+            }
+
+            sort(icluster_cluster_pairs.begin(), icluster_cluster_pairs.end(), pT_comparison_pairs);
+
+            for (unsigned int i_cluster = 0; i_cluster<clusters.size(); i_cluster++){
+
+                int index = icluster_cluster_pairs[i_cluster].first;
+                TLorentzVector tlv = icluster_cluster_pairs[i_cluster].second;
+
+                clusters_pTsorted.push_back(tlv);
+                clusters_pt_pTsorted.push_back(tlv.Pt());
+                clusters_E_pTsorted.push_back(tlv.E());
+                clusters_eta_pTsorted.push_back(tlv.Eta());
+                clusters_phi_pTsorted.push_back(tlv.Phi());
+                clusters_bdteg_pTsorted.push_back(clusters_bdteg.at(index));
+                clusters_coreshowerlength_pTsorted.push_back(clusters_coreshowerlength.at(index));
+                clusters_maxlayer_pTsorted.push_back(clusters_maxlayer.at(index));
+
+            }
+
+            // REMOVE DUPLICATED SUPERCLUSTERS
+
+            float new_pt_leading = clusters_pTsorted.at(0).Pt();
+
+            if(new_pt_leading == previous_pt_leading) 
                continue;
 
             previous_pt_leading = new_pt_leading;
@@ -346,15 +342,15 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
             _supercl3d_cl3d_coreshowerlength.push_back(clusters_coreshowerlength_pTsorted);
             _supercl3d_cl3d_maxlayer.push_back(clusters_maxlayer_pTsorted);
 
-		}
+        }
 
-		_n_supercl3ds = _supercl3d_cl3d_pt.size();
+        _n_supercl3ds = _supercl3d_cl3d_pt.size();
 
-		// BUILD SUPERCLUSTER INFO
+        // BUILD SUPERCLUSTER INFO
 
-		for (int i_supercl3d=0; i_supercl3d<_n_supercl3ds; i_supercl3d++){
+        for (int i_supercl3d=0; i_supercl3d<_n_supercl3ds; i_supercl3d++){
 
-			vector<float> cl3d_pt = _supercl3d_cl3d_pt.at(i_supercl3d);
+            vector<float> cl3d_pt = _supercl3d_cl3d_pt.at(i_supercl3d);
             vector<float> cl3d_energy = _supercl3d_cl3d_energy.at(i_supercl3d);
             vector<float> cl3d_eta = _supercl3d_cl3d_eta.at(i_supercl3d);
             vector<float> cl3d_phi = _supercl3d_cl3d_phi.at(i_supercl3d);
@@ -369,27 +365,32 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
             _supercl3d_phi.push_back(cl3d_phi.at(0));
             
             for (int i_subcl3d=0; i_subcl3d<n_cl3d; i_subcl3d++){
-            	pt_supercluster += cl3d_pt.at(i_subcl3d);
-            	e_supercluster += cl3d_energy.at(i_subcl3d);
+                pt_supercluster += cl3d_pt.at(i_subcl3d);
+                e_supercluster += cl3d_energy.at(i_subcl3d);
             }
 
             _supercl3d_pt.push_back(pt_supercluster);
             _supercl3d_energy.push_back(e_supercluster);
 
-		}
+            if(n_cl3d>0) h_pT_cl1->Fill(cl3d_pt.at(0));
+            if(n_cl3d>1) h_pT_cl2->Fill(cl3d_pt.at(1));
+            if(n_cl3d>2) h_pT_cl3->Fill(cl3d_pt.at(2));
+            if(n_cl3d>3) h_pT_cl4->Fill(cl3d_pt.at(3));
 
-		// MATCHING TO GEN TAUS
+        }
 
-		for (int i_gentau=0; i_gentau<_gentau_n; i_gentau++){
+        // MATCHING TO GEN TAUS
 
-			TLorentzVector gentau;
-			gentau.SetPtEtaPhiM( (*_gentau_pt)[i_gentau], (*_gentau_eta)[i_gentau], (*_gentau_phi)[i_gentau], (*_gentau_mass)[i_gentau]);
+        for (int i_gentau=0; i_gentau<_gentau_n; i_gentau++){
 
-			TLorentzVector gentauvis;
-			gentauvis.SetPtEtaPhiM( (*_gentau_vis_pt)[i_gentau], (*_gentau_vis_eta)[i_gentau], (*_gentau_vis_phi)[i_gentau], (*_gentau_vis_mass)[i_gentau]);
+            TLorentzVector gentau;
+            gentau.SetPtEtaPhiM( (*_gentau_pt)[i_gentau], (*_gentau_eta)[i_gentau], (*_gentau_phi)[i_gentau], (*_gentau_mass)[i_gentau]);
 
-			float matched_cl3d_n = 0;
-			vector<float> matched_cl3d_pt;
+            TLorentzVector gentauvis;
+            gentauvis.SetPtEtaPhiM( (*_gentau_vis_pt)[i_gentau], (*_gentau_vis_eta)[i_gentau], (*_gentau_vis_phi)[i_gentau], (*_gentau_vis_mass)[i_gentau]);
+
+            float matched_cl3d_n = 0;
+            vector<float> matched_cl3d_pt;
             vector<float> matched_cl3d_energy;
             vector<float> matched_cl3d_eta;
             vector<float> matched_cl3d_phi;
@@ -407,60 +408,65 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 
             float dRmin = 1.0;
 
-			for (int i_supercl3d=0; i_supercl3d<_n_supercl3ds; i_supercl3d++){
+            for (int i_supercl3d=0; i_supercl3d<_n_supercl3ds; i_supercl3d++){
 
-				TLorentzVector supercluster;
-				supercluster.SetPtEtaPhiE( _supercl3d_pt[i_supercl3d], _supercl3d_eta[i_supercl3d], _supercl3d_phi[i_supercl3d], _supercl3d_energy[i_supercl3d]);	
+                TLorentzVector supercluster;
+                supercluster.SetPtEtaPhiE( _supercl3d_pt[i_supercl3d], _supercl3d_eta[i_supercl3d], _supercl3d_phi[i_supercl3d], _supercl3d_energy[i_supercl3d]);    
 
-				bool isMatch = false;
+                bool isMatch = false;
 
-				float dR_gentauvis = supercluster.DeltaR(gentauvis);
+                float dR_gentauvis = supercluster.DeltaR(gentauvis);
 
-				isMatch = (dR_gentauvis <= 0.3);
+                isMatch = (dR_gentauvis <= 0.3);
 
-				if(dR_gentauvis<dRmin){
+                if(dR_gentauvis<dRmin){
 
-            		dRmin = dR_gentauvis;
+                    dRmin = dR_gentauvis;
 
-            		matched_cl3d_n 		= _supercl3d_n_cl3d.at(i_supercl3d);
-					matched_cl3d_pt 	= _supercl3d_cl3d_pt.at(i_supercl3d);
-            		matched_cl3d_energy = _supercl3d_cl3d_energy.at(i_supercl3d);
-            		matched_cl3d_eta 	= _supercl3d_cl3d_eta.at(i_supercl3d);
-            		matched_cl3d_phi 	= _supercl3d_cl3d_phi.at(i_supercl3d);
-            		matched_cl3d_bdteg 	= _supercl3d_cl3d_bdteg.at(i_supercl3d);
-            		matched_cl3d_coreshowerlength = _supercl3d_cl3d_coreshowerlength.at(i_supercl3d);
-            		matched_cl3d_maxlayer = _supercl3d_cl3d_maxlayer.at(i_supercl3d);
+                    matched_cl3d_n      = _supercl3d_n_cl3d.at(i_supercl3d);
+                    matched_cl3d_pt     = _supercl3d_cl3d_pt.at(i_supercl3d);
+                    matched_cl3d_energy = _supercl3d_cl3d_energy.at(i_supercl3d);
+                    matched_cl3d_eta    = _supercl3d_cl3d_eta.at(i_supercl3d);
+                    matched_cl3d_phi    = _supercl3d_cl3d_phi.at(i_supercl3d);
+                    matched_cl3d_bdteg  = _supercl3d_cl3d_bdteg.at(i_supercl3d);
+                    matched_cl3d_coreshowerlength = _supercl3d_cl3d_coreshowerlength.at(i_supercl3d);
+                    matched_cl3d_maxlayer = _supercl3d_cl3d_maxlayer.at(i_supercl3d);
 
-            	}
+                }
 
-			}
+            }
 
-			_gentau_isMatched.push_back(dRmin<=0.3);
+            _gentau_isMatched.push_back(dRmin<=0.3);
 
-			if(dRmin<=0.3) {
+            if(dRmin<=0.3) {
 
-				_gentau_numberMatchedcl3d.push_back(matched_cl3d_n);
-				_gentau_PtMatchedcl3d.push_back(matched_cl3d_pt);
-				_gentau_EtaMatchedcl3d.push_back(matched_cl3d_eta);
-				_gentau_PhiMatchedcl3d.push_back(matched_cl3d_phi);
-				_gentau_BDTegMatchedcl3d.push_back(matched_cl3d_bdteg);
-				_gentau_CoreShowerLengthMatchedcl3d.push_back(matched_cl3d_coreshowerlength);
-				_gentau_MaxLayerMatchedcl3d.push_back(matched_cl3d_maxlayer);
+                _gentau_numberMatchedcl3d.push_back(matched_cl3d_n);
+                _gentau_PtMatchedcl3d.push_back(matched_cl3d_pt);
+                _gentau_EtaMatchedcl3d.push_back(matched_cl3d_eta);
+                _gentau_PhiMatchedcl3d.push_back(matched_cl3d_phi);
+                _gentau_BDTegMatchedcl3d.push_back(matched_cl3d_bdteg);
+                _gentau_CoreShowerLengthMatchedcl3d.push_back(matched_cl3d_coreshowerlength);
+                _gentau_MaxLayerMatchedcl3d.push_back(matched_cl3d_maxlayer);
 
-			}
+            }
 
-		}
+        }
 
-		out_tree->Fill();
+        out_tree->Fill();
 
-	}
+    }
 
-	out_file->cd();
+    out_file->cd();
 
-	out_tree->Write();
-	out_file->Close();
+    h_pT_cl1->Write();
+    h_pT_cl2->Write();
+    h_pT_cl3->Write();
+    h_pT_cl4->Write();
 
-	return;
+    out_tree->Write();
+    out_file->Close();
+
+    return;
 
 }
 
