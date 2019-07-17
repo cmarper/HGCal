@@ -16,7 +16,7 @@ bool pT_comparison_pairs(pair<int,TLorentzVector> pair1, pair<int,TLorentzVector
 
 }
 
-void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_thr_seed = 4, float pt_thr_sec = 2, float eta_window_maxi = 0.15, float phi_window_maxi = 0.45, float eta_window_mini = 0.15, float phi_window_mini = 0.15){
+void cluster_tree( TString filein, TString fileout, int nevents = -1){
 
     TFile* out_file = TFile::Open(fileout);
       /*if(out_file!=0){
@@ -109,6 +109,14 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 
     int _maxicluster_n;
 
+    vector<int>    _maxicluster_n_cl3d;
+    vector<float>  _maxicluster_pt_tot;
+    vector<float>  _maxicluster_pt_leadcl3d;
+    vector<float>  _maxicluster_eta_leadcl3d;
+    vector<float>  _maxicluster_eta_Eweighted;
+    vector<float>  _maxicluster_phi_leadcl3d;
+    vector<float>  _maxicluster_phi_Eweighted;
+
     vector<vector<float>>  _maxicluster_cl3d_pt;
     vector<vector<float>>  _maxicluster_cl3d_energy;
     vector<vector<float>>  _maxicluster_cl3d_eta;
@@ -125,6 +133,14 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
     vector<vector<float>>  _maxicluster_cl3d_srrmean;
 
     int _minicluster_n;
+
+    vector<int>    _minicluster_n_cl3d;
+    vector<float>  _minicluster_pt_tot;
+    vector<float>  _minicluster_pt_leadcl3d;
+    vector<float>  _minicluster_eta_leadcl3d;
+    vector<float>  _minicluster_eta_Eweighted;
+    vector<float>  _minicluster_phi_leadcl3d;
+    vector<float>  _minicluster_phi_Eweighted;
 
     vector<vector<float>>  _minicluster_cl3d_pt;
     vector<vector<float>>  _minicluster_cl3d_energy;
@@ -143,7 +159,14 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 
     int _supercluster_n;
 
-    vector<bool> _supercluster_isMerged;
+    vector<bool>   _supercluster_isMerged;
+    vector<int>    _supercluster_n_cl3d;
+    vector<float>  _supercluster_pt_tot;
+    vector<float>  _supercluster_pt_leadcl3d;
+    vector<float>  _supercluster_eta_leadcl3d;
+    vector<float>  _supercluster_eta_Eweighted;
+    vector<float>  _supercluster_phi_leadcl3d;
+    vector<float>  _supercluster_phi_Eweighted;
 
     vector<vector<float>>  _supercluster_cl3d_pt;
     vector<vector<float>>  _supercluster_cl3d_energy;
@@ -162,6 +185,14 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 
     out_tree->Branch("maxicluster_n",     &_maxicluster_n);
 
+    out_tree->Branch("maxicluster_n_cl3d",         &_maxicluster_n_cl3d);
+    out_tree->Branch("maxicluster_pt_tot",         &_maxicluster_pt_tot);
+    out_tree->Branch("maxicluster_pt_leadcl3d",    &_maxicluster_pt_leadcl3d);
+    out_tree->Branch("maxicluster_eta_leadcl3d",   &_maxicluster_eta_leadcl3d);
+    out_tree->Branch("maxicluster_eta_Eweighted",  &_maxicluster_eta_Eweighted);
+    out_tree->Branch("maxicluster_phi_leadcl3d",   &_maxicluster_phi_leadcl3d);
+    out_tree->Branch("maxicluster_phi_Eweighted",  &_maxicluster_phi_Eweighted);
+
     out_tree->Branch("maxicluster_cl3d_pt",                 &_maxicluster_cl3d_pt);
     out_tree->Branch("maxicluster_cl3d_energy",             &_maxicluster_cl3d_energy);
     out_tree->Branch("maxicluster_cl3d_eta",                &_maxicluster_cl3d_eta);
@@ -178,6 +209,14 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
     out_tree->Branch("maxicluster_cl3d_srrmean",            &_maxicluster_cl3d_srrmean);
 
     out_tree->Branch("minicluster_n",     &_minicluster_n);
+
+    out_tree->Branch("minicluster_n_cl3d",         &_minicluster_n_cl3d);
+    out_tree->Branch("minicluster_pt_tot",         &_minicluster_pt_tot);
+    out_tree->Branch("minicluster_pt_leadcl3d",    &_minicluster_pt_leadcl3d);
+    out_tree->Branch("minicluster_eta_leadcl3d",   &_minicluster_eta_leadcl3d);
+    out_tree->Branch("minicluster_eta_Eweighted",  &_minicluster_eta_Eweighted);
+    out_tree->Branch("minicluster_phi_leadcl3d",   &_minicluster_phi_leadcl3d);
+    out_tree->Branch("minicluster_phi_Eweighted",  &_minicluster_phi_Eweighted);
 
     out_tree->Branch("minicluster_cl3d_pt",                 &_minicluster_cl3d_pt);
     out_tree->Branch("minicluster_cl3d_energy",             &_minicluster_cl3d_energy);
@@ -196,7 +235,15 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 
     out_tree->Branch("supercluster_n",     &_supercluster_n);
 
-    out_tree->Branch("supercluster_isMerged", &_supercluster_isMerged);
+    out_tree->Branch("supercluster_isMerged",                &_supercluster_isMerged);
+
+    out_tree->Branch("supercluster_n_cl3d",         &_supercluster_n_cl3d);
+    out_tree->Branch("supercluster_pt_tot",         &_supercluster_pt_tot);
+    out_tree->Branch("supercluster_pt_leadcl3d",    &_supercluster_pt_leadcl3d);
+    out_tree->Branch("supercluster_eta_leadcl3d",   &_supercluster_eta_leadcl3d);
+    out_tree->Branch("supercluster_eta_Eweighted",  &_supercluster_eta_Eweighted);
+    out_tree->Branch("supercluster_phi_leadcl3d",   &_supercluster_phi_leadcl3d);
+    out_tree->Branch("supercluster_phi_Eweighted",  &_supercluster_phi_Eweighted);
 
     out_tree->Branch("supercluster_cl3d_pt",                 &_supercluster_cl3d_pt);
     out_tree->Branch("supercluster_cl3d_energy",             &_supercluster_cl3d_energy);
@@ -255,6 +302,14 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 
         _maxicluster_n = 0;
 
+        _maxicluster_n_cl3d.clear(); 
+        _maxicluster_pt_tot.clear(); 
+        _maxicluster_pt_leadcl3d.clear(); 
+        _maxicluster_eta_leadcl3d.clear(); 
+        _maxicluster_eta_Eweighted.clear(); 
+        _maxicluster_phi_leadcl3d.clear(); 
+        _maxicluster_phi_Eweighted.clear(); 
+
         _maxicluster_cl3d_pt.clear();
         _maxicluster_cl3d_energy.clear();
         _maxicluster_cl3d_eta.clear();
@@ -271,6 +326,14 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
         _maxicluster_cl3d_srrmean.clear();
 
         _minicluster_n = 0;
+ 
+        _minicluster_n_cl3d.clear(); 
+        _minicluster_pt_tot.clear(); 
+        _minicluster_pt_leadcl3d.clear(); 
+        _minicluster_eta_leadcl3d.clear(); 
+        _minicluster_eta_Eweighted.clear(); 
+        _minicluster_phi_leadcl3d.clear(); 
+        _minicluster_phi_Eweighted.clear(); 
 
         _minicluster_cl3d_pt.clear();
         _minicluster_cl3d_energy.clear();
@@ -290,7 +353,15 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
         _supercluster_n = 0;
 
         _supercluster_isMerged.clear();
+        _supercluster_n_cl3d.clear(); 
+        _supercluster_pt_tot.clear(); 
+        _supercluster_pt_leadcl3d.clear(); 
+        _supercluster_eta_leadcl3d.clear(); 
+        _supercluster_eta_Eweighted.clear(); 
+        _supercluster_phi_leadcl3d.clear(); 
+        _supercluster_phi_Eweighted.clear(); 
 
+        _supercluster_cl3d_pt.clear();
         _supercluster_cl3d_pt.clear();
         _supercluster_cl3d_energy.clear();
         _supercluster_cl3d_eta.clear();
@@ -327,7 +398,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 
             // RAW CLUSTERING 
 
-            vector<TLorentzVector> candidate_maxicluster;
+            vector<TLorentzVector>  candidate_maxicluster;
             vector<float> candidate_maxicluster_bdteg;
             vector<int>   candidate_maxicluster_showerlength;
             vector<int>   candidate_maxicluster_coreshowerlength;
@@ -379,7 +450,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
             seed_candidate_maxicluster_srrmean = (*_cl3d_srrmean)[i_main];
 
 
-            if ( seed_candidate_maxicluster.Pt() < pt_thr_seed ) continue;
+            if ( seed_candidate_maxicluster.Pt() <= 4.0 ) continue;
 
             candidate_maxicluster.push_back(seed_candidate_maxicluster);
             candidate_maxicluster_bdteg.push_back(seed_candidate_maxicluster_bdteg);
@@ -425,10 +496,10 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
                 secondary_candidate_maxicluster_srrtot = (*_cl3d_srrtot)[i_sec];
                 secondary_candidate_maxicluster_srrmean = (*_cl3d_srrmean)[i_sec];
 
-                if ( secondary_candidate_maxicluster.Pt() < pt_thr_sec ) continue;
+                if( secondary_candidate_maxicluster.Pt() <= 2.0 ) continue;
 
-                if( abs(secondary_candidate_maxicluster.Eta() - seed_candidate_maxicluster.Eta()) > eta_window_maxi ) continue;
-                if( abs(secondary_candidate_maxicluster.Phi() - seed_candidate_maxicluster.Phi()) > phi_window_maxi ) continue;
+                if( fabs(secondary_candidate_maxicluster.Eta() - seed_candidate_maxicluster.Eta()) >= (3/2)*0.1 ) continue; // (TT/2)*(eta/TT)
+                if( fabs(seed_candidate_maxicluster.DeltaPhi(secondary_candidate_maxicluster)) >= (9/2)*0.1 ) continue;
 
                 candidate_maxicluster.push_back(secondary_candidate_maxicluster);
                 candidate_maxicluster_bdteg.push_back(secondary_candidate_maxicluster_bdteg);
@@ -443,6 +514,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
                 candidate_maxicluster_srrmean.push_back(secondary_candidate_maxicluster_srrmean);
 
             }
+
 
             // SORT CLUSTERS BY PT IN SUPERCLUSTER
 
@@ -512,7 +584,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 
             }
 
-            // REMOVE DUPLICATED SUPERCLUSTERS
+            // REMOVE DUPLICATED MAXICLUSTERS
 
             float new_pt_leading_maxi = candidate_maxicluster_pTsorted.at(0).Pt();
 
@@ -520,6 +592,34 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
                continue;
 
             previous_pt_leading_maxi = new_pt_leading_maxi;
+
+            /////////////////////////////////////
+
+            int n_cl3d = candidate_maxicluster_pt_pTsorted.size();
+            _maxicluster_n_cl3d.push_back(n_cl3d);
+
+            float pt_tot = 0;
+            float pt_lead = candidate_maxicluster_pt_pTsorted.at(0);
+            float eta_pt_tot = 0;
+            float eta_lead = candidate_maxicluster_eta_pTsorted.at(0);
+            float phi_pt_tot = 0;
+            float phi_lead = candidate_maxicluster_phi_pTsorted.at(0);
+
+            for(unsigned int subcl3d=0;subcl3d<candidate_maxicluster_pt_pTsorted.size();subcl3d++) {
+                pt_tot += candidate_maxicluster_pt_pTsorted.at(subcl3d);
+                eta_pt_tot += ((candidate_maxicluster_pt_pTsorted.at(subcl3d))*(candidate_maxicluster_eta_pTsorted.at(subcl3d)));
+                phi_pt_tot += ((candidate_maxicluster_pt_pTsorted.at(subcl3d))*(candidate_maxicluster_phi_pTsorted.at(subcl3d)));
+            }
+
+            float eta_Eweighted = eta_pt_tot/pt_tot;
+            float phi_Eweighted = phi_pt_tot/pt_tot;
+
+            _maxicluster_pt_tot.push_back(pt_tot);
+            _maxicluster_pt_leadcl3d.push_back(pt_lead);
+            _maxicluster_eta_leadcl3d.push_back(eta_lead);
+            _maxicluster_eta_Eweighted.push_back(eta_Eweighted);
+            _maxicluster_phi_leadcl3d.push_back(phi_lead);
+            _maxicluster_phi_Eweighted.push_back(phi_Eweighted);
 
             _maxicluster_cl3d_pt.push_back(candidate_maxicluster_pt_pTsorted);
             _maxicluster_cl3d_energy.push_back(candidate_maxicluster_E_pTsorted);
@@ -540,6 +640,16 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 
         _maxicluster_n = _maxicluster_cl3d_pt.size();
 
+        /*cout<<"** Event "<<i<<" **"<<endl;
+        cout<<"Number of maxiclusters "<<_maxicluster_n<<endl;
+        for(int i=0;i<_maxicluster_n;i++){
+            int n_subcl3d=_maxicluster_cl3d_pt.at(i).size();
+            vector<float> pt_subcl3d=_maxicluster_cl3d_pt.at(i);
+            vector<float> eta_subcl3d=_maxicluster_cl3d_eta.at(i);
+            cout<<" Maxicluster #"<<i<<",with "<<n_subcl3d<<" subclusters ("<<_maxicluster_n_cl3d.at(i)<<")"<<endl;
+
+        }*/
+
 
         // MINICLUSTERS
 
@@ -549,7 +659,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 
             // RAW CLUSTERING 
 
-            vector<TLorentzVector> candidate_minicluster;
+            vector<TLorentzVector>  candidate_minicluster;
             vector<float> candidate_minicluster_bdteg;
             vector<int>   candidate_minicluster_showerlength;
             vector<int>   candidate_minicluster_coreshowerlength;
@@ -601,7 +711,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
             seed_candidate_minicluster_srrmean = (*_cl3d_srrmean)[i_main];
 
 
-            if ( seed_candidate_minicluster.Pt() < pt_thr_seed ) continue;
+            if ( seed_candidate_minicluster.Pt() <= 4.0 ) continue;
 
             candidate_minicluster.push_back(seed_candidate_minicluster);
             candidate_minicluster_bdteg.push_back(seed_candidate_minicluster_bdteg);
@@ -647,10 +757,10 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
                 secondary_candidate_minicluster_srrtot = (*_cl3d_srrtot)[i_sec];
                 secondary_candidate_minicluster_srrmean = (*_cl3d_srrmean)[i_sec];
 
-                if ( secondary_candidate_minicluster.Pt() < pt_thr_sec ) continue;
+                if( secondary_candidate_minicluster.Pt() <= 2.0 ) continue;
 
-                if( abs(secondary_candidate_minicluster.Eta() - seed_candidate_minicluster.Eta()) > eta_window_mini ) continue;
-                if( abs(secondary_candidate_minicluster.Phi() - seed_candidate_minicluster.Phi()) > phi_window_mini ) continue;
+                if( fabs(secondary_candidate_minicluster.Eta() - seed_candidate_minicluster.Eta()) >= (3/2)*0.1 ) continue; // (TT/2)*(eta/TT)
+                if( fabs(seed_candidate_minicluster.DeltaPhi(secondary_candidate_minicluster)) >= (3/2)*0.1 ) continue;
 
                 candidate_minicluster.push_back(secondary_candidate_minicluster);
                 candidate_minicluster_bdteg.push_back(secondary_candidate_minicluster_bdteg);
@@ -665,6 +775,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
                 candidate_minicluster_srrmean.push_back(secondary_candidate_minicluster_srrmean);
 
             }
+
 
             // SORT CLUSTERS BY PT IN SUPERCLUSTER
 
@@ -734,7 +845,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 
             }
 
-            // REMOVE DUPLICATED SUPERCLUSTERS
+            // REMOVE DUPLICATED MINICLUSTERS
 
             float new_pt_leading_mini = candidate_minicluster_pTsorted.at(0).Pt();
 
@@ -742,6 +853,34 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
                continue;
 
             previous_pt_leading_mini = new_pt_leading_mini;
+
+            /////////////////////////////////////
+
+            int n_cl3d = candidate_minicluster_pt_pTsorted.size();
+            _minicluster_n_cl3d.push_back(n_cl3d);
+
+            float pt_tot = 0;
+            float pt_lead = candidate_minicluster_pt_pTsorted.at(0);
+            float eta_pt_tot = 0;
+            float eta_lead = candidate_minicluster_eta_pTsorted.at(0);
+            float phi_pt_tot = 0;
+            float phi_lead = candidate_minicluster_phi_pTsorted.at(0);
+
+            for(unsigned int subcl3d=0;subcl3d<candidate_minicluster_pt_pTsorted.size();subcl3d++) {
+                pt_tot += candidate_minicluster_pt_pTsorted.at(subcl3d);
+                eta_pt_tot += ((candidate_minicluster_pt_pTsorted.at(subcl3d))*(candidate_minicluster_eta_pTsorted.at(subcl3d)));
+                phi_pt_tot += ((candidate_minicluster_pt_pTsorted.at(subcl3d))*(candidate_minicluster_phi_pTsorted.at(subcl3d)));
+            }
+
+            float eta_Eweighted = eta_pt_tot/pt_tot;
+            float phi_Eweighted = phi_pt_tot/pt_tot;
+
+            _minicluster_pt_tot.push_back(pt_tot);
+            _minicluster_pt_leadcl3d.push_back(pt_lead);
+            _minicluster_eta_leadcl3d.push_back(eta_lead);
+            _minicluster_eta_Eweighted.push_back(eta_Eweighted);
+            _minicluster_phi_leadcl3d.push_back(phi_lead);
+            _minicluster_phi_Eweighted.push_back(phi_Eweighted);
 
             _minicluster_cl3d_pt.push_back(candidate_minicluster_pt_pTsorted);
             _minicluster_cl3d_energy.push_back(candidate_minicluster_E_pTsorted);
@@ -762,14 +901,13 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 
         _minicluster_n = _minicluster_cl3d_pt.size();
 
-
         // MERGING AND OVERLAP REMOVAL
 
-        vector<float> maxiclust_cl3d_pt;
+        /*vector<float> maxiclust_cl3d_pt;
         vector<float> maxiclust_cl3d_energy;
         vector<float> maxiclust_cl3d_eta;
         vector<float> maxiclust_cl3d_phi;
-        /*vector<float> maxiclust_cl3d_bdteg;
+        vector<float> maxiclust_cl3d_bdteg;
         vector<int>   maxiclust_cl3d_showerlength;
         vector<int>   maxiclust_cl3d_coreshowerlength;
         vector<int>   maxiclust_cl3d_firstlayer;
@@ -778,13 +916,13 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
         vector<float> maxiclust_cl3d_spptot;
         vector<float> maxiclust_cl3d_szz;
         vector<float> maxiclust_cl3d_srrtot;
-        vector<float> maxiclust_cl3d_srrmean;*/
+        vector<float> maxiclust_cl3d_srrmean;
 
         maxiclust_cl3d_pt.clear();
         maxiclust_cl3d_energy.clear();
         maxiclust_cl3d_eta.clear();
         maxiclust_cl3d_phi.clear();
-        /*maxiclust_cl3d_bdteg.clear();
+        maxiclust_cl3d_bdteg.clear();
         maxiclust_cl3d_showerlength.clear();
         maxiclust_cl3d_coreshowerlength.clear();
         maxiclust_cl3d_firstlayer.clear();
@@ -793,11 +931,50 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
         maxiclust_cl3d_spptot.clear();
         maxiclust_cl3d_szz.clear();
         maxiclust_cl3d_srrtot.clear();
-        maxiclust_cl3d_srrmean.clear();*/
+        maxiclust_cl3d_srrmean.clear();
 
         //cout<<"Number of maxiclusters: "<<_maxicluster_n<<endl;
 
+        //cout<<"***** ENTRY "<<i<<" *****"<<endl;
+
         for (int i_maxicluster=0; i_maxicluster<_maxicluster_n; i_maxicluster++){
+
+            bool superclust_isMerged = false;
+
+            vector<float> superclust_cl3d_pt;
+            vector<float> superclust_cl3d_energy;
+            vector<float> superclust_cl3d_eta;
+            vector<float> superclust_cl3d_phi;
+            vector<float> superclust_cl3d_bdteg;
+            vector<int>   superclust_cl3d_showerlength;
+            vector<int>   superclust_cl3d_coreshowerlength;
+            vector<int>   superclust_cl3d_firstlayer;
+            vector<int>   superclust_cl3d_maxlayer;
+            vector<float> superclust_cl3d_seetot;
+            vector<float> superclust_cl3d_spptot;
+            vector<float> superclust_cl3d_szz;
+            vector<float> superclust_cl3d_srrtot;
+            vector<float> superclust_cl3d_srrmean;
+
+            superclust_cl3d_pt.clear();
+            superclust_cl3d_energy.clear();
+            superclust_cl3d_eta.clear();
+            superclust_cl3d_phi.clear();
+            superclust_cl3d_bdteg.clear();
+            superclust_cl3d_showerlength.clear();
+            superclust_cl3d_coreshowerlength.clear();
+            superclust_cl3d_firstlayer.clear();
+            superclust_cl3d_maxlayer.clear();
+            superclust_cl3d_seetot.clear();
+            superclust_cl3d_spptot.clear();
+            superclust_cl3d_szz.clear();
+            superclust_cl3d_srrtot.clear();
+            superclust_cl3d_srrmean.clear();
+
+            float maxiclust_max_eta = -999.;
+            float maxiclust_min_eta =  999.;
+            float maxiclust_max_phi = -999.;
+            float maxiclust_min_phi =  999.;
 
             //cout<<"With subclusters: "<<_maxicluster_cl3d_pt.at(i_maxicluster).size()<<endl;
 
@@ -805,10 +982,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
             maxiclust_cl3d_energy = _maxicluster_cl3d_energy.at(i_maxicluster);
             maxiclust_cl3d_eta = _maxicluster_cl3d_eta.at(i_maxicluster);
             maxiclust_cl3d_phi = _maxicluster_cl3d_phi.at(i_maxicluster);
-
-            cout<<"Maxicluster #"<<i_maxicluster<<",with leading cl3d (pT,eta,phi): ("<<maxiclust_cl3d_pt.at(0)<<","<<maxiclust_cl3d_eta.at(0)<<","<<maxiclust_cl3d_phi.at(0)<<")"<<endl;
-
-            /*maxiclust_cl3d_bdteg = _maxicluster_cl3d_bdteg.at(i_maxicluster);
+            maxiclust_cl3d_bdteg = _maxicluster_cl3d_bdteg.at(i_maxicluster);
             maxiclust_cl3d_showerlength = _maxicluster_cl3d_showerlength.at(i_maxicluster);
             maxiclust_cl3d_coreshowerlength = _maxicluster_cl3d_coreshowerlength.at(i_maxicluster);
             maxiclust_cl3d_firstlayer = _maxicluster_cl3d_firstlayer.at(i_maxicluster);
@@ -817,26 +991,41 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
             maxiclust_cl3d_spptot = _maxicluster_cl3d_spptot.at(i_maxicluster);
             maxiclust_cl3d_szz = _maxicluster_cl3d_szz.at(i_maxicluster);
             maxiclust_cl3d_srrtot = _maxicluster_cl3d_srrtot.at(i_maxicluster);
-            maxiclust_cl3d_srrmean = _maxicluster_cl3d_srrmean.at(i_maxicluster);*/
+            maxiclust_cl3d_srrmean = _maxicluster_cl3d_srrmean.at(i_maxicluster);
 
-            /*for (int i_cl3d=0; i_cl3d<_maxicluster_cl3d_pt.size(); i_cl3d++)
+            TLorentzVector maxiclust_cl3d_leading;
+            maxiclust_cl3d_leading.SetPtEtaPhiM(maxiclust_cl3d_pt.at(0), maxiclust_cl3d_eta.at(0), maxiclust_cl3d_phi.at(0), 0);
 
-                _supercluster_cl3d_pt.push_back(maxiclust_cl3d_pt.at(i_cl3d));
-                _supercluster_cl3d_energy.push_back(maxiclust_cl3d_energy.at(i_cl3d));
-                _supercluster_cl3d_eta.push_back(maxiclust_cl3d_eta.at(i_cl3d));
-                _supercluster_cl3d_phi.push_back(maxiclust_cl3d_phi.at(i_cl3d));
-                _supercluster_cl3d_bdteg.push_back(maxiclust_cl3d_bdteg.at(i_cl3d));
-                _supercluster_cl3d_showerlength.push_back(maxiclust_cl3d_showerlength.at(i_cl3d));
-                _supercluster_cl3d_coreshowerlength.push_back(maxiclust_cl3d_coreshowerlength.at(i_cl3d));
-                _supercluster_cl3d_firstlayer.push_back(maxiclust_cl3d_firstlayer.at(i_cl3d));
-                _supercluster_cl3d_maxlayer.push_back(maxiclust_cl3d_maxlayer.at(i_cl3d));
-                _supercluster_cl3d_seetot.push_back(maxiclust_cl3d_seetot.at(i_cl3d));
-                _supercluster_cl3d_spptot.push_back(maxiclust_cl3d_spptot.at(i_cl3d));
-                _supercluster_cl3d_szz.push_back(maxiclust_cl3d_szz.at(i_cl3d));
-                _supercluster_cl3d_srrtot.push_back(maxiclust_cl3d_srrtot.at(i_cl3d));
-                _supercluster_cl3d_srrmean.push_back(maxiclust_cl3d_srrmean.at(i_cl3d));
+            //cout<<"-- Maxicluster #"<<i_maxicluster<<" -- "<<endl;
 
-            }*/
+            for (unsigned int i_cl3d=0; i_cl3d<maxiclust_cl3d_pt.size(); i_cl3d++){
+
+                //cout<<"  Subcluster #"<<i_cl3d<<", with ("<<maxiclust_cl3d_pt.at(i_cl3d)<<","<<maxiclust_cl3d_eta.at(i_cl3d)<<","<<maxiclust_cl3d_phi.at(i_cl3d)<<")"<<endl;
+
+                if( maxiclust_cl3d_eta.at(i_cl3d) > maxiclust_max_eta ) maxiclust_max_eta = maxiclust_cl3d_eta.at(i_cl3d);
+                if( maxiclust_cl3d_eta.at(i_cl3d) < maxiclust_min_eta ) maxiclust_min_eta = maxiclust_cl3d_eta.at(i_cl3d);
+
+                if( maxiclust_cl3d_phi.at(i_cl3d) > maxiclust_max_phi ) maxiclust_max_phi = maxiclust_cl3d_phi.at(i_cl3d);
+                if( maxiclust_cl3d_phi.at(i_cl3d) < maxiclust_min_phi ) maxiclust_min_phi = maxiclust_cl3d_phi.at(i_cl3d);
+
+                superclust_cl3d_pt.push_back(maxiclust_cl3d_pt.at(i_cl3d));
+                superclust_cl3d_energy.push_back(maxiclust_cl3d_energy.at(i_cl3d));
+                superclust_cl3d_eta.push_back(maxiclust_cl3d_eta.at(i_cl3d));
+                superclust_cl3d_phi.push_back(maxiclust_cl3d_phi.at(i_cl3d));
+                superclust_cl3d_bdteg.push_back(maxiclust_cl3d_bdteg.at(i_cl3d));
+                superclust_cl3d_showerlength.push_back(maxiclust_cl3d_showerlength.at(i_cl3d));
+                superclust_cl3d_coreshowerlength.push_back(maxiclust_cl3d_coreshowerlength.at(i_cl3d));
+                superclust_cl3d_firstlayer.push_back(maxiclust_cl3d_firstlayer.at(i_cl3d));
+                superclust_cl3d_maxlayer.push_back(maxiclust_cl3d_maxlayer.at(i_cl3d));
+                superclust_cl3d_seetot.push_back(maxiclust_cl3d_seetot.at(i_cl3d));
+                superclust_cl3d_spptot.push_back(maxiclust_cl3d_spptot.at(i_cl3d));
+                superclust_cl3d_szz.push_back(maxiclust_cl3d_szz.at(i_cl3d));
+                superclust_cl3d_srrtot.push_back(maxiclust_cl3d_srrtot.at(i_cl3d));
+                superclust_cl3d_srrmean.push_back(maxiclust_cl3d_srrmean.at(i_cl3d));
+
+            }
+
+            //cout<<"max_eta "<<maxiclust_max_eta<<",min_eta "<<maxiclust_min_eta<<",max_phi "<<maxiclust_max_phi<<",min_phi "<<maxiclust_min_phi<<endl;
 
             int isMerged = false;
 
@@ -844,7 +1033,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
             vector<float> miniclust_cl3d_energy;
             vector<float> miniclust_cl3d_eta;
             vector<float> miniclust_cl3d_phi;
-            /*vector<float> miniclust_cl3d_bdteg;
+            vector<float> miniclust_cl3d_bdteg;
             vector<int>   miniclust_cl3d_showerlength;
             vector<int>   miniclust_cl3d_coreshowerlength;
             vector<int>   miniclust_cl3d_firstlayer;
@@ -853,13 +1042,13 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
             vector<float> miniclust_cl3d_spptot;
             vector<float> miniclust_cl3d_szz;
             vector<float> miniclust_cl3d_srrtot;
-            vector<float> miniclust_cl3d_srrmean;*/
+            vector<float> miniclust_cl3d_srrmean;
 
             miniclust_cl3d_pt.clear();
             miniclust_cl3d_energy.clear();
             miniclust_cl3d_eta.clear();
             miniclust_cl3d_phi.clear();
-            /*miniclust_cl3d_bdteg.clear();
+            miniclust_cl3d_bdteg.clear();
             miniclust_cl3d_showerlength.clear();
             miniclust_cl3d_coreshowerlength.clear();
             miniclust_cl3d_firstlayer.clear();
@@ -868,7 +1057,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
             miniclust_cl3d_spptot.clear();
             miniclust_cl3d_szz.clear();
             miniclust_cl3d_srrtot.clear();
-            miniclust_cl3d_srrmean.clear();*/
+            miniclust_cl3d_srrmean.clear();
 
             for (int i_minicluster=0; i_minicluster<_minicluster_n; i_minicluster++){
 
@@ -876,8 +1065,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
                 miniclust_cl3d_energy = _minicluster_cl3d_energy.at(i_minicluster);
                 miniclust_cl3d_eta = _minicluster_cl3d_eta.at(i_minicluster);
                 miniclust_cl3d_phi = _minicluster_cl3d_phi.at(i_minicluster);
-
-                /*miniclust_cl3d_bdteg = _minicluster_cl3d_bdteg.at(i_minicluster);
+                miniclust_cl3d_bdteg = _minicluster_cl3d_bdteg.at(i_minicluster);
                 miniclust_cl3d_showerlength = _minicluster_cl3d_showerlength.at(i_minicluster);
                 miniclust_cl3d_coreshowerlength = _minicluster_cl3d_coreshowerlength.at(i_minicluster);
                 miniclust_cl3d_firstlayer = _minicluster_cl3d_firstlayer.at(i_minicluster);
@@ -886,41 +1074,77 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
                 miniclust_cl3d_spptot = _minicluster_cl3d_spptot.at(i_minicluster);
                 miniclust_cl3d_szz = _minicluster_cl3d_szz.at(i_minicluster);
                 miniclust_cl3d_srrtot = _minicluster_cl3d_srrtot.at(i_minicluster);
-                miniclust_cl3d_srrmean = _minicluster_cl3d_srrmean.at(i_minicluster);*/
+                miniclust_cl3d_srrmean = _minicluster_cl3d_srrmean.at(i_minicluster);
 
-                if(maxiclust_cl3d_pt.at(0) == miniclust_cl3d_pt.at(0)) continue;
+                TLorentzVector miniclust_cl3d_leading;
+                miniclust_cl3d_leading.SetPtEtaPhiM(miniclust_cl3d_pt.at(0), miniclust_cl3d_eta.at(0), miniclust_cl3d_phi.at(0), 0);
 
-                if(fabs(maxiclust_cl3d_eta.at(0)-miniclust_cl3d_eta.at(0))>=0.15) continue;
-                if(fabs(maxiclust_cl3d_phi.at(0)-miniclust_cl3d_phi.at(0))<=0.45 || fabs(maxiclust_cl3d_phi.at(0)-miniclust_cl3d_phi.at(0))>=0.60) continue;
+                if( maxiclust_cl3d_pt.at(0) == miniclust_cl3d_pt.at(0)) continue;
+
+                if( fabs(maxiclust_cl3d_eta.at(0)-miniclust_cl3d_eta.at(0)) >= (3/2)*0.1 ) continue;
+
+                // max_phi+(2/2)*0.1 < phi < max_phi+(4/2)*0.1
+                // min_phi-(4/2)*0.1 < phi < min_phi-(2/2)*0.1
+
+                bool in_phi_range = false;
+                if( (( maxiclust_max_phi+(2/2)*0.1 <= miniclust_cl3d_phi.at(0) ) && ( miniclust_cl3d_phi.at(0) <= maxiclust_max_phi+(5/2)*0.1 )) ||
+                    (( maxiclust_min_phi-(5/2)*0.1 <= miniclust_cl3d_phi.at(0) ) && ( miniclust_cl3d_phi.at(0) <= maxiclust_min_phi-(2/2)*0.1 )) ) 
+                        in_phi_range = true;
+
+                if(!in_phi_range) continue;
+
+                superclust_isMerged = true;
+
+                //cout<<"-- Minicluster #"<<i_minicluster<<" -- "<<endl;
+                
+                for (unsigned int i_cl3d=0; i_cl3d<miniclust_cl3d_pt.size(); i_cl3d++){
+
+                   //cout<<"  Subcluster #"<<i_cl3d<<", with ("<<miniclust_cl3d_pt.at(i_cl3d)<<","<<miniclust_cl3d_eta.at(i_cl3d)<<","<<miniclust_cl3d_phi.at(i_cl3d)<<")"<<endl;
+
+                   superclust_cl3d_pt.push_back(miniclust_cl3d_pt.at(i_cl3d));
+                   superclust_cl3d_energy.push_back(miniclust_cl3d_energy.at(i_cl3d));
+                   superclust_cl3d_eta.push_back(miniclust_cl3d_eta.at(i_cl3d));
+                   superclust_cl3d_phi.push_back(miniclust_cl3d_phi.at(i_cl3d));
+                   superclust_cl3d_bdteg.push_back(miniclust_cl3d_bdteg.at(i_cl3d));
+                   superclust_cl3d_showerlength.push_back(miniclust_cl3d_showerlength.at(i_cl3d));
+                   superclust_cl3d_coreshowerlength.push_back(miniclust_cl3d_coreshowerlength.at(i_cl3d));
+                   superclust_cl3d_firstlayer.push_back(miniclust_cl3d_firstlayer.at(i_cl3d));
+                   superclust_cl3d_maxlayer.push_back(miniclust_cl3d_maxlayer.at(i_cl3d));
+                   superclust_cl3d_seetot.push_back(miniclust_cl3d_seetot.at(i_cl3d));
+                   superclust_cl3d_spptot.push_back(miniclust_cl3d_spptot.at(i_cl3d));
+                   superclust_cl3d_szz.push_back(miniclust_cl3d_szz.at(i_cl3d));
+                   superclust_cl3d_srrtot.push_back(miniclust_cl3d_srrtot.at(i_cl3d));
+                   superclust_cl3d_srrmean.push_back(miniclust_cl3d_srrmean.at(i_cl3d));
+
+                }
 
 
-                cout<<"Minicluster #"<<i_minicluster<<",with leading cl3d (pT,eta,phi): ("<<miniclust_cl3d_pt.at(0)<<","<<miniclust_cl3d_eta.at(0)<<","<<miniclust_cl3d_phi.at(0)<<")"<<endl;
-
-                /*_supercluster_cl3d_pt.push_back(miniclust_cl3d_pt);
-                _supercluster_cl3d_energy.push_back(miniclust_cl3d_energy);
-                _supercluster_cl3d_eta.push_back(miniclust_cl3d_eta);
-                _supercluster_cl3d_phi.push_back(miniclust_cl3d_phi);
-                _supercluster_cl3d_bdteg.push_back(miniclust_cl3d_bdteg);
-                _supercluster_cl3d_showerlength.push_back(miniclust_cl3d_showerlength);
-                _supercluster_cl3d_coreshowerlength.push_back(miniclust_cl3d_coreshowerlength);
-                _supercluster_cl3d_firstlayer.push_back(miniclust_cl3d_firstlayer);
-                _supercluster_cl3d_maxlayer.push_back(miniclust_cl3d_maxlayer);
-                _supercluster_cl3d_seetot.push_back(miniclust_cl3d_seetot);
-                _supercluster_cl3d_spptot.push_back(miniclust_cl3d_spptot);
-                _supercluster_cl3d_szz.push_back(miniclust_cl3d_szz);
-                _supercluster_cl3d_srrtot.push_back(miniclust_cl3d_srrtot);
-                _supercluster_cl3d_srrmean.push_back(miniclust_cl3d_srrmean);*/
-
-                isMerged = true;
 
             }
 
-            _supercluster_isMerged.push_back(isMerged);
+            _supercluster_isMerged.push_back(superclust_isMerged);
+
+            _supercluster_cl3d_pt.push_back(superclust_cl3d_pt);
+            _supercluster_cl3d_energy.push_back(superclust_cl3d_energy);
+            _supercluster_cl3d_eta.push_back(superclust_cl3d_eta);
+            _supercluster_cl3d_phi.push_back(superclust_cl3d_phi);
+            _supercluster_cl3d_bdteg.push_back(superclust_cl3d_bdteg);
+            _supercluster_cl3d_showerlength.push_back(superclust_cl3d_showerlength);
+            _supercluster_cl3d_coreshowerlength.push_back(superclust_cl3d_coreshowerlength);
+            _supercluster_cl3d_firstlayer.push_back(superclust_cl3d_firstlayer);
+            _supercluster_cl3d_maxlayer.push_back(superclust_cl3d_maxlayer);
+            _supercluster_cl3d_seetot.push_back(superclust_cl3d_seetot);
+            _supercluster_cl3d_spptot.push_back(superclust_cl3d_spptot);
+            _supercluster_cl3d_szz.push_back(superclust_cl3d_szz);
+            _supercluster_cl3d_srrtot.push_back(superclust_cl3d_srrtot);
+            _supercluster_cl3d_srrmean.push_back(superclust_cl3d_srrmean);
 
         }
 
         _supercluster_n = _supercluster_cl3d_pt.size();
-
+        cout<<"_supercluster_n "<<_supercluster_n<<endl;
+        cout<<"---"<<endl;
+        */
 
         out_tree->Fill();
 
@@ -935,29 +1159,15 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float pt_t
 
 }
 
-void test(int n_events = -1, TString pu = "0", float ptthr_seed = 4, float ptthr_sec = 2, float etawindowmax = 0.15, float phiwindowmax = 0.45, float etawindowmin = 0.15, float phiwindowmin = 0.15){
+void test(int n_events = -1, TString pu = "0"){
 
   TString dir = "/data_CMS/cms/mperez/HGCal_data/May19/";
 
   //cout<<"pu"<<pu<<endl;
 
-  int i_ptthr_seed = ptthr_seed;
-  int i_ptthr_sec = ptthr_sec;
-  int i_etawindowmax = 100*etawindowmax;
-  int i_phiwindowmax = 100*phiwindowmax;
-  int i_etawindowmin = 100*etawindowmin;
-  int i_phiwindowmin = 100*phiwindowmin;
-
-  TString s_ptthr_seed = to_string(i_ptthr_seed);
-  TString s_ptthr_sec  = to_string(i_ptthr_sec);
-  TString s_etawindowmax  = to_string(i_etawindowmax);
-  TString s_phiwindowmax  = to_string(i_phiwindowmax);
-  TString s_etawindowmin  = to_string(i_etawindowmin);
-  TString s_phiwindowmin  = to_string(i_phiwindowmin);
-
   TString infile = dir+"skimmed/NTuple_ZTT_PU"+pu+"_skimmed.root";
-  TString outfile = dir+"clustered/NTuple_ZTT_PU"+pu+"_clustered_pT"+s_ptthr_seed+"-"+s_ptthr_sec+"_maxi"+s_etawindowmax+"-"+s_phiwindowmax+"_mini"+s_etawindowmin+"-"+s_phiwindowmin+".root";
+  TString outfile = dir+"clustered/NTuple_ZTT_PU"+pu+"_clustered.root";
 
-  cluster_tree(infile, outfile, n_events, ptthr_seed, ptthr_sec, etawindowmax, phiwindowmax, etawindowmin, phiwindowmin);
+  cluster_tree(infile, outfile, n_events);
 
 }
