@@ -1162,8 +1162,14 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
 
 void test(int n_events = -1){
 
-  TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_8k_skimmed.root";
-  TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_8k_clustered.root";
+  //TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_skimmed.root";
+  //TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_clustered.root";
+
+  //TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_skimmed.root";
+  //TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_clustered.root";
+
+  TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_skimmed.root";
+  TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_clustered.root";
 
   cluster_tree(infile, outfile, n_events);
 

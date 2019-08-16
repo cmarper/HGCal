@@ -310,24 +310,25 @@ void plot_perdecaymode_all(){
   //plot_perdecaymode("gentau_matchedSC_coreshowerlength_seed","gentau_isMatched", 40,0,40, "Core shower length of Scl3d seed","coreshowerlength_seed",true,250);
   //plot_perdecaymode("gentau_matchedSC_firstlayer_seed","gentau_isMatched", 50,0,50, "First layer of Scl3d seed","firstlayer_seed",true,1200);
   //plot_perdecaymode("gentau_matchedSC_maxlayer_seed","gentau_isMatched", 50,0,50, "Max. layer of Scl3d seed","maxlayer_seed",true,500);
-  //plot_perdecaymode("gentau_matchedSC_seetot_seed","gentau_isMatched", 50,0,0.1, "Scl3d seed #sigma_{#eta#eta}^{tot}","seetot_seed",true,200);
-  //plot_perdecaymode("gentau_matchedSC_seemax_seed","gentau_isMatched", 50,0,0.15,"Scl3d seed #sigma_{#eta#eta}^{max}","seemax_seed",true,150);
-  //plot_perdecaymode("gentau_matchedSC_spptot_seed","gentau_isMatched", 50,0,0.1, "Scl3d seed #sigma_{#phi#phi}^{tot}","spptot_seed",true,200);
-  //plot_perdecaymode("gentau_matchedSC_sppmax_seed","gentau_isMatched", 50,0,0.15,"Scl3d seed #sigma_{#phi#phi}^{max}","sppmax_seed",true,150);
-  //plot_perdecaymode("gentau_matchedSC_szz_seed","gentau_isMatched", 50,0,100, "Scl3d seed #sigma_{zz}","szz_seed",true,320)
-  //plot_perdecaymode("gentau_matchedSC_srrtot_seed","gentau_isMatched",45,0,0.015, "Scl3d seed #sigma_{rr}^{tot}","srrtot_seed",true,320);
-  //plot_perdecaymode("gentau_matchedSC_srrmax_seed","gentau_isMatched",45,0,0.015, "Scl3d seed #sigma_{rr}^{max}","srrmax_seed",true,200);
-  //plot_perdecaymode("gentau_matchedSC_srrmean_seed","gentau_isMatched",50,0,0.01, "Scl3d seed #sigma_{rr}^{mean}","srrmean_seed",true,300);
-  //plot_perdecaymode("gentau_matchedSC_emaxe_seed","gentau_isMatched",50,0,1, "Scl3d seed E(max.layer)/E(tot)","emaxe_seed",true,300);
-  //plot_perdecaymode("gentau_matchedSC_hoe_seed","gentau_isMatched",50,0,2.5,"Scl3d seed H/E","hoe_seed",true,450);
-  //plot_perdecaymode("gentau_matchedSC_meanz_seed","gentau_isMatched",50,300,500,"Scl3d seed mean z","meanz_seed",true,450);
-  plot_perdecaymode("gentau_matchedSC_layer10_seed","gentau_isMatched", 50,0,50,"Scl3d seed layer containing 10% of E(tot)","layer10_seed",true,1000);
-  plot_perdecaymode("gentau_matchedSC_layer50_seed","gentau_isMatched", 50,0,50,"Scl3d seed layer containing 50% of E(tot)","layer50_seed",true,600);
-  plot_perdecaymode("gentau_matchedSC_layer90_seed","gentau_isMatched", 50,0,50,"Scl3d seed layer containing 90% of E(tot)","layer90_seed",true,270);
-  plot_perdecaymode("gentau_matchedSC_ntc67_seed","gentau_isMatched",50,0,50,"Scl3d seed #TC containing 67% of E(tot)","ntc67_seed",true,120);
-  plot_perdecaymode("gentau_matchedSC_ntc90_seed","gentau_isMatched",50,0,100,"Scl3d seed #TC containing 90% of E(tot)","ntc90_seed",true,100);
-  plot_perdecaymode("gentau_matchedSC_bdteg_seed","gentau_isMatched",40,-2,2, "Scl3d seed BDT eg score","bdteg_seed",true,1000); //wrong in v10
-  plot_perdecaymode("gentau_matchedSC_quality_seed","gentau_isMatched",2,0,2, "Scl3d seed quality","quality_seed",true,1000); 
+
+  plot_perdecaymode("gentau_matchedSC_seetot_seed","gentau_isMatched", 50,0,0.1, "Scl3d seed #sigma_{#eta#eta}^{tot}","seetot_seed",true,200);
+  plot_perdecaymode("gentau_matchedSC_seemax_seed","gentau_isMatched", 50,0,0.15,"Scl3d seed #sigma_{#eta#eta}^{max}","seemax_seed",true,150);
+  plot_perdecaymode("gentau_matchedSC_spptot_seed","gentau_isMatched", 50,0,0.1, "Scl3d seed #sigma_{#phi#phi}^{tot}","spptot_seed",true,200);
+  plot_perdecaymode("gentau_matchedSC_sppmax_seed","gentau_isMatched", 50,0,0.15,"Scl3d seed #sigma_{#phi#phi}^{max}","sppmax_seed",true,150);
+  /*plot_perdecaymode("gentau_matchedSC_szz_seed","gentau_isMatched",
+  plot_perdecaymode("gentau_matchedSC_srrtot_seed","gentau_isMatched",
+  plot_perdecaymode("gentau_matchedSC_srrmax_seed","gentau_isMatched",
+  plot_perdecaymode("gentau_matchedSC_srrmean_seed","gentau_isMatched",
+  plot_perdecaymode("gentau_matchedSC_emaxe_seed","gentau_isMatched",
+  plot_perdecaymode("gentau_matchedSC_hoe_seed","gentau_isMatched",
+  plot_perdecaymode("gentau_matchedSC_meanz_seed","gentau_isMatched",
+  plot_perdecaymode("gentau_matchedSC_layer10_seed","gentau_isMatched",
+  plot_perdecaymode("gentau_matchedSC_layer50_seed","gentau_isMatched",
+  plot_perdecaymode("gentau_matchedSC_layer90_seed","gentau_isMatched",
+  plot_perdecaymode("gentau_matchedSC_ntc67_seed","gentau_isMatched",
+  plot_perdecaymode("gentau_matchedSC_ntc90_seed","gentau_isMatched",
+  plot_perdecaymode("gentau_matchedSC_bdteg_seed","gentau_isMatched",
+  plot_perdecaymode("gentau_matchedSC_quality_seed","gentau_isMatched",*/
 
 }
 

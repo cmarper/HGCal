@@ -525,7 +525,7 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 
 void test(int n_events = -1){
 
-	/*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/ZTT_Tauola_All_hadronic_14TeV_TuneCUETP8M1_Pythia8/ZTauTau_PU0_L1TFall17_May19/190504_153054/0000/";
+	/*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/RelValDiTau_Pt20To100_Etam1p6Tom2p9/RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU0_Aug19_v2/190806_155429/0000/";
   
 	vector<TString> infiles;
 	infiles.push_back(indir+Form("ntuple_1.root"));
@@ -533,14 +533,25 @@ void test(int n_events = -1){
 	infiles.push_back(indir+Form("ntuple_3.root"));
 	infiles.push_back(indir+Form("ntuple_4.root"));
 	infiles.push_back(indir+Form("ntuple_5.root"));
-	infiles.push_back(indir+Form("ntuple_6.root"));
-	infiles.push_back(indir+Form("ntuple_7.root"));*/
 
-	TString indir = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuples/";
+	TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_skimmed.root";*/
+
+	TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/RelValDiTau_Pt20To100_Eta1p6To2p9/RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU0_Aug19_v2/190806_155449/0000/";
+
+	vector<TString> infiles;
+	infiles.push_back(indir+Form("ntuple_1.root"));
+	infiles.push_back(indir+Form("ntuple_2.root"));
+	infiles.push_back(indir+Form("ntuple_3.root"));
+	infiles.push_back(indir+Form("ntuple_4.root"));
+	infiles.push_back(indir+Form("ntuple_5.root"));
+
+    TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_skimmed.root";
+
+
+	/*TString indir = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuples/";
 	vector<TString> infiles;
 	infiles.push_back(indir+Form("ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_8k.root"));
-
-	TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_8k_skimmed.root";
+	TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_8k_skimmed.root";*/
   
 	skim_tree(infiles, outfile, n_events);
 
