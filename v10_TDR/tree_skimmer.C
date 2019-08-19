@@ -8,7 +8,42 @@
 #include <TString.h>
 #include <iostream>
 
+#include "TMVA/Tools.h"
+#include "TMVA/Reader.h"
+#include "TMVA/MethodCuts.h"
+
 using namespace std;
+
+float puBDT_cl3d_abseta;
+float puBDT_cl3d_showerlength;
+float puBDT_cl3d_coreshowerlength;
+float puBDT_cl3d_firstlayer;
+float puBDT_cl3d_maxlayer;
+float puBDT_cl3d_szz;
+float puBDT_cl3d_seetot;
+float puBDT_cl3d_spptot;
+float puBDT_cl3d_srrtot;
+float puBDT_cl3d_srrmean;
+
+TMVA::Reader* Book_MVAReader_PUvsTau(std::string basePath, std::string weightFileName)
+{
+   TMVA::Reader* reader = new TMVA::Reader("!Color:!Silent");
+
+   reader->AddVariable("cl3d_abseta", 			&puBDT_cl3d_abseta); //0
+   reader->AddVariable("cl3d_showerlength", 	&puBDT_cl3d_showerlength); //1
+   reader->AddVariable("cl3d_coreshowerlength", &puBDT_cl3d_coreshowerlength); //2
+   reader->AddVariable("cl3d_firstlayer", 		&puBDT_cl3d_firstlayer); //3
+   reader->AddVariable("cl3d_maxlayer", 		&puBDT_cl3d_maxlayer); //4
+   reader->AddVariable("cl3d_szz", 				&puBDT_cl3d_szz); //5
+   reader->AddVariable("cl3d_seetot", 			&puBDT_cl3d_seetot); //6
+   reader->AddVariable("cl3d_spptot", 			&puBDT_cl3d_spptot);
+   reader->AddVariable("cl3d_srrtot", 			&puBDT_cl3d_srrtot); //8
+   reader->AddVariable("cl3d_srrmean", 			&puBDT_cl3d_srrmean); // 9
+
+   reader->BookMVA("BDTG method", basePath+"/"+weightFileName);
+
+   return reader;
+}
 
 
 void skim_tree( vector<TString> filein, TString fileout, int nevents ){
@@ -31,6 +66,8 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 	cout<<"nentries="<<in_tree->GetEntries()<<endl;
 	
 	if (nevents != -1) nentries = nevents;
+
+	TMVA::Reader* PUvsTau_reader = Book_MVAReader_PUvsTau("../data", "xgboost_weights_puBDT.xml");
 
 	// old branches used
 
@@ -228,6 +265,8 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 	vector<float> _out_cl3d_bdteg;
 	vector<int>   _out_cl3d_quality;
 
+	vector<float> _out_cl3d_puBDT;
+
 	out_tree->Branch("run",		&_in_run);
 	out_tree->Branch("event",	&_in_event);
 	out_tree->Branch("lumi",	&_in_lumi);
@@ -292,6 +331,8 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
     out_tree->Branch("cl3d_ntc90", 		&_out_cl3d_ntc90);
 	out_tree->Branch("cl3d_bdteg",		&_out_cl3d_bdteg);
 	out_tree->Branch("cl3d_quality",	&_out_cl3d_quality);
+
+	out_tree->Branch("cl3d_puBDT", &_out_cl3d_puBDT);
 
 
 	for (int i=0;i<nentries;i++) {
@@ -422,6 +463,8 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 		_out_cl3d_bdteg.clear();
 		_out_cl3d_quality.clear();
 
+		_out_cl3d_puBDT.clear();
+
 
 		//loop through entries
 
@@ -475,7 +518,7 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 		_out_cl3d_n = _in_cl3d_n;
 
 		for (int i_cl3d=0; i_cl3d<_in_cl3d_n; i_cl3d++){	
-		
+
 			_out_cl3d_id.push_back((*_in_cl3d_id)[i_cl3d]);
 			_out_cl3d_pt.push_back((*_in_cl3d_pt)[i_cl3d]);
 			_out_cl3d_energy.push_back((*_in_cl3d_energy)[i_cl3d]);
@@ -508,6 +551,23 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 			_out_cl3d_bdteg.push_back((*_in_cl3d_bdteg)[i_cl3d]);
 			_out_cl3d_quality.push_back((*_in_cl3d_quality)[i_cl3d]);
 
+			// PU vs Tau BDT
+
+			puBDT_cl3d_abseta = abs((*_in_cl3d_eta)[i_cl3d]);
+			puBDT_cl3d_showerlength = (*_in_cl3d_showerlength)[i_cl3d];
+			puBDT_cl3d_coreshowerlength = (*_in_cl3d_coreshowerlength)[i_cl3d];
+			puBDT_cl3d_firstlayer = (*_in_cl3d_firstlayer)[i_cl3d];
+			puBDT_cl3d_maxlayer = (*_in_cl3d_maxlayer)[i_cl3d];
+			puBDT_cl3d_szz = (*_in_cl3d_szz)[i_cl3d];
+			puBDT_cl3d_seetot = (*_in_cl3d_seetot)[i_cl3d];
+			puBDT_cl3d_spptot = (*_in_cl3d_spptot)[i_cl3d];
+			puBDT_cl3d_srrtot = (*_in_cl3d_srrtot)[i_cl3d];
+			puBDT_cl3d_srrmean = (*_in_cl3d_srrmean)[i_cl3d];
+
+			float puBDT_score = PUvsTau_reader->EvaluateMVA("BDTG method");
+
+			_out_cl3d_puBDT.push_back(puBDT_score);
+
 		}
 
 		out_tree->Fill();
@@ -525,33 +585,64 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 
 void test(int n_events = -1){
 
-	/*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/RelValDiTau_Pt20To100_Etam1p6Tom2p9/RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU0_Aug19_v2/190806_155429/0000/";
-  
-	vector<TString> infiles;
-	infiles.push_back(indir+Form("ntuple_1.root"));
-	infiles.push_back(indir+Form("ntuple_2.root"));
-	infiles.push_back(indir+Form("ntuple_3.root"));
-	infiles.push_back(indir+Form("ntuple_4.root"));
-	infiles.push_back(indir+Form("ntuple_5.root"));
-
-	TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_skimmed.root";*/
+	////////////////////////////////////////////////
+	//// Tau positive endcap -> training region ////
+	////////////////////////////////////////////////
 
 	TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/RelValDiTau_Pt20To100_Eta1p6To2p9/RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU0_Aug19_v2/190806_155449/0000/";
 
 	vector<TString> infiles;
-	infiles.push_back(indir+Form("ntuple_1.root"));
-	infiles.push_back(indir+Form("ntuple_2.root"));
-	infiles.push_back(indir+Form("ntuple_3.root"));
-	infiles.push_back(indir+Form("ntuple_4.root"));
-	infiles.push_back(indir+Form("ntuple_5.root"));
+	for(int i=1; i<6; i++) {
+		cout<<"File "<<Form("ntuple_%i.root",i)<<endl;
+		infiles.push_back(indir+Form("ntuple_%i.root",i));
+	}
 
-    TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_skimmed.root";
+    TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_skimmed.root";
 
 
-	/*TString indir = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuples/";
+	///////////////////////////////////////////////////
+	//// Tau negative endcap -> application region ////
+	///////////////////////////////////////////////////
+
+	/*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/RelValDiTau_Pt20To100_Etam1p6Tom2p9/RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU0_Aug19_v2/190806_155429/0000/";
+  
 	vector<TString> infiles;
-	infiles.push_back(indir+Form("ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_8k.root"));
-	TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_8k_skimmed.root";*/
+	for(int i=1; i<6; i++) {
+		cout<<"File "<<Form("ntuple_%i.root",i)<<endl;
+		infiles.push_back(indir+Form("ntuple_%i.root",i));
+	}
+
+	TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_skimmed.root";*/
+
+
+	////////////////////////////////////////////////
+    ///// PU files 0 to 100 -> training region /////
+	////////////////////////////////////////////////
+
+	/*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/Nu_E10-pythia8-gun/Nu_E10_v10_PU200_Aug19/190806_155507/0000/";
+	
+	vector<TString> infiles;
+	for(int i=0; i<100; i++) {
+		cout<<"File "<<Form("ntuple_%i.root",i)<<endl;
+		infiles.push_back(indir+Form("ntuple_%i.root",i));
+	}
+	
+	TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_Nu_E10_v10_PU200_files0to100_skimmed.root";*/
+
+
+	///////////////////////////////////////////////////
+	//// PU files 100 to 150 -> application region ////
+	///////////////////////////////////////////////////
+
+	/*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/Nu_E10-pythia8-gun/Nu_E10_v10_PU200_Aug19/190806_155507/0000/";
+	
+	vector<TString> infiles;
+	for(int i=100; i<150; i++) {
+		cout<<"File "<<Form("ntuple_%i.root",i)<<endl;
+		infiles.push_back(indir+Form("ntuple_%i.root",i));
+	}
+	
+	TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_Nu_E10_v10_PU200_files100to150_skimmed.root";*/
   
 	skim_tree(infiles, outfile, n_events);
 

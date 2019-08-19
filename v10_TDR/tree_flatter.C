@@ -79,6 +79,7 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
     vector<float>  *_in_gentau_matchedSC_ntc90_seed;
     vector<float>  *_in_gentau_matchedSC_bdteg_seed;
     vector<int>    *_in_gentau_matchedSC_quality_seed;
+    vector<float>  *_in_gentau_matchedSC_puBDT_seed;
 
 
 	in_tree->SetBranchAddress("event",&_in_event);
@@ -131,6 +132,7 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
     in_tree->SetBranchAddress("gentau_matchedSC_ntc90_seed", 			&_in_gentau_matchedSC_ntc90_seed);
     in_tree->SetBranchAddress("gentau_matchedSC_bdteg_seed", 			&_in_gentau_matchedSC_bdteg_seed);
     in_tree->SetBranchAddress("gentau_matchedSC_quality_seed", 			&_in_gentau_matchedSC_quality_seed);
+    in_tree->SetBranchAddress("gentau_matchedSC_puBDT_seed",            &_in_gentau_matchedSC_puBDT_seed);
 
 	// new branches
 
@@ -188,6 +190,7 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
     float  _out_gentau_matchedSC_ntc90_seed;
     float  _out_gentau_matchedSC_bdteg_seed;
     int    _out_gentau_matchedSC_quality_seed;
+    float  _out_gentau_matchedSC_puBDT_seed;
 
 	out_tree->Branch("event",&_out_event);
 
@@ -239,6 +242,7 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
     out_tree->Branch("gentau_matchedSC_ntc90_seed", 			&_out_gentau_matchedSC_ntc90_seed);
     out_tree->Branch("gentau_matchedSC_bdteg_seed", 			&_out_gentau_matchedSC_bdteg_seed);
     out_tree->Branch("gentau_matchedSC_quality_seed", 			&_out_gentau_matchedSC_quality_seed);
+    out_tree->Branch("gentau_matchedSC_puBDT_seed",             &_out_gentau_matchedSC_puBDT_seed);
 
 	for (int i=0;i<nentries;i++) {
 
@@ -296,6 +300,7 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
     	_in_gentau_matchedSC_ntc90_seed = 0;
     	_in_gentau_matchedSC_bdteg_seed = 0;
     	_in_gentau_matchedSC_quality_seed = 0;
+        _in_gentau_matchedSC_puBDT_seed = 0;
 
 		// new branches
 
@@ -349,6 +354,7 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
     	_out_gentau_matchedSC_ntc90_seed = 0;
     	_out_gentau_matchedSC_bdteg_seed = 0;
     	_out_gentau_matchedSC_quality_seed = 0;
+        _out_gentau_matchedSC_puBDT_seed = 0;
 
 		int entry_ok = in_tree->GetEntry(i);	
 		if(entry_ok<0) continue;
@@ -405,6 +411,7 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
         	_out_gentau_matchedSC_ntc90_seed = _in_gentau_matchedSC_ntc90_seed->at(i_gentau);
         	_out_gentau_matchedSC_bdteg_seed = _in_gentau_matchedSC_bdteg_seed->at(i_gentau);
         	_out_gentau_matchedSC_quality_seed = _in_gentau_matchedSC_quality_seed->at(i_gentau);
+            _out_gentau_matchedSC_puBDT_seed = _in_gentau_matchedSC_puBDT_seed->at(i_gentau);
 
         	out_tree->Fill();
 
@@ -423,11 +430,11 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
 
 void test(int n_events = -1){
 
-  TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_clustered.root";
-  TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_clustered_flat.root";
+  //TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/clustered/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_clustered.root";
+  //TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/flat/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_flat.root";
 
-  //TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_clustered.root";
-  //TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_clustered_flat.root";
+  TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/clustered/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_clustered.root";
+  TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/flat/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_flat.root";
 
   flatten_tree(infile, outfile, n_events);
 

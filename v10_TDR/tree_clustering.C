@@ -86,6 +86,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
     vector<float>  *_cl3d_ntc90;
     vector<float>  *_cl3d_bdteg;
     vector<int>    *_cl3d_quality;
+    vector<float>  *_cl3d_puBDT;
 
     in_tree->SetBranchAddress("event",&_event);
 
@@ -134,7 +135,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
     in_tree->SetBranchAddress("cl3d_ntc90",     &_cl3d_ntc90);
     in_tree->SetBranchAddress("cl3d_bdteg",     &_cl3d_bdteg);
     in_tree->SetBranchAddress("cl3d_quality",   &_cl3d_quality);
-
+    in_tree->SetBranchAddress("cl3d_puBDT",     &_cl3d_puBDT);
 
     TTree* out_tree=in_tree->GetTree()->CloneTree(0);
     out_tree->SetNameTitle("ClusteredTree","ClusteredTree");
@@ -171,6 +172,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
     vector<float>  _gentau_matchedSC_ntc90_seed;
     vector<float>  _gentau_matchedSC_bdteg_seed;
     vector<int>    _gentau_matchedSC_quality_seed;
+    vector<float>  _gentau_matchedSC_puBDT_seed;
 
     int _n_supercluster;
 
@@ -221,6 +223,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
     vector<vector<float>>  _supercluster_cl3d_ntc90;
     vector<vector<float>>  _supercluster_cl3d_bdteg;
     vector<vector<int>>    _supercluster_cl3d_quality;
+    vector<vector<float>>  _supercluster_cl3d_puBDT;
 
     out_tree->Branch("gentau_isMatched",  &_gentau_isMatched);
 
@@ -254,6 +257,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
     out_tree->Branch("gentau_matchedSC_ntc90_seed", &_gentau_matchedSC_ntc90_seed);
     out_tree->Branch("gentau_matchedSC_bdteg_seed", &_gentau_matchedSC_bdteg_seed);
     out_tree->Branch("gentau_matchedSC_quality_seed", &_gentau_matchedSC_quality_seed);
+    out_tree->Branch("gentau_matchedSC_puBDT_seed", &_gentau_matchedSC_puBDT_seed);
 
     out_tree->Branch("n_supercluster",     &_n_supercluster);
 
@@ -304,6 +308,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
     out_tree->Branch("supercluster_cl3d_ntc90",      &_supercluster_cl3d_ntc90);
     out_tree->Branch("supercluster_cl3d_bdteg",      &_supercluster_cl3d_bdteg);
     out_tree->Branch("supercluster_cl3d_quality",    &_supercluster_cl3d_quality);
+    out_tree->Branch("supercluster_cl3d_puBDT",      &_supercluster_cl3d_puBDT);
 
     float matched_taus = 0;
     float unmatched_taus = 0;
@@ -361,6 +366,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
         _cl3d_ntc90 = 0;
         _cl3d_bdteg = 0;
         _cl3d_quality = 0;
+        _cl3d_puBDT = 0;
 
         _gentau_isMatched.clear();
 
@@ -394,6 +400,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
         _gentau_matchedSC_ntc90_seed.clear();
         _gentau_matchedSC_bdteg_seed.clear();
         _gentau_matchedSC_quality_seed.clear();
+        _gentau_matchedSC_puBDT_seed.clear();
 
         _n_supercluster = 0;
 
@@ -444,7 +451,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
         _supercluster_cl3d_ntc90.clear();
         _supercluster_cl3d_bdteg.clear();
         _supercluster_cl3d_quality.clear();
-
+        _supercluster_cl3d_puBDT.clear();
 
         int entry_ok = in_tree->GetEntry(i);    
         if(entry_ok<0) 
@@ -496,6 +503,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
             vector<float> candidate_supercluster_ntc90;
             vector<float> candidate_supercluster_bdteg;
             vector<int>   candidate_supercluster_quality;
+            vector<float> candidate_supercluster_puBDT;
 
             candidate_supercluster.clear();
             candidate_supercluster_n_cl3d.clear();
@@ -521,6 +529,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
             candidate_supercluster_ntc90.clear();
             candidate_supercluster_bdteg.clear();
             candidate_supercluster_quality.clear();
+            candidate_supercluster_puBDT.clear();
 
             // MAIN CLUSTER CANDIDATE (SUPERCLUSTER SEED)
 
@@ -547,6 +556,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
             float seed_candidate_supercluster_ntc90;
             float seed_candidate_supercluster_bdteg;
             int   seed_candidate_supercluster_quality;
+            float seed_candidate_supercluster_puBDT;
 
             seed_candidate_supercluster.SetPtEtaPhiM( (*_cl3d_pt)[i_main], (*_cl3d_eta)[i_main], (*_cl3d_phi)[i_main], 0);
             seed_candidate_supercluster_showerlength = (*_cl3d_showerlength)[i_main];
@@ -571,9 +581,12 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
             seed_candidate_supercluster_ntc90 = (*_cl3d_ntc90)[i_main];
             seed_candidate_supercluster_bdteg = (*_cl3d_bdteg)[i_main];
             seed_candidate_supercluster_quality = (*_cl3d_quality)[i_main];
+            seed_candidate_supercluster_puBDT = (*_cl3d_puBDT)[i_main];
+
+            if ( seed_candidate_supercluster_puBDT < 0 ) continue;
 
             if ( seed_candidate_supercluster.Pt() < thr_seed ) continue;
-
+        
             if(debug) cout<<"   Seed cl3d candidate #"<<i_main<<": pT "<<seed_candidate_supercluster.Pt()<<", eta "<<seed_candidate_supercluster.Eta()<<", phi "<<seed_candidate_supercluster.Phi()<<endl;
 
             candidate_supercluster.push_back(seed_candidate_supercluster);
@@ -599,6 +612,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
             candidate_supercluster_ntc90.push_back(seed_candidate_supercluster_ntc90);
             candidate_supercluster_bdteg.push_back(seed_candidate_supercluster_bdteg);
             candidate_supercluster_quality.push_back(seed_candidate_supercluster_quality);
+            candidate_supercluster_puBDT.push_back(seed_candidate_supercluster_puBDT);
 
             // SECONDARY CLUSTERS CANDIDATES
 
@@ -629,6 +643,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
                 float secondary_candidate_supercluster_ntc90;
                 float secondary_candidate_supercluster_bdteg;
                 int   secondary_candidate_supercluster_quality;
+                float secondary_candidate_supercluster_puBDT;
 
                 secondary_candidate_supercluster.SetPtEtaPhiM( (*_cl3d_pt)[i_sec], (*_cl3d_eta)[i_sec], (*_cl3d_phi)[i_sec], 0);
                 secondary_candidate_supercluster_showerlength = (*_cl3d_showerlength)[i_sec];
@@ -653,9 +668,12 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
                 secondary_candidate_supercluster_ntc90 = (*_cl3d_ntc90)[i_sec];
                 secondary_candidate_supercluster_bdteg = (*_cl3d_bdteg)[i_sec];
                 secondary_candidate_supercluster_quality = (*_cl3d_quality)[i_sec];
+                secondary_candidate_supercluster_puBDT = (*_cl3d_puBDT)[i_sec];
+
+                if( secondary_candidate_supercluster_puBDT < 0 ) continue;
 
                 if( secondary_candidate_supercluster.Pt() < thr_sec ) continue;
-
+ 
                 if( fabs(secondary_candidate_supercluster.Eta() - seed_candidate_supercluster.Eta()) > dEta ) continue; // (TT/2)*(eta/TT) -> 3
                 if( fabs(seed_candidate_supercluster.DeltaPhi(secondary_candidate_supercluster)) > dPhi ) continue; // => 9
 
@@ -684,6 +702,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
                 candidate_supercluster_ntc90.push_back(secondary_candidate_supercluster_ntc90);
                 candidate_supercluster_bdteg.push_back(secondary_candidate_supercluster_bdteg);
                 candidate_supercluster_quality.push_back(secondary_candidate_supercluster_quality);
+                candidate_supercluster_puBDT.push_back(secondary_candidate_supercluster_puBDT);
 
             }
 
@@ -716,6 +735,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
             vector<float> candidate_supercluster_ntc90_pTsorted;
             vector<float> candidate_supercluster_bdteg_pTsorted;
             vector<int>   candidate_supercluster_quality_pTsorted;
+            vector<float> candidate_supercluster_puBDT_pTsorted;
 
             candidate_supercluster_pTsorted.clear();
             candidate_supercluster_pt_pTsorted.clear();
@@ -744,6 +764,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
             candidate_supercluster_ntc90_pTsorted.clear();
             candidate_supercluster_bdteg_pTsorted.clear();
             candidate_supercluster_quality_pTsorted.clear();
+            candidate_supercluster_puBDT_pTsorted.clear();
 
             vector< pair<int,TLorentzVector> > isupercluster_supercluster_pairs;
 
@@ -788,6 +809,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
                 candidate_supercluster_ntc90_pTsorted.push_back(candidate_supercluster_ntc90.at(index));
                 candidate_supercluster_bdteg_pTsorted.push_back(candidate_supercluster_bdteg.at(index));
                 candidate_supercluster_quality_pTsorted.push_back(candidate_supercluster_quality.at(index));
+                candidate_supercluster_puBDT_pTsorted.push_back(candidate_supercluster_puBDT.at(index));
 
             }
 
@@ -898,6 +920,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
             _supercluster_cl3d_ntc90.push_back(candidate_supercluster_ntc90_pTsorted);
             _supercluster_cl3d_bdteg.push_back(candidate_supercluster_bdteg_pTsorted);
             _supercluster_cl3d_quality.push_back(candidate_supercluster_quality_pTsorted);
+            _supercluster_cl3d_puBDT.push_back(candidate_supercluster_puBDT_pTsorted);
 
         }
 
@@ -991,6 +1014,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
             float tau_ntc90_seed = -999;
             float tau_bdteg_seed = -999;
             int   tau_quality_seed = -999;
+            float tau_puBDT_seed = -999;
 
             for(int i_supercl=0; i_supercl<_n_supercluster; i_supercl++){
 
@@ -1019,6 +1043,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
                 vector<float> cl3ds_ntc90;
                 vector<float> cl3ds_bdteg;
                 vector<int>   cl3ds_quality;
+                vector<float> cl3ds_puBDT;
 
                 cl3ds_showerlength = _supercluster_cl3d_showerlength.at(i_supercl);
                 cl3ds_coreshowerlength = _supercluster_cl3d_coreshowerlength.at(i_supercl);
@@ -1042,6 +1067,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
                 cl3ds_ntc90 = _supercluster_cl3d_ntc90.at(i_supercl);
                 cl3ds_bdteg = _supercluster_cl3d_bdteg.at(i_supercl);
                 cl3ds_quality = _supercluster_cl3d_quality.at(i_supercl);
+                cl3ds_puBDT = _supercluster_cl3d_puBDT.at(i_supercl);
 
                 float dR = supercluster.DeltaR(gentauvis);
 
@@ -1080,6 +1106,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
                     tau_ntc90_seed = cl3ds_ntc90.at(0);
                     tau_bdteg_seed = cl3ds_bdteg.at(0);
                     tau_quality_seed = cl3ds_quality.at(0);
+                    tau_puBDT_seed = cl3ds_puBDT.at(0);
 
                     if(debug){
                         cout<<" --> Matched: gen tau eta "<<gentauvis.Eta()<<" to supercluster eta "<<supercluster.Eta()<<endl;
@@ -1129,6 +1156,7 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
             _gentau_matchedSC_ntc90_seed.push_back(tau_ntc90_seed);
             _gentau_matchedSC_bdteg_seed.push_back(tau_bdteg_seed);
             _gentau_matchedSC_quality_seed.push_back(tau_quality_seed);
+            _gentau_matchedSC_puBDT_seed.push_back(tau_puBDT_seed);
 
         }
 
@@ -1160,16 +1188,17 @@ void cluster_tree( TString filein, TString fileout, int nevents = -1, float thr_
     return;
 }
 
+
 void test(int n_events = -1){
 
-  //TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_skimmed.root";
-  //TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_clustered.root";
+  //TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_skimmed.root";
+  //TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/clustered/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_clustered.root";
 
-  //TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_skimmed.root";
-  //TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_clustered.root";
+  //TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_skimmed.root";
+  //TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/clustered/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_clustered.root";
 
-  TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_skimmed.root";
-  TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/ntuple_RelValDiTau_Pt20To100_clustered.root";
+  TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_Nu_E10_v10_PU200_files100to150_skimmed.root";
+  TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/clustered/ntuple_Nu_E10_v10_PU200_files100to150_clustered.root";
 
   cluster_tree(infile, outfile, n_events);
 
