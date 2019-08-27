@@ -67,7 +67,7 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 	
 	if (nevents != -1) nentries = nevents;
 
-	TMVA::Reader* PUvsTau_reader = Book_MVAReader_PUvsTau("../data", "xgboost_weights_puBDT.xml");
+	TMVA::Reader* PUvsTau_reader = Book_MVAReader_PUvsTau("../data/puBDT", "xgboost_weights_puBDT.xml");
 
 	// old branches used
 
@@ -99,6 +99,37 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 	vector<int>   *_in_gentau_totNgamma;
 	vector<int>   *_in_gentau_totNpiZero;
 	vector<int>   *_in_gentau_totNcharged;
+
+	int _in_tc_n;
+
+	vector<unsigned int> 	*_in_tc_id;
+	vector<int>		*_in_tc_subdet;
+	vector<int>		*_in_tc_zside;
+	vector<int>		*_in_tc_layer;
+	vector<int>		*_in_tc_waferu;
+	vector<int>		*_in_tc_waferv;
+	vector<int>		*_in_tc_wafertype;
+	vector<int>		*_in_tc_panel_number;
+	vector<int>		*_in_tc_panel_sector;
+	vector<int>		*_in_tc_cell;
+	vector<int>		*_in_tc_cellu;
+	vector<int>		*_in_tc_cellv;	
+	vector<unsigned int>	*_in_tc_data;
+	vector<unsigned int>	*_in_tc_uncompressedCharge;
+	vector<unsigned int>	*_in_tc_compressedCharge;
+
+	vector<float>	*_in_tc_pt;
+	vector<float>	*_in_tc_mipPt;
+	vector<float>	*_in_tc_energy;
+	vector<float>	*_in_tc_eta;
+	vector<float>   *_in_tc_phi;
+	vector<float>   *_in_tc_x;
+	vector<float>   *_in_tc_y;
+	vector<float>   *_in_tc_z;
+
+	vector<unsigned int>	*_in_tc_cluster_id;
+	vector<unsigned int>	*_in_tc_multicluster_id;
+	vector<unsigned int>	*_in_tc_multicluster_pt;
 
 	int _in_cl3d_n;
 
@@ -162,6 +193,36 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 	in_tree->SetBranchAddress("gentau_totNgamma",		&_in_gentau_totNgamma);
 	in_tree->SetBranchAddress("gentau_totNpiZero",		&_in_gentau_totNpiZero);
 	in_tree->SetBranchAddress("gentau_totNcharged",		&_in_gentau_totNcharged);
+
+	in_tree->SetBranchAddress("tc_n", 	&_in_tc_n);
+
+	in_tree->SetBranchAddress("tc_id", 		&_in_tc_id);
+	in_tree->SetBranchAddress("tc_subdet", 	&_in_tc_subdet);
+	in_tree->SetBranchAddress("tc_zside", 	&_in_tc_zside);
+	in_tree->SetBranchAddress("tc_layer", 	&_in_tc_layer);
+	in_tree->SetBranchAddress("tc_waferu", 	&_in_tc_waferu);
+	in_tree->SetBranchAddress("tc_waferv", 	&_in_tc_waferv);
+	in_tree->SetBranchAddress("tc_wafertype", 	&_in_tc_wafertype);
+	in_tree->SetBranchAddress("tc_panel_number", 	&_in_tc_panel_number);
+	in_tree->SetBranchAddress("tc_panel_sector", 	&_in_tc_panel_sector);
+	in_tree->SetBranchAddress("tc_cellu", 			&_in_tc_cellu);
+	in_tree->SetBranchAddress("tc_cellv", 			&_in_tc_cellv);	
+	in_tree->SetBranchAddress("tc_data", 			&_in_tc_data);
+	in_tree->SetBranchAddress("tc_uncompressedCharge", 	&_in_tc_uncompressedCharge);
+	in_tree->SetBranchAddress("tc_compressedCharge", 	&_in_tc_compressedCharge);
+
+	in_tree->SetBranchAddress("tc_pt", 				&_in_tc_pt);
+	in_tree->SetBranchAddress("tc_mipPt", 			&_in_tc_mipPt);
+	in_tree->SetBranchAddress("tc_energy", 			&_in_tc_energy);
+	in_tree->SetBranchAddress("tc_eta", 			&_in_tc_eta);
+	in_tree->SetBranchAddress("tc_phi", 			&_in_tc_phi);
+	in_tree->SetBranchAddress("tc_x", 				&_in_tc_x);
+	in_tree->SetBranchAddress("tc_y", 				&_in_tc_y);
+	in_tree->SetBranchAddress("tc_z", 				&_in_tc_z);
+
+	in_tree->SetBranchAddress("tc_cluster_id", 		&_in_tc_cluster_id);
+	in_tree->SetBranchAddress("tc_multicluster_id", &_in_tc_multicluster_id);
+	in_tree->SetBranchAddress("tc_multicluster_pt", &_in_tc_multicluster_pt);
 
 	in_tree->SetBranchAddress("cl3d_n",&_in_cl3d_n);
 
@@ -231,6 +292,36 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 	vector<int>   _out_gentau_totNpiZero;
 	vector<int>   _out_gentau_totNcharged;
 
+	int _out_tc_n;
+
+	vector<unsigned int> 	_out_tc_id;
+	vector<int>		_out_tc_subdet;
+	vector<int>		_out_tc_zside;
+	vector<int>		_out_tc_layer;
+	vector<int>		_out_tc_waferu;
+	vector<int>		_out_tc_waferv;
+	vector<int>		_out_tc_wafertype;
+	vector<int>		_out_tc_panel_number;
+	vector<int>		_out_tc_panel_sector;
+	vector<int>		_out_tc_cellu;
+	vector<int>		_out_tc_cellv;	
+	vector<unsigned int>	_out_tc_data;
+	vector<unsigned int>	_out_tc_uncompressedCharge;
+	vector<unsigned int>	_out_tc_compressedCharge;
+
+	vector<float>	_out_tc_pt;
+	vector<float>	_out_tc_mipPt;
+	vector<float>	_out_tc_energy;
+	vector<float>	_out_tc_eta;
+	vector<float>   _out_tc_phi;
+	vector<float>   _out_tc_x;
+	vector<float>   _out_tc_y;
+	vector<float>   _out_tc_z;
+
+	vector<unsigned int>	_out_tc_cluster_id;
+	vector<unsigned int>	_out_tc_multicluster_id;
+	vector<unsigned int>	_out_tc_multicluster_pt;
+
 	int _out_cl3d_n;
 
 	vector<unsigned int> _out_cl3d_id;
@@ -298,13 +389,43 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 	out_tree->Branch("gentau_totNpiZero",		&_out_gentau_totNpiZero);
 	out_tree->Branch("gentau_totNcharged",		&_out_gentau_totNcharged);
 
+	out_tree->Branch("tc_n", 				&_out_tc_n);
+
+	out_tree->Branch("tc_id", 				&_out_tc_id);
+	out_tree->Branch("tc_subdet", 			&_out_tc_subdet);
+	out_tree->Branch("tc_zside", 			&_out_tc_zside);
+	out_tree->Branch("tc_layer", 			&_out_tc_layer);
+	out_tree->Branch("tc_waferu", 			&_out_tc_waferu);
+	out_tree->Branch("tc_waferv", 			&_out_tc_waferv);
+	out_tree->Branch("tc_wafertype", 		&_out_tc_wafertype);
+	out_tree->Branch("tc_panel_number", 	&_out_tc_panel_number);
+	out_tree->Branch("tc_panel_sector", 	&_out_tc_panel_sector);
+	out_tree->Branch("tc_cellu", 			&_out_tc_cellu);
+	out_tree->Branch("tc_cellv", 			&_out_tc_cellv);	
+	out_tree->Branch("tc_data", 				&_out_tc_data);
+	out_tree->Branch("tc_uncompressedCharge", 	&_out_tc_uncompressedCharge);
+	out_tree->Branch("tc_compressedCharge", 	&_out_tc_compressedCharge);
+
+	out_tree->Branch("tc_pt", 				&_out_tc_pt);
+	out_tree->Branch("tc_mipPt", 			&_out_tc_mipPt);
+	out_tree->Branch("tc_energy", 			&_out_tc_energy);
+	out_tree->Branch("tc_eta", 				&_out_tc_eta);
+	out_tree->Branch("tc_phi", 				&_out_tc_phi);
+	out_tree->Branch("tc_x", 				&_out_tc_x);
+	out_tree->Branch("tc_y", 				&_out_tc_y);
+	out_tree->Branch("tc_z", 				&_out_tc_z);
+
+	out_tree->Branch("tc_cluster_id", 		&_out_tc_cluster_id);
+	out_tree->Branch("tc_multicluster_id", 	&_out_tc_multicluster_id);
+	out_tree->Branch("tc_multicluster_pt", 	&_out_tc_multicluster_pt);
+
 	out_tree->Branch("cl3d_n",&_out_cl3d_n);
 
 	out_tree->Branch("cl3d_id",		&_out_cl3d_id);
 	out_tree->Branch("cl3d_pt",		&_out_cl3d_pt);
 	out_tree->Branch("cl3d_energy",	&_out_cl3d_energy);
-	out_tree->Branch("cl3d_eta",		&_out_cl3d_eta);
-	out_tree->Branch("cl3d_phi",		&_out_cl3d_phi);
+	out_tree->Branch("cl3d_eta",	&_out_cl3d_eta);
+	out_tree->Branch("cl3d_phi",	&_out_cl3d_phi);
 
 	out_tree->Branch("cl3d_clusters_n",	&_out_cl3d_clusters_n);
 	out_tree->Branch("cl3d_clusters_id",	&_out_cl3d_clusters_id);
@@ -365,6 +486,36 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 		_in_gentau_totNgamma = 0;
 		_in_gentau_totNpiZero = 0;
 		_in_gentau_totNcharged = 0;
+
+		_in_tc_n = 0;
+
+		_in_tc_id = 0;
+		_in_tc_subdet = 0;
+		_in_tc_zside = 0;
+		_in_tc_layer = 0;
+		_in_tc_waferu = 0;
+		_in_tc_waferv = 0;
+		_in_tc_wafertype = 0;
+		_in_tc_panel_number = 0;
+		_in_tc_panel_sector = 0;
+		_in_tc_cellu = 0;
+		_in_tc_cellv = 0;
+		_in_tc_data = 0;
+		_in_tc_uncompressedCharge = 0;
+		_in_tc_compressedCharge = 0;
+
+		_in_tc_pt = 0;
+		_in_tc_mipPt = 0;
+		_in_tc_energy = 0;
+		_in_tc_eta = 0;
+		_in_tc_phi = 0;
+		_in_tc_x = 0;
+		_in_tc_y = 0;
+		_in_tc_z = 0;
+
+		_in_tc_cluster_id = 0;
+		_in_tc_multicluster_id = 0;
+		_in_tc_multicluster_pt = 0;
 
 		_in_cl3d_n = 0;
 		
@@ -428,6 +579,36 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 		_out_gentau_totNgamma.clear();
 		_out_gentau_totNpiZero.clear();
 		_out_gentau_totNcharged.clear();
+
+		_out_tc_n = 0;
+
+		_out_tc_id.clear();
+		_out_tc_subdet.clear();
+		_out_tc_zside.clear();
+		_out_tc_layer.clear();
+		_out_tc_waferu.clear();
+		_out_tc_waferv.clear();
+		_out_tc_wafertype.clear();
+		_out_tc_panel_number.clear();
+		_out_tc_panel_sector.clear();
+		_out_tc_cellu.clear();
+		_out_tc_cellv.clear();
+		_out_tc_data.clear();
+		_out_tc_uncompressedCharge.clear();
+		_out_tc_compressedCharge.clear();
+
+		_out_tc_pt.clear();
+		_out_tc_mipPt.clear();
+		_out_tc_energy.clear();
+		_out_tc_eta.clear();
+		_out_tc_phi.clear();
+		_out_tc_x.clear();
+		_out_tc_y.clear();
+		_out_tc_z.clear();
+
+		_out_tc_cluster_id.clear();
+		_out_tc_multicluster_id.clear();
+		_out_tc_multicluster_pt.clear();
 
 		_out_cl3d_n = 0;
 		
@@ -513,6 +694,42 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 		_out_gentau_n = _out_gentau_pt.size();
 
 
+		// loop over trigger cells
+
+		_out_tc_n = _in_tc_n;
+
+		for (int i_tc=0; i_tc<_in_tc_n; i_tc++){
+
+			_out_tc_id.push_back((*_in_tc_id)[i_tc]);
+			_out_tc_subdet.push_back((*_in_tc_subdet)[i_tc]);
+			_out_tc_zside.push_back((*_in_tc_zside)[i_tc]);
+			_out_tc_layer.push_back((*_in_tc_layer)[i_tc]);
+			_out_tc_waferu.push_back((*_in_tc_waferu)[i_tc]);
+			_out_tc_waferv.push_back((*_in_tc_waferv)[i_tc]);
+			_out_tc_wafertype.push_back((*_in_tc_wafertype)[i_tc]);
+			_out_tc_panel_number.push_back((*_in_tc_panel_number)[i_tc]);
+			_out_tc_panel_sector.push_back((*_in_tc_panel_sector)[i_tc]);
+			_out_tc_cellu.push_back((*_in_tc_cellu)[i_tc]);
+			_out_tc_cellv.push_back((*_in_tc_cellv)[i_tc]);
+			_out_tc_data.push_back((*_in_tc_data)[i_tc]);
+			_out_tc_uncompressedCharge.push_back((*_in_tc_uncompressedCharge)[i_tc]);
+			_out_tc_compressedCharge.push_back((*_in_tc_compressedCharge)[i_tc]);
+
+			_out_tc_pt.push_back((*_in_tc_pt)[i_tc]);
+			_out_tc_mipPt.push_back((*_in_tc_mipPt)[i_tc]);
+			_out_tc_energy.push_back((*_in_tc_energy)[i_tc]);
+			_out_tc_eta.push_back((*_in_tc_eta)[i_tc]);
+			_out_tc_phi.push_back((*_in_tc_phi)[i_tc]);
+			_out_tc_x.push_back((*_in_tc_x)[i_tc]);
+			_out_tc_y.push_back((*_in_tc_y)[i_tc]);
+			_out_tc_z.push_back((*_in_tc_z)[i_tc]);
+
+			_out_tc_cluster_id.push_back((*_in_tc_cluster_id)[i_tc]);
+			_out_tc_multicluster_id.push_back((*_in_tc_multicluster_id)[i_tc]);
+			_out_tc_multicluster_pt.push_back((*_in_tc_multicluster_pt)[i_tc]);
+
+		}
+
 		// loop over 3d clusters
 
 		_out_cl3d_n = _in_cl3d_n;
@@ -585,11 +802,11 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 
 void test(int n_events = -1){
 
-	////////////////////////////////////////////////
-	//// Tau positive endcap -> training region ////
-	////////////////////////////////////////////////
+	/////////////////////////////////////////////////////
+	//// Tau PU 0 positive endcap -> training region ////
+	/////////////////////////////////////////////////////
 
-	TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/RelValDiTau_Pt20To100_Eta1p6To2p9/RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU0_Aug19_v2/190806_155449/0000/";
+	/*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/RelValDiTau_Pt20To100_Eta1p6To2p9/RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU0_Aug19_v2/190806_155449/0000/";
 
 	vector<TString> infiles;
 	for(int i=1; i<6; i++) {
@@ -597,12 +814,12 @@ void test(int n_events = -1){
 		infiles.push_back(indir+Form("ntuple_%i.root",i));
 	}
 
-    TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_skimmed.root";
+    TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU0_skimmed.root";*/
 
 
-	///////////////////////////////////////////////////
-	//// Tau negative endcap -> application region ////
-	///////////////////////////////////////////////////
+	////////////////////////////////////////////////////////
+	//// Tau PU 0 negative endcap -> application region ////
+	////////////////////////////////////////////////////////
 
 	/*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/RelValDiTau_Pt20To100_Etam1p6Tom2p9/RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU0_Aug19_v2/190806_155429/0000/";
   
@@ -612,7 +829,36 @@ void test(int n_events = -1){
 		infiles.push_back(indir+Form("ntuple_%i.root",i));
 	}
 
-	TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_skimmed.root";*/
+	TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU0_skimmed.root";*/
+
+
+	///////////////////////////////////////////////////////
+	//// Tau PU 200 positive endcap -> training region ////
+	///////////////////////////////////////////////////////
+
+	TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/RelValDiTau_Pt20To100_Eta1p6To2p9/RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU200_Aug19/190826_150525/0000/";
+
+	vector<TString> infiles;
+	for(int i=1; i<101; i++) {
+		cout<<"File "<<Form("ntuple_%i.root",i)<<endl;
+		infiles.push_back(indir+Form("ntuple_%i.root",i));
+	}
+
+    TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU200_skimmed.root";
+
+    //////////////////////////////////////////////////////////
+	//// Tau PU 200 negative endcap -> application region ////
+	//////////////////////////////////////////////////////////
+
+	/*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/RelValDiTau_Pt20To100_Etam1p6Tom2p9/RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU200_Aug19/190826_150504/0000/";
+
+	vector<TString> infiles;
+	for(int i=1; i<101; i++) {
+		cout<<"File "<<Form("ntuple_%i.root",i)<<endl;
+		infiles.push_back(indir+Form("ntuple_%i.root",i));
+	}
+
+    TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU200_skimmed.root";*/
 
 
 	////////////////////////////////////////////////
