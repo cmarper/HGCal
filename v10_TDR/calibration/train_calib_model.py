@@ -14,7 +14,7 @@ from sklearn.externals import joblib
 features = ['pt_tot', 'eta_Eweighted','firstlayer', 'maxlayer', 'layer10', 'layer50', 'layer90', 'showerlength', 'hoe', 'meanz']
 n_features = len(features)
 
-datasetname = '../../data/input_train_calib_10vars_etaPlus.csv'
+datasetname = '../../data/calibration/input_train_calib_10vars_etaPlus_PUcut_PU200.csv'
 dataset = loadtxt(datasetname, delimiter=",")
 
 print 'Loading data, with',n_features,'features:\n',features
@@ -45,5 +45,5 @@ print numpy.shape(X_train)
 gbrt.fit(X_train, y_train)
 
 # Save the model
-filename = '../../data/model_train_calib_10vars_etaPlus.sav'
+filename = '../../data/calibration/model_train_calib_10vars_etaPlus_PUcut_PU200.sav'
 joblib.dump(gbrt, filename)
