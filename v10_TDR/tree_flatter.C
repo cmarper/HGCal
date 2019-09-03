@@ -47,39 +47,39 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
 
     vector<int>    *_in_gentau_decayMode;
 
-    vector<bool>   *_in_gentau_isMatched;
+    vector<bool>   *_in_gentau_isMatchedtoSCL3D;
 
-    vector<int>    *_in_gentau_matchedSC_n_cl3d;
-    vector<float>  *_in_gentau_matchedSC_pt_tot;
-    vector<float>  *_in_gentau_matchedSC_pt_seed;
-    vector<float>  *_in_gentau_matchedSC_eta_Eweighted;
-    vector<float>  *_in_gentau_matchedSC_eta_seed;
-    vector<float>  *_in_gentau_matchedSC_phi_Eweighted;
-    vector<float>  *_in_gentau_matchedSC_phi_seed;
+    vector<int>    *_in_gentau_matchedSCL3D_n_cl3d;
+    vector<float>  *_in_gentau_matchedSCL3D_pt_tot;
+    vector<float>  *_in_gentau_matchedSCL3D_pt_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_eta_Eweighted;
+    vector<float>  *_in_gentau_matchedSCL3D_eta_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_phi_Eweighted;
+    vector<float>  *_in_gentau_matchedSCL3D_phi_seed;
 
-    vector<int>    *_in_gentau_matchedSC_showerlength_seed;
-    vector<int>    *_in_gentau_matchedSC_coreshowerlength_seed;
-    vector<int>    *_in_gentau_matchedSC_firstlayer_seed;
-    vector<int>    *_in_gentau_matchedSC_maxlayer_seed;
-    vector<float>  *_in_gentau_matchedSC_seetot_seed;
-    vector<float>  *_in_gentau_matchedSC_seemax_seed;
-    vector<float>  *_in_gentau_matchedSC_spptot_seed;
-    vector<float>  *_in_gentau_matchedSC_sppmax_seed;
-    vector<float>  *_in_gentau_matchedSC_szz_seed;
-    vector<float>  *_in_gentau_matchedSC_srrtot_seed;
-    vector<float>  *_in_gentau_matchedSC_srrmax_seed;
-    vector<float>  *_in_gentau_matchedSC_srrmean_seed;
-    vector<float>  *_in_gentau_matchedSC_emaxe_seed;
-    vector<float>  *_in_gentau_matchedSC_hoe_seed;
-    vector<float>  *_in_gentau_matchedSC_meanz_seed;
-    vector<float>  *_in_gentau_matchedSC_layer10_seed;
-    vector<float>  *_in_gentau_matchedSC_layer50_seed;
-    vector<float>  *_in_gentau_matchedSC_layer90_seed;
-    vector<float>  *_in_gentau_matchedSC_ntc67_seed;
-    vector<float>  *_in_gentau_matchedSC_ntc90_seed;
-    vector<float>  *_in_gentau_matchedSC_bdteg_seed;
-    vector<int>    *_in_gentau_matchedSC_quality_seed;
-    vector<float>  *_in_gentau_matchedSC_puBDT_seed;
+    vector<int>    *_in_gentau_matchedSCL3D_showerlength_seed;
+    vector<int>    *_in_gentau_matchedSCL3D_coreshowerlength_seed;
+    vector<int>    *_in_gentau_matchedSCL3D_firstlayer_seed;
+    vector<int>    *_in_gentau_matchedSCL3D_maxlayer_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_seetot_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_seemax_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_spptot_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_sppmax_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_szz_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_srrtot_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_srrmax_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_srrmean_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_emaxe_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_hoe_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_meanz_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_layer10_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_layer50_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_layer90_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_ntc67_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_ntc90_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_bdteg_seed;
+    vector<int>    *_in_gentau_matchedSCL3D_quality_seed;
+    vector<float>  *_in_gentau_matchedSCL3D_puBDT_seed;
 
 
 	in_tree->SetBranchAddress("event",&_in_event);
@@ -100,39 +100,39 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
 
     in_tree->SetBranchAddress("gentau_decayMode",   &_in_gentau_decayMode);
 
-    in_tree->SetBranchAddress("gentau_isMatched",	&_in_gentau_isMatched);
+    in_tree->SetBranchAddress("gentau_isMatchedtoSCL3D",	&_in_gentau_isMatchedtoSCL3D);
 
-    in_tree->SetBranchAddress("gentau_matchedSC_n_cl3d", 		&_in_gentau_matchedSC_n_cl3d);
-    in_tree->SetBranchAddress("gentau_matchedSC_pt_tot", 		&_in_gentau_matchedSC_pt_tot);
-    in_tree->SetBranchAddress("gentau_matchedSC_pt_seed",		&_in_gentau_matchedSC_pt_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_eta_Eweighted", &_in_gentau_matchedSC_eta_Eweighted);
-    in_tree->SetBranchAddress("gentau_matchedSC_eta_seed", 		&_in_gentau_matchedSC_eta_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_phi_Eweighted", &_in_gentau_matchedSC_phi_Eweighted);
-    in_tree->SetBranchAddress("gentau_matchedSC_phi_seed", 		&_in_gentau_matchedSC_phi_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_n_cl3d", 		&_in_gentau_matchedSCL3D_n_cl3d);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_pt_tot", 		&_in_gentau_matchedSCL3D_pt_tot);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_pt_seed",		&_in_gentau_matchedSCL3D_pt_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_eta_Eweighted", &_in_gentau_matchedSCL3D_eta_Eweighted);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_eta_seed", 		&_in_gentau_matchedSCL3D_eta_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_phi_Eweighted", &_in_gentau_matchedSCL3D_phi_Eweighted);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_phi_seed", 		&_in_gentau_matchedSCL3D_phi_seed);
 
-    in_tree->SetBranchAddress("gentau_matchedSC_showerlength_seed", 	&_in_gentau_matchedSC_showerlength_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_coreshowerlength_seed", &_in_gentau_matchedSC_coreshowerlength_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_firstlayer_seed", 		&_in_gentau_matchedSC_firstlayer_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_maxlayer_seed", 		&_in_gentau_matchedSC_maxlayer_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_seetot_seed", 			&_in_gentau_matchedSC_seetot_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_seemax_seed", 			&_in_gentau_matchedSC_seemax_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_spptot_seed", 			&_in_gentau_matchedSC_spptot_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_sppmax_seed", 			&_in_gentau_matchedSC_sppmax_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_szz_seed", 				&_in_gentau_matchedSC_szz_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_srrtot_seed", 			&_in_gentau_matchedSC_srrtot_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_srrmax_seed", 			&_in_gentau_matchedSC_srrmax_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_srrmean_seed", 			&_in_gentau_matchedSC_srrmean_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_emaxe_seed", 			&_in_gentau_matchedSC_emaxe_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_hoe_seed", 				&_in_gentau_matchedSC_hoe_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_meanz_seed", 			&_in_gentau_matchedSC_meanz_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_layer10_seed", 			&_in_gentau_matchedSC_layer10_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_layer50_seed", 			&_in_gentau_matchedSC_layer50_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_layer90_seed", 			&_in_gentau_matchedSC_layer90_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_ntc67_seed", 			&_in_gentau_matchedSC_ntc67_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_ntc90_seed", 			&_in_gentau_matchedSC_ntc90_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_bdteg_seed", 			&_in_gentau_matchedSC_bdteg_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_quality_seed", 			&_in_gentau_matchedSC_quality_seed);
-    in_tree->SetBranchAddress("gentau_matchedSC_puBDT_seed",            &_in_gentau_matchedSC_puBDT_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_showerlength_seed", 	&_in_gentau_matchedSCL3D_showerlength_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_coreshowerlength_seed", &_in_gentau_matchedSCL3D_coreshowerlength_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_firstlayer_seed", 		&_in_gentau_matchedSCL3D_firstlayer_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_maxlayer_seed", 		&_in_gentau_matchedSCL3D_maxlayer_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_seetot_seed", 			&_in_gentau_matchedSCL3D_seetot_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_seemax_seed", 			&_in_gentau_matchedSCL3D_seemax_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_spptot_seed", 			&_in_gentau_matchedSCL3D_spptot_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_sppmax_seed", 			&_in_gentau_matchedSCL3D_sppmax_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_szz_seed", 				&_in_gentau_matchedSCL3D_szz_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_srrtot_seed", 			&_in_gentau_matchedSCL3D_srrtot_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_srrmax_seed", 			&_in_gentau_matchedSCL3D_srrmax_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_srrmean_seed", 			&_in_gentau_matchedSCL3D_srrmean_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_emaxe_seed", 			&_in_gentau_matchedSCL3D_emaxe_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_hoe_seed", 				&_in_gentau_matchedSCL3D_hoe_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_meanz_seed", 			&_in_gentau_matchedSCL3D_meanz_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_layer10_seed", 			&_in_gentau_matchedSCL3D_layer10_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_layer50_seed", 			&_in_gentau_matchedSCL3D_layer50_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_layer90_seed", 			&_in_gentau_matchedSCL3D_layer90_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_ntc67_seed", 			&_in_gentau_matchedSCL3D_ntc67_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_ntc90_seed", 			&_in_gentau_matchedSCL3D_ntc90_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_bdteg_seed", 			&_in_gentau_matchedSCL3D_bdteg_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_quality_seed", 			&_in_gentau_matchedSCL3D_quality_seed);
+    in_tree->SetBranchAddress("gentau_matchedSCL3D_puBDT_seed",            &_in_gentau_matchedSCL3D_puBDT_seed);
 
 	// new branches
 
@@ -158,39 +158,39 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
 
     int    _out_gentau_decayMode;
 
-    bool   _out_gentau_isMatched;
+    bool   _out_gentau_isMatchedtoSCL3D;
 
-    int     _out_gentau_matchedSC_n_cl3d;
-    float   _out_gentau_matchedSC_pt_tot;
-    float   _out_gentau_matchedSC_pt_seed;
-    float   _out_gentau_matchedSC_eta_Eweighted;
-    float   _out_gentau_matchedSC_eta_seed;
-    float   _out_gentau_matchedSC_phi_Eweighted;
-    float   _out_gentau_matchedSC_phi_seed;
+    int     _out_gentau_matchedSCL3D_n_cl3d;
+    float   _out_gentau_matchedSCL3D_pt_tot;
+    float   _out_gentau_matchedSCL3D_pt_seed;
+    float   _out_gentau_matchedSCL3D_eta_Eweighted;
+    float   _out_gentau_matchedSCL3D_eta_seed;
+    float   _out_gentau_matchedSCL3D_phi_Eweighted;
+    float   _out_gentau_matchedSCL3D_phi_seed;
 
-    int    _out_gentau_matchedSC_showerlength_seed;
-    int    _out_gentau_matchedSC_coreshowerlength_seed;
-    int    _out_gentau_matchedSC_firstlayer_seed;
-    int    _out_gentau_matchedSC_maxlayer_seed;
-    float  _out_gentau_matchedSC_seetot_seed;
-    float  _out_gentau_matchedSC_seemax_seed;
-    float  _out_gentau_matchedSC_spptot_seed;
-    float  _out_gentau_matchedSC_sppmax_seed;
-    float  _out_gentau_matchedSC_szz_seed;
-    float  _out_gentau_matchedSC_srrtot_seed;
-    float  _out_gentau_matchedSC_srrmax_seed;
-    float  _out_gentau_matchedSC_srrmean_seed;
-    float  _out_gentau_matchedSC_emaxe_seed;
-    float  _out_gentau_matchedSC_hoe_seed;
-    float  _out_gentau_matchedSC_meanz_seed;
-    float  _out_gentau_matchedSC_layer10_seed;
-    float  _out_gentau_matchedSC_layer50_seed;
-    float  _out_gentau_matchedSC_layer90_seed;
-    float  _out_gentau_matchedSC_ntc67_seed;
-    float  _out_gentau_matchedSC_ntc90_seed;
-    float  _out_gentau_matchedSC_bdteg_seed;
-    int    _out_gentau_matchedSC_quality_seed;
-    float  _out_gentau_matchedSC_puBDT_seed;
+    int    _out_gentau_matchedSCL3D_showerlength_seed;
+    int    _out_gentau_matchedSCL3D_coreshowerlength_seed;
+    int    _out_gentau_matchedSCL3D_firstlayer_seed;
+    int    _out_gentau_matchedSCL3D_maxlayer_seed;
+    float  _out_gentau_matchedSCL3D_seetot_seed;
+    float  _out_gentau_matchedSCL3D_seemax_seed;
+    float  _out_gentau_matchedSCL3D_spptot_seed;
+    float  _out_gentau_matchedSCL3D_sppmax_seed;
+    float  _out_gentau_matchedSCL3D_szz_seed;
+    float  _out_gentau_matchedSCL3D_srrtot_seed;
+    float  _out_gentau_matchedSCL3D_srrmax_seed;
+    float  _out_gentau_matchedSCL3D_srrmean_seed;
+    float  _out_gentau_matchedSCL3D_emaxe_seed;
+    float  _out_gentau_matchedSCL3D_hoe_seed;
+    float  _out_gentau_matchedSCL3D_meanz_seed;
+    float  _out_gentau_matchedSCL3D_layer10_seed;
+    float  _out_gentau_matchedSCL3D_layer50_seed;
+    float  _out_gentau_matchedSCL3D_layer90_seed;
+    float  _out_gentau_matchedSCL3D_ntc67_seed;
+    float  _out_gentau_matchedSCL3D_ntc90_seed;
+    float  _out_gentau_matchedSCL3D_bdteg_seed;
+    int    _out_gentau_matchedSCL3D_quality_seed;
+    float  _out_gentau_matchedSCL3D_puBDT_seed;
 
 	out_tree->Branch("event",&_out_event);
 
@@ -210,39 +210,39 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
 
     out_tree->Branch("gentau_decayMode",   &_out_gentau_decayMode);
 
-    out_tree->Branch("gentau_isMatched",	&_out_gentau_isMatched);
+    out_tree->Branch("gentau_isMatchedtoSCL3D",	&_out_gentau_isMatchedtoSCL3D);
 
-    out_tree->Branch("gentau_matchedSC_n_cl3d", 		&_out_gentau_matchedSC_n_cl3d);
-    out_tree->Branch("gentau_matchedSC_pt_tot", 		&_out_gentau_matchedSC_pt_tot);
-    out_tree->Branch("gentau_matchedSC_pt_seed",		&_out_gentau_matchedSC_pt_seed);
-    out_tree->Branch("gentau_matchedSC_eta_Eweighted", 	&_out_gentau_matchedSC_eta_Eweighted);
-    out_tree->Branch("gentau_matchedSC_eta_seed", 		&_out_gentau_matchedSC_eta_seed);
-    out_tree->Branch("gentau_matchedSC_phi_Eweighted", 	&_out_gentau_matchedSC_phi_Eweighted);
-    out_tree->Branch("gentau_matchedSC_phi_seed", 		&_out_gentau_matchedSC_phi_seed);
+    out_tree->Branch("gentau_matchedSCL3D_n_cl3d", 		&_out_gentau_matchedSCL3D_n_cl3d);
+    out_tree->Branch("gentau_matchedSCL3D_pt_tot", 		&_out_gentau_matchedSCL3D_pt_tot);
+    out_tree->Branch("gentau_matchedSCL3D_pt_seed",		&_out_gentau_matchedSCL3D_pt_seed);
+    out_tree->Branch("gentau_matchedSCL3D_eta_Eweighted", 	&_out_gentau_matchedSCL3D_eta_Eweighted);
+    out_tree->Branch("gentau_matchedSCL3D_eta_seed", 		&_out_gentau_matchedSCL3D_eta_seed);
+    out_tree->Branch("gentau_matchedSCL3D_phi_Eweighted", 	&_out_gentau_matchedSCL3D_phi_Eweighted);
+    out_tree->Branch("gentau_matchedSCL3D_phi_seed", 		&_out_gentau_matchedSCL3D_phi_seed);
 
-    out_tree->Branch("gentau_matchedSC_showerlength_seed", 		&_out_gentau_matchedSC_showerlength_seed);
-    out_tree->Branch("gentau_matchedSC_coreshowerlength_seed", 	&_out_gentau_matchedSC_coreshowerlength_seed);
-    out_tree->Branch("gentau_matchedSC_firstlayer_seed", 		&_out_gentau_matchedSC_firstlayer_seed);
-    out_tree->Branch("gentau_matchedSC_maxlayer_seed", 			&_out_gentau_matchedSC_maxlayer_seed);
-    out_tree->Branch("gentau_matchedSC_seetot_seed", 			&_out_gentau_matchedSC_seetot_seed);
-    out_tree->Branch("gentau_matchedSC_seemax_seed", 			&_out_gentau_matchedSC_seemax_seed);
-    out_tree->Branch("gentau_matchedSC_spptot_seed", 			&_out_gentau_matchedSC_spptot_seed);
-    out_tree->Branch("gentau_matchedSC_sppmax_seed", 			&_out_gentau_matchedSC_sppmax_seed);
-    out_tree->Branch("gentau_matchedSC_szz_seed", 				&_out_gentau_matchedSC_szz_seed);
-    out_tree->Branch("gentau_matchedSC_srrtot_seed", 			&_out_gentau_matchedSC_srrtot_seed);
-    out_tree->Branch("gentau_matchedSC_srrmax_seed", 			&_out_gentau_matchedSC_srrmax_seed);
-    out_tree->Branch("gentau_matchedSC_srrmean_seed", 			&_out_gentau_matchedSC_srrmean_seed);
-    out_tree->Branch("gentau_matchedSC_emaxe_seed", 			&_out_gentau_matchedSC_emaxe_seed);
-    out_tree->Branch("gentau_matchedSC_hoe_seed", 				&_out_gentau_matchedSC_hoe_seed);
-    out_tree->Branch("gentau_matchedSC_meanz_seed", 			&_out_gentau_matchedSC_meanz_seed);
-    out_tree->Branch("gentau_matchedSC_layer10_seed", 			&_out_gentau_matchedSC_layer10_seed);
-    out_tree->Branch("gentau_matchedSC_layer50_seed", 			&_out_gentau_matchedSC_layer50_seed);
-    out_tree->Branch("gentau_matchedSC_layer90_seed", 			&_out_gentau_matchedSC_layer90_seed);
-    out_tree->Branch("gentau_matchedSC_ntc67_seed", 			&_out_gentau_matchedSC_ntc67_seed);
-    out_tree->Branch("gentau_matchedSC_ntc90_seed", 			&_out_gentau_matchedSC_ntc90_seed);
-    out_tree->Branch("gentau_matchedSC_bdteg_seed", 			&_out_gentau_matchedSC_bdteg_seed);
-    out_tree->Branch("gentau_matchedSC_quality_seed", 			&_out_gentau_matchedSC_quality_seed);
-    out_tree->Branch("gentau_matchedSC_puBDT_seed",             &_out_gentau_matchedSC_puBDT_seed);
+    out_tree->Branch("gentau_matchedSCL3D_showerlength_seed", 		&_out_gentau_matchedSCL3D_showerlength_seed);
+    out_tree->Branch("gentau_matchedSCL3D_coreshowerlength_seed", 	&_out_gentau_matchedSCL3D_coreshowerlength_seed);
+    out_tree->Branch("gentau_matchedSCL3D_firstlayer_seed", 		&_out_gentau_matchedSCL3D_firstlayer_seed);
+    out_tree->Branch("gentau_matchedSCL3D_maxlayer_seed", 			&_out_gentau_matchedSCL3D_maxlayer_seed);
+    out_tree->Branch("gentau_matchedSCL3D_seetot_seed", 			&_out_gentau_matchedSCL3D_seetot_seed);
+    out_tree->Branch("gentau_matchedSCL3D_seemax_seed", 			&_out_gentau_matchedSCL3D_seemax_seed);
+    out_tree->Branch("gentau_matchedSCL3D_spptot_seed", 			&_out_gentau_matchedSCL3D_spptot_seed);
+    out_tree->Branch("gentau_matchedSCL3D_sppmax_seed", 			&_out_gentau_matchedSCL3D_sppmax_seed);
+    out_tree->Branch("gentau_matchedSCL3D_szz_seed", 				&_out_gentau_matchedSCL3D_szz_seed);
+    out_tree->Branch("gentau_matchedSCL3D_srrtot_seed", 			&_out_gentau_matchedSCL3D_srrtot_seed);
+    out_tree->Branch("gentau_matchedSCL3D_srrmax_seed", 			&_out_gentau_matchedSCL3D_srrmax_seed);
+    out_tree->Branch("gentau_matchedSCL3D_srrmean_seed", 			&_out_gentau_matchedSCL3D_srrmean_seed);
+    out_tree->Branch("gentau_matchedSCL3D_emaxe_seed", 			&_out_gentau_matchedSCL3D_emaxe_seed);
+    out_tree->Branch("gentau_matchedSCL3D_hoe_seed", 				&_out_gentau_matchedSCL3D_hoe_seed);
+    out_tree->Branch("gentau_matchedSCL3D_meanz_seed", 			&_out_gentau_matchedSCL3D_meanz_seed);
+    out_tree->Branch("gentau_matchedSCL3D_layer10_seed", 			&_out_gentau_matchedSCL3D_layer10_seed);
+    out_tree->Branch("gentau_matchedSCL3D_layer50_seed", 			&_out_gentau_matchedSCL3D_layer50_seed);
+    out_tree->Branch("gentau_matchedSCL3D_layer90_seed", 			&_out_gentau_matchedSCL3D_layer90_seed);
+    out_tree->Branch("gentau_matchedSCL3D_ntc67_seed", 			&_out_gentau_matchedSCL3D_ntc67_seed);
+    out_tree->Branch("gentau_matchedSCL3D_ntc90_seed", 			&_out_gentau_matchedSCL3D_ntc90_seed);
+    out_tree->Branch("gentau_matchedSCL3D_bdteg_seed", 			&_out_gentau_matchedSCL3D_bdteg_seed);
+    out_tree->Branch("gentau_matchedSCL3D_quality_seed", 			&_out_gentau_matchedSCL3D_quality_seed);
+    out_tree->Branch("gentau_matchedSCL3D_puBDT_seed",             &_out_gentau_matchedSCL3D_puBDT_seed);
 
 	for (int i=0;i<nentries;i++) {
 
@@ -268,39 +268,39 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
 
         _in_gentau_decayMode = 0; 
 
-    	_in_gentau_isMatched = 0;
+    	_in_gentau_isMatchedtoSCL3D = 0;
 
-    	_in_gentau_matchedSC_n_cl3d = 0;
-    	_in_gentau_matchedSC_pt_tot = 0;
-    	_in_gentau_matchedSC_pt_seed = 0;
-    	_in_gentau_matchedSC_eta_Eweighted = 0;
-    	_in_gentau_matchedSC_eta_seed = 0;
-    	_in_gentau_matchedSC_phi_Eweighted = 0;
-    	_in_gentau_matchedSC_phi_seed = 0;
+    	_in_gentau_matchedSCL3D_n_cl3d = 0;
+    	_in_gentau_matchedSCL3D_pt_tot = 0;
+    	_in_gentau_matchedSCL3D_pt_seed = 0;
+    	_in_gentau_matchedSCL3D_eta_Eweighted = 0;
+    	_in_gentau_matchedSCL3D_eta_seed = 0;
+    	_in_gentau_matchedSCL3D_phi_Eweighted = 0;
+    	_in_gentau_matchedSCL3D_phi_seed = 0;
 
-    	_in_gentau_matchedSC_showerlength_seed = 0;
-    	_in_gentau_matchedSC_coreshowerlength_seed = 0;
-    	_in_gentau_matchedSC_firstlayer_seed = 0;
-    	_in_gentau_matchedSC_maxlayer_seed = 0;
-    	_in_gentau_matchedSC_seetot_seed = 0;
-    	_in_gentau_matchedSC_seemax_seed = 0;
-    	_in_gentau_matchedSC_spptot_seed = 0;
-    	_in_gentau_matchedSC_sppmax_seed = 0;
-    	_in_gentau_matchedSC_szz_seed = 0;
-    	_in_gentau_matchedSC_srrtot_seed = 0;
-    	_in_gentau_matchedSC_srrmax_seed = 0;
-    	_in_gentau_matchedSC_srrmean_seed = 0;
-    	_in_gentau_matchedSC_emaxe_seed = 0;
-    	_in_gentau_matchedSC_hoe_seed = 0;
-    	_in_gentau_matchedSC_meanz_seed = 0;
-    	_in_gentau_matchedSC_layer10_seed = 0;
-    	_in_gentau_matchedSC_layer50_seed = 0;
-    	_in_gentau_matchedSC_layer90_seed = 0;
-    	_in_gentau_matchedSC_ntc67_seed = 0;
-    	_in_gentau_matchedSC_ntc90_seed = 0;
-    	_in_gentau_matchedSC_bdteg_seed = 0;
-    	_in_gentau_matchedSC_quality_seed = 0;
-        _in_gentau_matchedSC_puBDT_seed = 0;
+    	_in_gentau_matchedSCL3D_showerlength_seed = 0;
+    	_in_gentau_matchedSCL3D_coreshowerlength_seed = 0;
+    	_in_gentau_matchedSCL3D_firstlayer_seed = 0;
+    	_in_gentau_matchedSCL3D_maxlayer_seed = 0;
+    	_in_gentau_matchedSCL3D_seetot_seed = 0;
+    	_in_gentau_matchedSCL3D_seemax_seed = 0;
+    	_in_gentau_matchedSCL3D_spptot_seed = 0;
+    	_in_gentau_matchedSCL3D_sppmax_seed = 0;
+    	_in_gentau_matchedSCL3D_szz_seed = 0;
+    	_in_gentau_matchedSCL3D_srrtot_seed = 0;
+    	_in_gentau_matchedSCL3D_srrmax_seed = 0;
+    	_in_gentau_matchedSCL3D_srrmean_seed = 0;
+    	_in_gentau_matchedSCL3D_emaxe_seed = 0;
+    	_in_gentau_matchedSCL3D_hoe_seed = 0;
+    	_in_gentau_matchedSCL3D_meanz_seed = 0;
+    	_in_gentau_matchedSCL3D_layer10_seed = 0;
+    	_in_gentau_matchedSCL3D_layer50_seed = 0;
+    	_in_gentau_matchedSCL3D_layer90_seed = 0;
+    	_in_gentau_matchedSCL3D_ntc67_seed = 0;
+    	_in_gentau_matchedSCL3D_ntc90_seed = 0;
+    	_in_gentau_matchedSCL3D_bdteg_seed = 0;
+    	_in_gentau_matchedSCL3D_quality_seed = 0;
+        _in_gentau_matchedSCL3D_puBDT_seed = 0;
 
 		// new branches
 
@@ -322,39 +322,39 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
 
         _out_gentau_decayMode = 0; 
 
-    	_out_gentau_isMatched = 0;
+    	_out_gentau_isMatchedtoSCL3D = 0;
 
-    	_out_gentau_matchedSC_n_cl3d = 0;
-    	_out_gentau_matchedSC_pt_tot = 0;
-    	_out_gentau_matchedSC_pt_seed = 0;
-    	_out_gentau_matchedSC_eta_Eweighted = 0;
-    	_out_gentau_matchedSC_eta_seed = 0;
-    	_out_gentau_matchedSC_phi_Eweighted = 0;
-    	_out_gentau_matchedSC_phi_seed = 0;
+    	_out_gentau_matchedSCL3D_n_cl3d = 0;
+    	_out_gentau_matchedSCL3D_pt_tot = 0;
+    	_out_gentau_matchedSCL3D_pt_seed = 0;
+    	_out_gentau_matchedSCL3D_eta_Eweighted = 0;
+    	_out_gentau_matchedSCL3D_eta_seed = 0;
+    	_out_gentau_matchedSCL3D_phi_Eweighted = 0;
+    	_out_gentau_matchedSCL3D_phi_seed = 0;
 
-    	_out_gentau_matchedSC_showerlength_seed = 0;
-    	_out_gentau_matchedSC_coreshowerlength_seed = 0;
-    	_out_gentau_matchedSC_firstlayer_seed = 0;
-    	_out_gentau_matchedSC_maxlayer_seed = 0;
-    	_out_gentau_matchedSC_seetot_seed = 0;
-    	_out_gentau_matchedSC_seemax_seed = 0;
-    	_out_gentau_matchedSC_spptot_seed = 0;
-    	_out_gentau_matchedSC_sppmax_seed = 0;
-    	_out_gentau_matchedSC_szz_seed = 0;
-    	_out_gentau_matchedSC_srrtot_seed = 0;
-    	_out_gentau_matchedSC_srrmax_seed = 0;
-    	_out_gentau_matchedSC_srrmean_seed = 0;
-    	_out_gentau_matchedSC_emaxe_seed = 0;
-    	_out_gentau_matchedSC_hoe_seed = 0;
-    	_out_gentau_matchedSC_meanz_seed = 0;
-    	_out_gentau_matchedSC_layer10_seed = 0;
-    	_out_gentau_matchedSC_layer50_seed = 0;
-    	_out_gentau_matchedSC_layer90_seed = 0;
-    	_out_gentau_matchedSC_ntc67_seed = 0;
-    	_out_gentau_matchedSC_ntc90_seed = 0;
-    	_out_gentau_matchedSC_bdteg_seed = 0;
-    	_out_gentau_matchedSC_quality_seed = 0;
-        _out_gentau_matchedSC_puBDT_seed = 0;
+    	_out_gentau_matchedSCL3D_showerlength_seed = 0;
+    	_out_gentau_matchedSCL3D_coreshowerlength_seed = 0;
+    	_out_gentau_matchedSCL3D_firstlayer_seed = 0;
+    	_out_gentau_matchedSCL3D_maxlayer_seed = 0;
+    	_out_gentau_matchedSCL3D_seetot_seed = 0;
+    	_out_gentau_matchedSCL3D_seemax_seed = 0;
+    	_out_gentau_matchedSCL3D_spptot_seed = 0;
+    	_out_gentau_matchedSCL3D_sppmax_seed = 0;
+    	_out_gentau_matchedSCL3D_szz_seed = 0;
+    	_out_gentau_matchedSCL3D_srrtot_seed = 0;
+    	_out_gentau_matchedSCL3D_srrmax_seed = 0;
+    	_out_gentau_matchedSCL3D_srrmean_seed = 0;
+    	_out_gentau_matchedSCL3D_emaxe_seed = 0;
+    	_out_gentau_matchedSCL3D_hoe_seed = 0;
+    	_out_gentau_matchedSCL3D_meanz_seed = 0;
+    	_out_gentau_matchedSCL3D_layer10_seed = 0;
+    	_out_gentau_matchedSCL3D_layer50_seed = 0;
+    	_out_gentau_matchedSCL3D_layer90_seed = 0;
+    	_out_gentau_matchedSCL3D_ntc67_seed = 0;
+    	_out_gentau_matchedSCL3D_ntc90_seed = 0;
+    	_out_gentau_matchedSCL3D_bdteg_seed = 0;
+    	_out_gentau_matchedSCL3D_quality_seed = 0;
+        _out_gentau_matchedSCL3D_puBDT_seed = 0;
 
 		int entry_ok = in_tree->GetEntry(i);	
 		if(entry_ok<0) continue;
@@ -379,39 +379,39 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
 
         	_out_gentau_decayMode = _in_gentau_decayMode->at(i_gentau);
 
-        	_out_gentau_isMatched = _in_gentau_isMatched->at(i_gentau);
+        	_out_gentau_isMatchedtoSCL3D = _in_gentau_isMatchedtoSCL3D->at(i_gentau);
 
-        	_out_gentau_matchedSC_n_cl3d = _in_gentau_matchedSC_n_cl3d->at(i_gentau);
-        	_out_gentau_matchedSC_pt_tot = _in_gentau_matchedSC_pt_tot->at(i_gentau);
-        	_out_gentau_matchedSC_pt_seed = _in_gentau_matchedSC_pt_seed->at(i_gentau);
-        	_out_gentau_matchedSC_eta_Eweighted = _in_gentau_matchedSC_eta_Eweighted->at(i_gentau);
-        	_out_gentau_matchedSC_eta_seed = _in_gentau_matchedSC_eta_seed->at(i_gentau);
-        	_out_gentau_matchedSC_phi_Eweighted = _in_gentau_matchedSC_phi_Eweighted->at(i_gentau);
-        	_out_gentau_matchedSC_phi_seed = _in_gentau_matchedSC_phi_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_n_cl3d = _in_gentau_matchedSCL3D_n_cl3d->at(i_gentau);
+        	_out_gentau_matchedSCL3D_pt_tot = _in_gentau_matchedSCL3D_pt_tot->at(i_gentau);
+        	_out_gentau_matchedSCL3D_pt_seed = _in_gentau_matchedSCL3D_pt_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_eta_Eweighted = _in_gentau_matchedSCL3D_eta_Eweighted->at(i_gentau);
+        	_out_gentau_matchedSCL3D_eta_seed = _in_gentau_matchedSCL3D_eta_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_phi_Eweighted = _in_gentau_matchedSCL3D_phi_Eweighted->at(i_gentau);
+        	_out_gentau_matchedSCL3D_phi_seed = _in_gentau_matchedSCL3D_phi_seed->at(i_gentau);
 
-        	_out_gentau_matchedSC_showerlength_seed = _in_gentau_matchedSC_showerlength_seed->at(i_gentau);
-        	_out_gentau_matchedSC_coreshowerlength_seed = _in_gentau_matchedSC_coreshowerlength_seed->at(i_gentau);
-        	_out_gentau_matchedSC_firstlayer_seed = _in_gentau_matchedSC_firstlayer_seed->at(i_gentau);
-        	_out_gentau_matchedSC_maxlayer_seed = _in_gentau_matchedSC_maxlayer_seed->at(i_gentau);
-        	_out_gentau_matchedSC_seetot_seed = _in_gentau_matchedSC_seetot_seed->at(i_gentau);
-        	_out_gentau_matchedSC_seemax_seed = _in_gentau_matchedSC_seemax_seed->at(i_gentau);
-        	_out_gentau_matchedSC_spptot_seed = _in_gentau_matchedSC_spptot_seed->at(i_gentau);
-        	_out_gentau_matchedSC_sppmax_seed = _in_gentau_matchedSC_sppmax_seed->at(i_gentau);
-        	_out_gentau_matchedSC_szz_seed = _in_gentau_matchedSC_szz_seed->at(i_gentau);
-        	_out_gentau_matchedSC_srrtot_seed = _in_gentau_matchedSC_srrtot_seed->at(i_gentau);
-        	_out_gentau_matchedSC_srrmax_seed = _in_gentau_matchedSC_srrmax_seed->at(i_gentau);
-        	_out_gentau_matchedSC_srrmean_seed = _in_gentau_matchedSC_srrmean_seed->at(i_gentau);
-        	_out_gentau_matchedSC_emaxe_seed = _in_gentau_matchedSC_emaxe_seed->at(i_gentau);
-        	_out_gentau_matchedSC_hoe_seed = _in_gentau_matchedSC_hoe_seed->at(i_gentau);
-        	_out_gentau_matchedSC_meanz_seed = _in_gentau_matchedSC_meanz_seed->at(i_gentau);
-        	_out_gentau_matchedSC_layer10_seed = _in_gentau_matchedSC_layer10_seed->at(i_gentau);
-        	_out_gentau_matchedSC_layer50_seed = _in_gentau_matchedSC_layer50_seed->at(i_gentau);
-        	_out_gentau_matchedSC_layer90_seed = _in_gentau_matchedSC_layer90_seed->at(i_gentau);
-        	_out_gentau_matchedSC_ntc67_seed = _in_gentau_matchedSC_ntc67_seed->at(i_gentau);
-        	_out_gentau_matchedSC_ntc90_seed = _in_gentau_matchedSC_ntc90_seed->at(i_gentau);
-        	_out_gentau_matchedSC_bdteg_seed = _in_gentau_matchedSC_bdteg_seed->at(i_gentau);
-        	_out_gentau_matchedSC_quality_seed = _in_gentau_matchedSC_quality_seed->at(i_gentau);
-            _out_gentau_matchedSC_puBDT_seed = _in_gentau_matchedSC_puBDT_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_showerlength_seed = _in_gentau_matchedSCL3D_showerlength_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_coreshowerlength_seed = _in_gentau_matchedSCL3D_coreshowerlength_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_firstlayer_seed = _in_gentau_matchedSCL3D_firstlayer_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_maxlayer_seed = _in_gentau_matchedSCL3D_maxlayer_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_seetot_seed = _in_gentau_matchedSCL3D_seetot_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_seemax_seed = _in_gentau_matchedSCL3D_seemax_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_spptot_seed = _in_gentau_matchedSCL3D_spptot_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_sppmax_seed = _in_gentau_matchedSCL3D_sppmax_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_szz_seed = _in_gentau_matchedSCL3D_szz_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_srrtot_seed = _in_gentau_matchedSCL3D_srrtot_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_srrmax_seed = _in_gentau_matchedSCL3D_srrmax_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_srrmean_seed = _in_gentau_matchedSCL3D_srrmean_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_emaxe_seed = _in_gentau_matchedSCL3D_emaxe_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_hoe_seed = _in_gentau_matchedSCL3D_hoe_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_meanz_seed = _in_gentau_matchedSCL3D_meanz_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_layer10_seed = _in_gentau_matchedSCL3D_layer10_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_layer50_seed = _in_gentau_matchedSCL3D_layer50_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_layer90_seed = _in_gentau_matchedSCL3D_layer90_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_ntc67_seed = _in_gentau_matchedSCL3D_ntc67_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_ntc90_seed = _in_gentau_matchedSCL3D_ntc90_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_bdteg_seed = _in_gentau_matchedSCL3D_bdteg_seed->at(i_gentau);
+        	_out_gentau_matchedSCL3D_quality_seed = _in_gentau_matchedSCL3D_quality_seed->at(i_gentau);
+            _out_gentau_matchedSCL3D_puBDT_seed = _in_gentau_matchedSCL3D_puBDT_seed->at(i_gentau);
 
         	out_tree->Fill();
 
@@ -430,11 +430,17 @@ void flatten_tree( TString filein, TString fileout, int nevents = -1){
 
 void test(int n_events = -1){
 
-  //TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/clustered/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_clustered.root";
-  //TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/flat/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_flat.root";
+  //TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/clustered/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU0_clustered_PUcut.root";
+  //TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/flat/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU0_flat_PUcut.root";
 
-  TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/clustered/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_clustered.root";
-  TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/flat/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_flat.root";
+  //TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/clustered/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU0_clustered_noPUcut.root";
+  //TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/flat/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU0_flat_noPUcut.root";
+  
+  //TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/clustered/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU200_clustered_noPUcut.root";
+  //TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/flat/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU200_flat_noPUcut.root";
+
+  TString infile = "/data_CMS/cms/mperez/HGCal_data/Aug19/clustered/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU200_clustered_PUcut.root";
+  TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/flat/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU200_flat_PUcut.root";
 
   flatten_tree(infile, outfile, n_events);
 

@@ -49,10 +49,10 @@ TMVA::Reader* Book_MVAReader_PUvsTau(std::string basePath, std::string weightFil
 void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 	
 	TFile* out_file = TFile::Open(fileout);
-  	if(out_file!=0){
+  	/*if(out_file!=0){
 		cout<<fileout<<" already exists, please delete it before converting again"<<endl;
 		return;
-	}
+	}*/
 
 	out_file = TFile::Open(fileout,"RECREATE");
 
@@ -664,6 +664,9 @@ void skim_tree( vector<TString> filein, TString fileout, int nevents ){
 
 			if ( abs( (*_in_gentau_eta)[i_gentau] ) <= 1.6 || abs( (*_in_gentau_eta)[i_gentau] ) >= 2.9 ) continue;
 
+			bool ishadronic = ( ((*_in_gentau_decayMode)[i_gentau] == 0) || ((*_in_gentau_decayMode)[i_gentau] == 1) || ((*_in_gentau_decayMode)[i_gentau] == 4) || ((*_in_gentau_decayMode)[i_gentau] == 5) );
+			if(!ishadronic) continue;
+
 			_out_gentau_pt.push_back((*_in_gentau_pt)[i_gentau]);
 			_out_gentau_eta.push_back((*_in_gentau_eta)[i_gentau]);
 			_out_gentau_phi.push_back((*_in_gentau_phi)[i_gentau]);
@@ -836,7 +839,7 @@ void test(int n_events = -1){
 	//// Tau PU 200 positive endcap -> training region ////
 	///////////////////////////////////////////////////////
 
-	TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/RelValDiTau_Pt20To100_Eta1p6To2p9/RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU200_Aug19/190826_150525/0000/";
+	/*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/RelValDiTau_Pt20To100_Eta1p6To2p9/RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU200_Aug19/190826_150525/0000/";
 
 	vector<TString> infiles;
 	for(int i=1; i<101; i++) {
@@ -844,13 +847,13 @@ void test(int n_events = -1){
 		infiles.push_back(indir+Form("ntuple_%i.root",i));
 	}
 
-    TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU200_skimmed.root";
+    TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_RelValDiTau_Pt20To100_Eta1p6To2p9_v10_PU200_skimmed.root";*/
 
     //////////////////////////////////////////////////////////
 	//// Tau PU 200 negative endcap -> application region ////
 	//////////////////////////////////////////////////////////
 
-	/*TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/RelValDiTau_Pt20To100_Etam1p6Tom2p9/RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU200_Aug19/190826_150504/0000/";
+	TString indir = "root://polgrid4.in2p3.fr//store/user/cmartinp/HGCAL/RelValDiTau_Pt20To100_Etam1p6Tom2p9/RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU200_Aug19/190826_150504/0000/";
 
 	vector<TString> infiles;
 	for(int i=1; i<101; i++) {
@@ -858,7 +861,7 @@ void test(int n_events = -1){
 		infiles.push_back(indir+Form("ntuple_%i.root",i));
 	}
 
-    TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU200_skimmed.root";*/
+    TString outfile = "/data_CMS/cms/mperez/HGCal_data/Aug19/skimmed/ntuple_RelValDiTau_Pt20To100_Etam1p6Tom2p9_v10_PU200_skimmed.root";
 
 
 	////////////////////////////////////////////////
