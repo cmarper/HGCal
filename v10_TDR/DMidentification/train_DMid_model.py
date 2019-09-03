@@ -14,7 +14,7 @@ from sklearn.externals import joblib
 features = ['firstlayer', 'maxlayer', 'layer10', 'layer50', 'layer90', 'showerlength', 'hoe', 'meanz']
 n_features = len(features)
 
-datasetname = '../../data/input_train_DMid_8vars_etaPlus.csv'
+datasetname = '../../data/DMid/input_train_DMid_8vars_etaPlus_PUcut.csv'
 dataset = loadtxt(datasetname, delimiter=",")
 
 print 'Loading data, with',n_features,'features:\n',features
@@ -36,5 +36,5 @@ clf = RandomForestClassifier(n_jobs=2, random_state=0, class_weight='balanced',n
 clf.fit(X_train, y_train)
 
 # Save the model
-filename = '../../data/model_train_DMid_8vars_etaPlus.sav'
+filename = '../../data/DMid/model_train_DMid_8vars_etaPlus_PUcut.sav'
 joblib.dump(clf, filename)
